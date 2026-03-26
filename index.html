@@ -2,1237 +2,989 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<meta name="theme-color" content="#080808">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <title>WukaCulture RapStudio</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎤</text></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23C8FF00'/><text y='72' x='50' text-anchor='middle' font-size='60'>🎤</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Barlow+Condensed:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════════
-   DESIGN SYSTEM — Industrial Grunge meets Digital Precision
-═══════════════════════════════════════════════════════ */
-:root {
-  --bg:       #080808;
-  --bg2:      #0d0d0d;
-  --panel:    #111215;
-  --panel2:   #161820;
-  --border:   rgba(255,255,255,0.07);
-  --border2:  rgba(255,255,255,0.13);
-  --acc:      #C8FF00;      /* toxic lime */
-  --acc-dim:  rgba(200,255,0,0.12);
-  --acc-glow: rgba(200,255,0,0.25);
-  --red:      #FF3B3B;
-  --red-dim:  rgba(255,59,59,0.12);
-  --cyan:     #00E5FF;
-  --cyan-dim: rgba(0,229,255,0.1);
-  --amber:    #FFB800;
-  --text:     #EEEEF0;
-  --text2:    #888990;
-  --text3:    #444650;
-  --mono:     'DM Mono', monospace;
-  --cond:     'Barlow Condensed', sans-serif;
-  --display:  'Bebas Neue', sans-serif;
-  --r:        6px;
-  --r2:       12px;
+/* ══════════════════════════════════════════════
+   WUKACULTURE RAPSTUDIO — DESIGN SYSTEM v3
+   Theme: Underground Studio · Toxic Lime + Dark
+══════════════════════════════════════════════ */
+:root{
+  --bg:#080808; --bg1:#0d0d0f; --bg2:#111318; --bg3:#161a22;
+  --border:rgba(255,255,255,0.06); --border2:rgba(255,255,255,0.12); --border3:rgba(255,255,255,0.2);
+  --acc:#C8FF00; --acc2:rgba(200,255,0,0.15); --acc3:rgba(200,255,0,0.06);
+  --red:#FF4040; --red2:rgba(255,64,64,0.15);
+  --cyan:#00E0FF; --cyan2:rgba(0,224,255,0.12);
+  --amber:#FFB800; --amber2:rgba(255,184,0,0.15);
+  --purple:#A855F7;
+  --t1:#F0F0F2; --t2:#9090A0; --t3:#50505A; --t4:#2A2A32;
+  --f-display:'Bebas Neue',sans-serif;
+  --f-cond:'Barlow Condensed',sans-serif;
+  --f-mono:'DM Mono',monospace;
+  --r:8px; --r2:14px; --r3:20px;
+  --shadow:0 4px 24px rgba(0,0,0,0.5);
+  --nav-h:56px; --bottom-nav-h:64px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{height:100%;scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--t1);font-family:var(--f-mono);min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+img,svg{display:block;}
+button,input,select,textarea{font-family:inherit;outline:none;}
+
+/* ── SCANLINES overlay ── */
+body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.025) 3px,rgba(0,0,0,0.025) 4px);pointer-events:none;z-index:9000;}
+
+/* ══════════════════════════════════════════════
+   TOP HEADER
+══════════════════════════════════════════════ */
+#top-bar{
+  position:fixed;top:0;left:0;right:0;height:var(--nav-h);
+  display:flex;align-items:center;gap:10px;padding:0 16px;
+  background:rgba(8,8,8,0.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);z-index:500;
+}
+.logo{display:flex;align-items:baseline;gap:0;flex-shrink:0;line-height:1;}
+.logo-w{font-family:var(--f-display);font-size:20px;letter-spacing:3px;color:var(--acc);}
+.logo-c{font-family:var(--f-display);font-size:20px;letter-spacing:3px;color:var(--t3);}
+.logo-div{width:1px;height:16px;background:var(--border2);margin:0 8px;align-self:center;}
+.logo-r{font-family:var(--f-cond);font-size:11px;font-weight:700;letter-spacing:3px;color:var(--red);}
+.logo-s{font-family:var(--f-cond);font-size:11px;font-weight:300;letter-spacing:3px;color:var(--t3);}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.api-dot{width:7px;height:7px;border-radius:50%;background:var(--t4);transition:all .3s;flex-shrink:0;}
+.api-dot.on{background:var(--acc);box-shadow:0 0 8px var(--acc);}
+.api-dot.err{background:var(--red);}
+.api-label{font-size:9px;letter-spacing:1.5px;color:var(--t3);text-transform:uppercase;}
+.btn-settings{width:36px;height:36px;border-radius:var(--r);background:transparent;border:1px solid var(--border);color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s;}
+.btn-settings:hover{border-color:var(--border2);color:var(--t1);}
+
+/* ══════════════════════════════════════════════
+   BOTTOM NAV (mobile primary, desktop secondary)
+══════════════════════════════════════════════ */
+#bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;height:var(--bottom-nav-h);
+  display:flex;background:rgba(8,8,8,0.96);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);z-index:500;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;border:none;background:transparent;color:var(--t3);transition:color .2s;padding:0;}
+.bnav-item.active{color:var(--acc);}
+.bnav-item svg{width:22px;height:22px;}
+.bnav-label{font-family:var(--f-cond);font-size:9px;letter-spacing:1.5px;font-weight:600;text-transform:uppercase;}
+.bnav-item.active .bnav-label{color:var(--acc);}
+
+/* ══════════════════════════════════════════════
+   PAGES
+══════════════════════════════════════════════ */
+#app{padding-top:var(--nav-h);padding-bottom:calc(var(--bottom-nav-h) + env(safe-area-inset-bottom));}
+.page{display:none;animation:pagein .25s ease-out;}
+.page.active{display:block;}
+@keyframes pagein{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.page-inner{max-width:700px;margin:0 auto;padding:16px;}
+
+/* Desktop: wider layout */
+@media(min-width:900px){
+  .page-inner{max-width:1100px;padding:24px 32px;}
+  .desktop-cols{display:grid;grid-template-columns:320px 1fr;gap:20px;align-items:start;}
+  .desktop-col-right{display:flex;flex-direction:column;gap:16px;}
 }
 
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+/* ══════════════════════════════════════════════
+   SHARED COMPONENTS
+══════════════════════════════════════════════ */
+/* Cards */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;}
+.card-head{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.card-head-title{font-family:var(--f-cond);font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t2);}
+.card-head-badge{font-size:9px;letter-spacing:1px;padding:2px 7px;border-radius:3px;background:var(--bg3);border:1px solid var(--border);color:var(--t3);}
+.card-head-action{margin-left:auto;}
+.card-body{padding:16px;}
+.card+.card{margin-top:12px;}
 
-html { scroll-behavior: smooth; }
+/* Section label */
+.slabel{font-family:var(--f-cond);font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t3);margin-bottom:10px;}
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--mono);
-  min-height: 100vh;
-  overflow-x: hidden;
-  cursor: default;
-}
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:9px 16px;border-radius:var(--r);border:none;cursor:pointer;font-family:var(--f-mono);font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.btn:active{transform:scale(0.97);}
+.btn-acc{background:var(--acc);color:#000;box-shadow:0 0 20px rgba(200,255,0,0.2);}
+.btn-acc:hover{filter:brightness(1.08);}
+.btn-ghost{background:transparent;border:1px solid var(--border2);color:var(--t2);}
+.btn-ghost:hover{border-color:var(--border3);color:var(--t1);}
+.btn-red{background:var(--red2);border:1px solid var(--red);color:var(--red);}
+.btn-sm{padding:6px 12px;font-size:9px;}
+.btn-icon{width:36px;height:36px;padding:0;border-radius:var(--r);}
+.btn-round{width:52px;height:52px;border-radius:50%;font-size:20px;padding:0;}
+.btn-round-acc{background:var(--acc);color:#000;box-shadow:0 0 24px rgba(200,255,0,0.3);}
+.btn-round-acc:hover{box-shadow:0 0 36px rgba(200,255,0,0.4);}
+.btn-round-acc.playing{background:var(--bg3);border:2px solid var(--acc);color:var(--acc);}
 
-/* Scanline texture */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
-  pointer-events: none;
-  z-index: 9999;
-}
+/* Inputs */
+.input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:10px 12px;color:var(--t1);font-family:var(--f-mono);font-size:12px;transition:border-color .2s;}
+.input:focus{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc3);}
+.input::placeholder{color:var(--t4);}
+.input-row{display:flex;gap:8px;align-items:center;}
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+/* Range slider */
+.slider{width:100%;height:3px;-webkit-appearance:none;appearance:none;background:var(--border2);border-radius:2px;outline:none;cursor:pointer;}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--acc);box-shadow:0 0 6px rgba(200,255,0,0.4);cursor:pointer;}
+.slider::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--acc);border:none;cursor:pointer;}
+.slider-row{display:flex;align-items:center;gap:10px;}
+.slider-val{font-size:12px;color:var(--acc);min-width:36px;text-align:right;font-weight:500;}
 
-/* ═══ HEADER ═══════════════════════════════════════════ */
-header {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  padding: 0 28px;
-  height: 58px;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  background: rgba(8,8,8,0.95);
-  backdrop-filter: blur(12px);
-  z-index: 200;
-}
+/* Toast */
+.toast{font-size:11px;padding:10px 14px;border-radius:var(--r);border-left:3px solid var(--cyan);background:var(--bg3);color:var(--t2);display:none;line-height:1.6;margin-bottom:12px;}
+.toast.show{display:block;}
+.toast.ok{border-left-color:var(--acc);color:var(--acc);}
+.toast.err{border-left-color:var(--red);color:#ff9090;}
+.toast.warn{border-left-color:var(--amber);color:#e0b060;}
+.toast.info{border-left-color:var(--cyan);color:var(--cyan);}
 
-.wordmark {
-  display: flex;
-  align-items: baseline;
-  gap: 0;
-  flex-shrink: 0;
-}
-.wordmark-wuka {
-  font-family: var(--display);
-  font-size: 22px;
-  letter-spacing: 3px;
-  color: var(--acc);
-  line-height: 1;
-}
-.wordmark-culture {
-  font-family: var(--display);
-  font-size: 22px;
-  letter-spacing: 3px;
-  color: var(--text2);
-  line-height: 1;
-}
-.wordmark-sep {
-  width: 1px;
-  height: 20px;
-  background: var(--border2);
-  margin: 0 10px;
-  align-self: center;
-}
-.wordmark-rap {
-  font-family: var(--cond);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 4px;
-  color: var(--red);
-  text-transform: uppercase;
-}
-.wordmark-studio {
-  font-family: var(--cond);
-  font-size: 13px;
-  font-weight: 300;
-  letter-spacing: 4px;
-  color: var(--text2);
-  text-transform: uppercase;
-}
+/* Alert box */
+.alert{padding:12px 14px;border-radius:var(--r);font-size:10px;line-height:1.8;margin-bottom:14px;}
+.alert-warn{background:var(--amber2);border:1px solid rgba(255,184,0,0.3);color:#cca050;}
+.alert-err{background:var(--red2);border:1px solid rgba(255,64,64,0.3);color:#ff9090;}
+.alert-info{background:var(--cyan2);border:1px solid rgba(0,224,255,0.2);color:var(--cyan);}
+.alert b{font-weight:700;}
 
-.header-tabs {
-  display: flex;
-  gap: 2px;
-  margin-left: auto;
-}
-.htab {
-  padding: 6px 16px;
-  border-radius: var(--r);
-  cursor: pointer;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--text2);
-  transition: all 0.18s;
-}
-.htab:hover { color: var(--text); border-color: var(--border2); }
-.htab.active { background: var(--acc); color: #000; font-weight: 500; border-color: var(--acc); }
+/* Chip / Tag */
+.chip{display:inline-flex;align-items:center;font-family:var(--f-cond);font-size:12px;font-weight:600;letter-spacing:1px;padding:4px 10px;border-radius:4px;border:1px solid var(--border);color:var(--t2);background:var(--bg3);cursor:pointer;transition:all .12s;white-space:nowrap;}
+.chip:hover{border-color:var(--border3);color:var(--t1);}
+.chip.active{border-color:var(--acc);color:var(--acc);background:var(--acc3);}
 
-.header-status {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 10px;
-  color: var(--text3);
-  letter-spacing: 1px;
-}
-.hstatus-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--text3);
-}
-.hstatus-dot.on { background: var(--acc); box-shadow: 0 0 6px var(--acc); animation: hpulse 2s infinite; }
-.hstatus-dot.err { background: var(--red); box-shadow: 0 0 6px var(--red); }
-@keyframes hpulse { 0%,100%{opacity:1}50%{opacity:0.4} }
+/* ══════════════════════════════════════════════
+   PAGE 1 — FREESTYLE
+══════════════════════════════════════════════ */
 
-/* ═══ LAYOUT ════════════════════════════════════════════ */
-.page { display: none; }
-.page.active { display: flex; gap: 0; min-height: calc(100vh - 58px); }
+/* Upload zone */
+.upload-zone{
+  border:2px dashed var(--border2);border-radius:var(--r2);padding:28px 20px;
+  text-align:center;cursor:pointer;transition:all .25s;position:relative;
+  background:var(--bg3);margin-bottom:12px;
+}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--acc);background:var(--acc3);}
+.upload-zone.loaded{border-style:solid;border-color:rgba(200,255,0,0.4);}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.uz-icon{font-size:28px;margin-bottom:8px;}
+.uz-title{font-family:var(--f-cond);font-size:14px;font-weight:700;letter-spacing:2px;color:var(--t1);margin-bottom:3px;}
+.uz-sub{font-size:10px;color:var(--t3);letter-spacing:1px;}
 
-/* Left panel */
-.panel-left {
-  width: 340px;
-  flex-shrink: 0;
-  border-right: 1px solid var(--border);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  overflow-y: auto;
-  max-height: calc(100vh - 58px);
-}
+/* YT input */
+.yt-row{display:flex;gap:8px;align-items:center;}
+.yt-tag{background:var(--red);color:#fff;font-family:var(--f-cond);font-size:9px;font-weight:700;letter-spacing:1px;padding:3px 7px;border-radius:3px;flex-shrink:0;}
 
-/* Right main area */
-.panel-right {
-  flex: 1;
-  padding: 20px 24px;
-  overflow-y: auto;
-  max-height: calc(100vh - 58px);
-}
+/* BPM display */
+.bpm-hero{display:flex;align-items:center;gap:14px;padding:16px;}
+.bpm-big{font-family:var(--f-display);font-size:72px;line-height:1;color:var(--acc);letter-spacing:2px;text-shadow:0 0 40px rgba(200,255,0,0.3);min-width:140px;}
+.bpm-unit{font-family:var(--f-cond);font-size:13px;font-weight:300;letter-spacing:2px;color:var(--t3);display:block;margin-top:-6px;}
+.bpm-meta{flex:1;}
+.bpm-meta-row{font-size:10px;color:var(--t3);letter-spacing:.5px;margin-bottom:5px;}
+.bpm-meta-row b{color:var(--t2);}
+.bpm-presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
 
-/* ── SECTION LABELS ── */
-.sec-label {
-  font-family: var(--mono);
-  font-size: 9px;
-  letter-spacing: 3px;
-  color: var(--text3);
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
+/* Tap button */
+.tap-btn{width:100%;padding:14px;border-radius:var(--r);border:2px solid var(--border2);background:transparent;color:var(--t2);font-family:var(--f-cond);font-size:16px;font-weight:700;letter-spacing:3px;cursor:pointer;transition:all .1s;text-align:center;}
+.tap-btn:active{border-color:var(--acc);color:var(--acc);background:var(--acc3);transform:scale(0.98);}
+.tap-btn.flash{border-color:var(--acc);color:var(--acc);background:var(--acc3);}
 
-/* ── CARDS ── */
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  padding: 16px;
-}
-.card + .card { /* no extra margin needed, gap handles it */ }
+/* Beat grid */
+.beat-row{display:flex;gap:4px;padding:12px 16px;}
+.beat-cell{flex:1;height:28px;border-radius:3px;background:var(--border);transition:all .06s;position:relative;overflow:hidden;}
+.beat-cell::after{content:'';position:absolute;inset:0;background:var(--acc);transform:scaleY(0);transform-origin:bottom;transition:transform .06s;}
+.beat-cell.b1::after{transform:scaleY(0.6);}
+.beat-cell.b2::after{transform:scaleY(0.35);}
+.beat-cell.b3::after{transform:scaleY(0.5);}
+.beat-cell.b4::after{transform:scaleY(0.25);}
+.beat-cell.active{background:var(--border2);}
+.beat-cell.active::after{transform:scaleY(1)!important;background:var(--acc);box-shadow:0 0 10px var(--acc);}
 
-/* ── UPLOAD ZONE ── */
-.upload-zone {
-  border: 1px dashed var(--border2);
-  border-radius: var(--r2);
-  padding: 28px 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.22s;
-  position: relative;
-  background: var(--panel2);
-}
-.upload-zone:hover, .upload-zone.drag {
-  border-color: var(--acc);
-  background: var(--acc-dim);
-}
-.upload-zone input {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-}
-.upload-zone svg { width: 28px; height: 28px; margin-bottom: 8px; opacity: 0.5; }
-.upload-zone .up-title { font-family: var(--cond); font-size: 14px; font-weight: 600; letter-spacing: 2px; color: var(--text); margin-bottom: 4px; }
-.upload-zone .up-sub { font-size: 10px; color: var(--text2); letter-spacing: 1px; }
-.upload-zone.has-file { border-color: var(--acc); border-style: solid; background: var(--acc-dim); }
+/* Transport */
+.transport{display:flex;align-items:center;gap:12px;padding:14px 16px;}
+.track-info{flex:1;overflow:hidden;}
+.track-title{font-family:var(--f-cond);font-size:15px;font-weight:700;letter-spacing:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px;}
+.track-sub{font-size:10px;color:var(--t3);letter-spacing:.5px;}
 
-/* ── YT INPUT ── */
-.yt-input-wrap {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.yt-badge {
-  background: var(--red);
-  color: #fff;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 3px 6px;
-  border-radius: 3px;
-  flex-shrink: 0;
-  font-family: var(--cond);
-}
-input.yt-url {
-  flex: 1;
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 8px 10px;
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 10px;
-  outline: none;
-  transition: border-color 0.2s;
-}
-input.yt-url:focus { border-color: var(--acc); }
-input.yt-url::placeholder { color: var(--text3); }
+/* Progress bar */
+.progress-wrap{padding:0 16px 12px;}
+.progress-bar{width:100%;height:3px;background:var(--border);border-radius:2px;cursor:pointer;position:relative;margin-bottom:6px;}
+.progress-fill{height:100%;background:var(--acc);border-radius:2px;width:0%;transition:width .1s linear;pointer-events:none;}
+.progress-bar:hover .progress-fill{box-shadow:0 0 6px var(--acc);}
+.time-row{display:flex;justify-content:space-between;font-size:9px;color:var(--t3);}
 
-/* ── BUTTONS ── */
-.btn {
-  padding: 8px 14px;
-  border-radius: var(--r);
-  border: none;
-  cursor: pointer;
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 1.5px;
-  font-weight: 500;
-  text-transform: uppercase;
-  transition: all 0.15s;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.btn-acc { background: var(--acc); color: #000; }
-.btn-acc:hover { filter: brightness(1.1); transform: translateY(-1px); }
-.btn-acc:active { transform: translateY(0); }
-.btn-ghost { background: transparent; border: 1px solid var(--border2); color: var(--text2); }
-.btn-ghost:hover { border-color: var(--acc); color: var(--acc); }
-.btn-red { background: var(--red); color: #fff; }
-.btn-red:hover { filter: brightness(1.1); }
-.btn-sm { padding: 5px 10px; font-size: 9px; }
-.btn-play {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  background: var(--acc);
-  border: none;
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px;
-  flex-shrink: 0;
-  transition: all 0.15s;
-  box-shadow: 0 0 20px var(--acc-glow);
-}
-.btn-play:hover { transform: scale(1.08); box-shadow: 0 0 30px var(--acc-glow); }
-.btn-play:active { transform: scale(0.96); }
-.btn-play.playing { background: var(--panel2); border: 2px solid var(--acc); color: var(--acc); box-shadow: 0 0 16px var(--acc-glow); }
+/* YT embed */
+.yt-embed{border-radius:var(--r2);overflow:hidden;border:1px solid var(--border);display:none;}
+.yt-embed.show{display:block;}
+.yt-embed iframe{display:block;width:100%;height:190px;}
+.yt-bar{background:var(--bg3);padding:8px 14px;display:flex;align-items:center;gap:8px;font-size:10px;color:var(--t3);}
 
-/* ── STATUS TOAST ── */
-.toast {
-  font-size: 10px;
-  font-family: var(--mono);
-  padding: 8px 12px;
-  border-radius: var(--r);
-  border-left: 2px solid var(--cyan);
-  background: var(--panel2);
-  color: var(--text2);
-  display: none;
-  line-height: 1.6;
-  letter-spacing: 0.5px;
+/* ── STREAM STAGE ── */
+.stream-stage{
+  background:var(--bg1);border:1px solid var(--border);border-radius:var(--r2);
+  padding:20px;min-height:180px;position:relative;overflow:hidden;display:none;
 }
-.toast.ok { border-left-color: var(--acc); color: #b8db5a; }
-.toast.err { border-left-color: var(--red); color: #ff9090; }
-.toast.info { border-left-color: var(--cyan); color: #80d8e8; }
-.toast.warn { border-left-color: var(--amber); color: #e8c060; }
-.toast.show { display: block; }
+.stream-stage.on{display:block;}
+/* Animated top line */
+.stream-stage::before{content:'';position:absolute;top:0;left:-100%;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--acc),transparent);animation:slideline 2s linear infinite;}
+@keyframes slideline{0%{left:-100%}100%{left:100%}}
 
-/* ═══ BPM ENGINE PANEL ════════════════════════════════ */
-.bpm-display {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 14px;
-}
-.bpm-number {
-  font-family: var(--display);
-  font-size: 64px;
-  line-height: 1;
-  color: var(--acc);
-  letter-spacing: 2px;
-  text-shadow: 0 0 30px var(--acc-glow);
-  min-width: 120px;
-}
-.bpm-number .bpm-unit { font-family: var(--cond); font-size: 14px; font-weight: 300; letter-spacing: 3px; color: var(--text3); display: block; margin-top: -4px; }
-.bpm-info { flex: 1; }
-.bpm-info-row { font-size: 10px; color: var(--text3); margin-bottom: 4px; letter-spacing: 1px; }
-.bpm-info-row b { color: var(--text2); }
-.bpm-badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
-.bpm-badge {
-  font-family: var(--cond);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  padding: 3px 8px;
-  border-radius: 3px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.bpm-badge.genre { background: var(--panel2); border: 1px solid var(--border2); color: var(--text2); }
-.bpm-badge.genre:hover { border-color: var(--acc); color: var(--acc); }
-.bpm-badge.active-genre { background: var(--acc-dim); border: 1px solid var(--acc); color: var(--acc); }
+.bar-counter{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.bar-num-big{font-family:var(--f-display);font-size:24px;color:var(--t3);letter-spacing:2px;line-height:1;}
+.bar-num-big span{color:var(--acc);}
+.beat-dots-row{display:flex;gap:5px;}
+.bdot{width:9px;height:9px;border-radius:50%;background:var(--border2);transition:all .05s;}
+.bdot.on{background:var(--acc);box-shadow:0 0 8px var(--acc);transform:scale(1.3);}
+.bpm-pill{margin-left:auto;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:3px 10px;font-size:10px;color:var(--t3);letter-spacing:1px;}
+.bpm-pill b{color:var(--acc);}
 
-.bpm-slider-wrap { margin-bottom: 14px; }
-.slider-row { display: flex; align-items: center; gap: 10px; }
-.slider-row input[type=range] {
-  flex: 1;
-  height: 3px;
-  -webkit-appearance: none;
-  background: var(--border2);
-  border-radius: 2px;
-  outline: none;
-  cursor: pointer;
-}
-.slider-row input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 14px; height: 14px;
-  border-radius: 50%;
-  background: var(--acc);
-  box-shadow: 0 0 6px var(--acc-glow);
-  cursor: pointer;
-}
-.slider-val { font-size: 11px; color: var(--acc); min-width: 40px; text-align: right; font-family: var(--mono); }
+/* Main word */
+.current-word-wrap{min-height:90px;display:flex;align-items:center;margin-bottom:12px;}
+.current-word{font-family:var(--f-display);font-size:clamp(40px,10vw,80px);letter-spacing:3px;color:var(--acc);line-height:1;text-shadow:0 0 40px rgba(200,255,0,0.25);}
+@keyframes wflash{0%{color:#fff;text-shadow:0 0 60px #fff;transform:scale(1.03)}100%{color:var(--acc);text-shadow:0 0 40px rgba(200,255,0,0.25);transform:scale(1)}}
+.current-word.flash{animation:wflash .18s ease-out forwards;}
 
-/* ── METRONOME / BEAT GRID ── */
-.beat-grid {
-  display: grid;
-  grid-template-columns: repeat(16, 1fr);
-  gap: 3px;
-  margin-bottom: 14px;
-}
-.beat-cell {
-  height: 8px;
-  border-radius: 2px;
-  background: var(--border);
-  transition: background 0.05s;
-}
-.beat-cell.q1 { background: rgba(200,255,0,0.7); }
-.beat-cell.q2 { background: rgba(200,255,0,0.4); }
-.beat-cell.q3 { background: rgba(200,255,0,0.55); }
-.beat-cell.q4 { background: rgba(200,255,0,0.35); }
-.beat-cell.active { background: var(--acc) !important; box-shadow: 0 0 8px var(--acc); }
+/* Word queue */
+.word-queue{display:flex;flex-wrap:wrap;gap:7px;min-height:32px;margin-bottom:14px;}
+.wq-item{font-family:var(--f-cond);font-size:18px;font-weight:600;letter-spacing:1.5px;padding:3px 10px;border-radius:4px;border:1px solid var(--border);color:var(--t2);opacity:.7;transition:all .15s;}
+.wq-item.recent{border-color:var(--border2);opacity:.9;}
+.wq-item.pinned{border-color:rgba(200,255,0,.3);color:var(--acc);opacity:1;cursor:pointer;}
+.wq-item:hover{opacity:1;border-color:var(--border3);}
 
-/* ── WAVEFORM / PROGRESS ── */
-.waveform-wrap {
-  position: relative;
-  height: 48px;
-  background: var(--panel2);
-  border-radius: var(--r);
-  overflow: hidden;
-  cursor: pointer;
-  margin-bottom: 12px;
-  border: 1px solid var(--border);
-}
-.waveform-bars {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  gap: 1px;
-  padding: 4px 8px;
-}
-.wbar {
-  flex: 1;
-  border-radius: 1px;
-  background: var(--border2);
-  min-height: 3px;
-  transition: background 0.1s;
-}
-.wbar.played { background: rgba(200,255,0,0.4); }
-.wbar.head { background: var(--acc); }
-.waveform-progress {
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  background: rgba(200,255,0,0.06);
-  pointer-events: none;
-  transition: width 0.1s linear;
-}
-.waveform-time {
-  display: flex;
-  justify-content: space-between;
-  font-size: 9px;
-  color: var(--text3);
-  letter-spacing: 1px;
-  margin-bottom: 10px;
-}
+/* History strip */
+.hist-strip{display:flex;flex-wrap:wrap;gap:5px;padding-top:12px;border-top:1px solid var(--border);}
+.hist-pill{font-size:9px;padding:2px 7px;border-radius:3px;background:var(--bg3);border:1px solid var(--border);color:var(--t3);letter-spacing:.5px;}
 
-/* ── TRANSPORT ── */
-.transport {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.transport-info { flex: 1; }
-.track-title { font-family: var(--cond); font-size: 15px; font-weight: 600; letter-spacing: 1px; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.track-meta { font-size: 9px; color: var(--text3); letter-spacing: 1px; }
+/* Stream controls bar */
+.stream-ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 16px;background:var(--bg3);border-top:1px solid var(--border);}
+.ctrl-grp{display:flex;align-items:center;gap:8px;font-size:9px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;}
+.ctrl-grp .slider{width:70px;height:2px;}
+.ctrl-grp .slider::-webkit-slider-thumb{width:12px;height:12px;}
+.ctrl-val{color:var(--acc);min-width:20px;font-size:10px;font-weight:500;}
 
-/* ── YT EMBED ── */
-.yt-embed {
-  display: none;
-  border-radius: var(--r2);
-  overflow: hidden;
-  border: 1px solid var(--border);
-  margin-bottom: 14px;
-}
-.yt-embed.show { display: block; }
-.yt-embed iframe { display: block; width: 100%; height: 180px; }
-.yt-info-bar {
-  background: var(--panel2);
-  padding: 8px 14px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 10px;
-  color: var(--text2);
-  border-top: 1px solid var(--border);
-}
+/* Pool bar */
+.pool-bar{display:flex;align-items:center;gap:8px;padding:8px 16px;background:var(--bg3);border-top:1px solid var(--border);font-size:9px;color:var(--t3);letter-spacing:1px;}
+.pool-count-big{font-family:var(--f-display);font-size:18px;color:var(--acc);letter-spacing:1px;line-height:1;}
+.pool-dots{display:flex;gap:2px;}
+.pdot{width:3px;height:14px;border-radius:1px;background:var(--border);transition:background .3s;}
+.pdot.on{background:var(--acc);}
+.pdot.half{background:rgba(200,255,0,.3);}
+.pool-spin{width:10px;height:10px;border:1.5px solid var(--border2);border-top-color:var(--acc);border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.pool-spin.on{display:block;}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-/* ═══ WORD STREAM PANEL ═══════════════════════════════ */
-.stream-stage {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  padding: 20px;
-  min-height: 200px;
-  position: relative;
-  overflow: hidden;
-  display: none;
-}
-.stream-stage.active { display: block; }
+/* ══════════════════════════════════════════════
+   PAGE 2 — RHYME / KAFİYE
+══════════════════════════════════════════════ */
+.rhyme-search-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:16px;margin-bottom:16px;}
+.rhyme-input-big{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;color:var(--t1);font-family:var(--f-display);font-size:clamp(22px,5vw,32px);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+.rhyme-input-big:focus{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc3);}
+.rhyme-input-big::placeholder{color:var(--t4);}
+.rhyme-search-row{display:flex;gap:8px;flex-wrap:wrap;}
 
-/* Bar accent line */
-.stream-stage::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--acc), transparent);
-  animation: scanline 2s linear infinite;
-}
-@keyframes scanline { 0%{opacity:0.3}50%{opacity:1}100%{opacity:0.3} }
+.rhyme-cats{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.rcat-btn{font-size:10px;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--bg3);color:var(--t3);cursor:pointer;font-family:var(--f-cond);font-weight:600;letter-spacing:1px;transition:all .15s;}
+.rcat-btn:hover,.rcat-btn.active{border-color:var(--acc);color:var(--acc);background:var(--acc3);}
 
-.current-word {
-  font-family: var(--display);
-  font-size: 72px;
-  letter-spacing: 4px;
-  color: var(--acc);
-  line-height: 1;
-  text-shadow: 0 0 40px var(--acc-glow);
-  min-height: 80px;
-  display: flex;
-  align-items: center;
-  margin-bottom: 16px;
-  transition: all 0.1s;
-}
-.current-word.flash { animation: wordflash 0.15s ease-out; }
-@keyframes wordflash {
-  0%  { transform: scale(1.04); color: #fff; text-shadow: 0 0 60px #fff; }
-  100%{ transform: scale(1); }
-}
+.rhyme-results{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:540px){.rhyme-results{grid-template-columns:1fr;}}
+.rhyme-col{}
+.rhyme-col.full{grid-column:1/-1;}
+.rhyme-col-head{font-family:var(--f-cond);font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t3);margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.rcol-count{font-size:9px;padding:2px 6px;border-radius:3px;background:var(--bg3);border:1px solid var(--border);color:var(--t3);}
+.rhyme-chips{display:flex;flex-wrap:wrap;gap:5px;}
+.r-chip{font-size:12px;padding:5px 11px;border-radius:var(--r);border:1px solid var(--border);background:var(--bg3);color:var(--t2);cursor:pointer;transition:all .12s;letter-spacing:.5px;}
+.r-chip:hover{border-color:var(--border3);color:var(--t1);transform:translateY(-1px);}
+.r-chip:active{transform:translateY(0);}
+.r-chip.p{border-color:rgba(200,255,0,.35);color:var(--acc);background:var(--acc3);}
+.r-chip.n{border-color:rgba(0,224,255,.25);color:var(--cyan);}
+.r-chip.s{border-color:rgba(255,184,0,.25);color:var(--amber);}
+.r-chip.c{font-size:11px;font-style:italic;color:var(--t3);}
+.r-chip.c:hover{color:var(--t2);}
 
-.word-queue {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  min-height: 36px;
-  margin-bottom: 16px;
-}
-.wq-chip {
-  font-family: var(--cond);
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  padding: 2px 10px;
-  border-radius: 4px;
-  border: 1px solid var(--border);
-  color: var(--text2);
-  opacity: 0.6;
-  cursor: default;
-  transition: all 0.2s;
-}
-.wq-chip.pin { border-color: var(--border2); color: var(--text); opacity: 0.9; cursor: pointer; }
-.wq-chip.pin:hover { border-color: var(--acc); color: var(--acc); }
+.loading-row{display:flex;align-items:center;gap:10px;color:var(--t3);font-size:10px;letter-spacing:1.5px;padding:24px 0;}
+.ldot{width:5px;height:5px;border-radius:50%;background:var(--acc);animation:ldot 1.4s ease-in-out infinite;}
+.ldot:nth-child(2){animation-delay:.2s;}
+.ldot:nth-child(3){animation-delay:.4s;}
+@keyframes ldot{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
 
-.word-history-strip {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-}
-.hist-pill {
-  font-size: 9px;
-  font-family: var(--mono);
-  padding: 2px 8px;
-  border-radius: 3px;
-  background: var(--panel2);
-  color: var(--text3);
-  letter-spacing: 1px;
-  border: 1px solid var(--border);
-}
+.empty-rhyme{padding:48px 20px;text-align:center;}
+.empty-rhyme .big{font-family:var(--f-display);font-size:64px;letter-spacing:5px;color:var(--bg3);display:block;margin-bottom:8px;}
+.empty-rhyme p{font-size:10px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;line-height:2;}
 
-/* ── BAR COUNTER ── */
-.bar-counter {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 12px;
-  padding: 10px 14px;
-  background: var(--panel2);
-  border-radius: var(--r);
-  border: 1px solid var(--border);
-}
-.bar-num { font-family: var(--display); font-size: 28px; color: var(--acc); letter-spacing: 2px; line-height: 1; }
-.bar-num small { font-family: var(--mono); font-size: 9px; color: var(--text3); display: block; }
-.beat-dots { display: flex; gap: 6px; }
-.bdot { width: 10px; height: 10px; border-radius: 50%; background: var(--border2); transition: all 0.05s; }
-.bdot.on { background: var(--acc); box-shadow: 0 0 8px var(--acc); transform: scale(1.2); }
+/* Saved rhymes */
+.saved-section{margin-top:16px;}
+.saved-list{display:flex;flex-direction:column;gap:6px;}
+.saved-item{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);font-size:11px;}
+.saved-word{font-family:var(--f-cond);font-size:14px;font-weight:700;letter-spacing:1px;color:var(--acc);min-width:80px;}
+.saved-rhymes{flex:1;color:var(--t2);font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.saved-del{color:var(--t3);cursor:pointer;font-size:14px;flex-shrink:0;padding:0 4px;}
+.saved-del:hover{color:var(--red);}
 
-/* ── STREAM CONTROLS ── */
-.stream-controls {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  flex-wrap: wrap;
-  margin-bottom: 14px;
-}
-.control-group { display: flex; align-items: center; gap: 8px; font-size: 9px; color: var(--text3); letter-spacing: 1px; text-transform: uppercase; }
-.control-group input[type=range] {
-  width: 70px;
-  height: 2px;
-  -webkit-appearance: none;
-  background: var(--border2);
-  border-radius: 1px;
-  outline: none;
-  cursor: pointer;
-}
-.control-group input[type=range]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--acc);
-  cursor: pointer;
-}
-.control-val { color: var(--acc); min-width: 24px; font-family: var(--mono); font-size: 10px; }
+/* ══════════════════════════════════════════════
+   PAGE 3 — NOTEBOOK / DEFTERİM
+══════════════════════════════════════════════ */
+.notebook-area{width:100%;min-height:240px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:14px;color:var(--t1);font-family:var(--f-mono);font-size:13px;line-height:1.8;resize:vertical;letter-spacing:.5px;}
+.notebook-area:focus{border-color:var(--acc);}
+.notebook-area::placeholder{color:var(--t4);}
+.notebook-meta{display:flex;gap:8px;align-items:center;margin-top:8px;font-size:9px;color:var(--t3);}
+.notebook-meta span{margin-left:auto;}
 
-/* ── POOL STATUS ── */
-.pool-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 9px;
-  color: var(--text3);
-  letter-spacing: 1px;
-  padding: 6px 10px;
-  background: var(--panel2);
-  border-radius: var(--r);
-  border: 1px solid var(--border);
-  margin-bottom: 12px;
-}
-.pool-count { font-size: 14px; font-family: var(--display); color: var(--acc); letter-spacing: 1px; }
-.pool-indicator { display: flex; gap: 2px; }
-.pi { width: 4px; height: 12px; border-radius: 1px; background: var(--border2); transition: background 0.3s; }
-.pi.filled { background: var(--acc); }
-.pi.half { background: rgba(200,255,0,0.35); }
-.pool-loading { font-size: 8px; color: var(--cyan); animation: hpulse 1s infinite; }
+.lyric-lines{display:flex;flex-direction:column;gap:6px;}
+.lyric-line{display:flex;align-items:flex-start;gap:10px;padding:8px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);font-size:12px;line-height:1.6;letter-spacing:.3px;cursor:text;}
+.lyric-line:focus-within{border-color:var(--border2);}
+.line-num{font-size:9px;color:var(--t4);min-width:18px;padding-top:2px;letter-spacing:1px;}
+.line-text{flex:1;background:transparent;border:none;color:var(--t1);font-family:var(--f-mono);font-size:12px;line-height:1.6;resize:none;width:100%;min-height:24px;}
+.line-text:focus{outline:none;}
+.line-actions{display:flex;gap:4px;opacity:0;transition:opacity .15s;}
+.lyric-line:hover .line-actions{opacity:1;}
+.la-btn{width:22px;height:22px;border-radius:3px;border:none;background:var(--bg);color:var(--t3);cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.la-btn:hover{color:var(--acc);}
 
-/* ═══ RHYME PAGE ════════════════════════════════════════ */
-.rhyme-hero {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 24px;
-  align-items: flex-start;
-}
-.rhyme-input-big {
-  flex: 1;
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: var(--r2);
-  padding: 16px 20px;
-  color: var(--text);
-  font-family: var(--display);
-  font-size: 36px;
-  letter-spacing: 4px;
-  outline: none;
-  transition: border-color 0.2s;
-  text-transform: uppercase;
-}
-.rhyme-input-big:focus { border-color: var(--acc); box-shadow: 0 0 0 2px var(--acc-dim); }
-.rhyme-input-big::placeholder { color: var(--text3); }
+.rhyme-suggest{display:flex;flex-wrap:wrap;gap:5px;padding:6px 10px;background:var(--bg1);border-top:1px solid var(--border);}
+.rs-chip{font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid var(--border);color:var(--t3);cursor:pointer;background:var(--bg2);}
+.rs-chip:hover{border-color:var(--acc);color:var(--acc);}
 
-.rhyme-grid-wrap {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
+/* ══════════════════════════════════════════════
+   PAGE 4 — SETTINGS
+══════════════════════════════════════════════ */
+.settings-section{margin-bottom:20px;}
+.setting-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);gap:12px;}
+.setting-row:last-child{border-bottom:none;}
+.setting-label{font-size:12px;color:var(--t1);letter-spacing:.3px;}
+.setting-desc{font-size:10px;color:var(--t3);margin-top:2px;letter-spacing:.3px;}
+.setting-control{flex-shrink:0;}
 
-.rhyme-col-title {
-  font-family: var(--cond);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text3);
-  margin-bottom: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.rhyme-col-title .badge {
-  font-size: 9px;
-  padding: 2px 6px;
-  border-radius: 2px;
-  background: var(--panel2);
-  color: var(--text3);
-  border: 1px solid var(--border);
-}
+/* Toggle switch */
+.toggle{position:relative;width:40px;height:22px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.toggle-slider{position:absolute;inset:0;background:var(--border2);border-radius:11px;cursor:pointer;transition:.3s;}
+.toggle-slider::before{content:'';position:absolute;height:16px;width:16px;left:3px;bottom:3px;background:var(--t3);border-radius:50%;transition:.3s;}
+.toggle input:checked+.toggle-slider{background:var(--acc);}
+.toggle input:checked+.toggle-slider::before{transform:translateX(18px);background:#000;}
 
-.rhyme-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-.r-chip {
-  font-family: var(--mono);
-  font-size: 12px;
-  padding: 6px 12px;
-  border-radius: var(--r);
-  border: 1px solid var(--border);
-  background: var(--panel2);
-  color: var(--text2);
-  cursor: pointer;
-  transition: all 0.12s;
-  letter-spacing: 0.5px;
-}
-.r-chip:hover { border-color: var(--acc); color: var(--acc); transform: translateY(-1px); }
-.r-chip.p { border-color: rgba(200,255,0,0.4); color: var(--acc); background: var(--acc-dim); }
-.r-chip.n { border-color: rgba(0,229,255,0.3); color: var(--cyan); }
-.r-chip.s { border-color: rgba(255,184,0,0.3); color: var(--amber); }
-.r-chip.c { font-size: 11px; font-style: italic; color: var(--text3); }
-.r-chip.c:hover { color: var(--text); }
+.shortcuts-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.sc-item{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--bg3);border-radius:var(--r);font-size:10px;color:var(--t2);}
+.sc-key{background:var(--bg1);border:1px solid var(--border2);border-radius:4px;padding:2px 7px;font-size:9px;color:var(--acc);letter-spacing:1px;min-width:36px;text-align:center;}
 
-/* Full-width sections for compound */
-.rhyme-full { grid-column: 1/-1; }
-
-/* ── LOADING STATE ── */
-.loading-dots {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--text3);
-  font-size: 10px;
-  letter-spacing: 2px;
-  padding: 20px 0;
+/* ══════════════════════════════════════════════
+   SETTINGS MODAL (overlay)
+══════════════════════════════════════════════ */
+#settings-modal{position:fixed;inset:0;z-index:600;display:none;align-items:flex-end;justify-content:center;}
+#settings-modal.open{display:flex;}
+.modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);}
+.modal-sheet{
+  position:relative;background:var(--bg2);border:1px solid var(--border);
+  border-radius:var(--r3) var(--r3) 0 0;padding:20px 20px 32px;
+  width:100%;max-width:480px;z-index:1;
+  animation:sheetin .25s ease-out;
 }
-.ldot {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--acc);
-  animation: ldotanim 1.2s ease-in-out infinite;
-}
-.ldot:nth-child(2) { animation-delay: 0.2s; }
-.ldot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes ldotanim { 0%,80%,100%{opacity:0.2;transform:scale(0.8)} 40%{opacity:1;transform:scale(1)} }
+@keyframes sheetin{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--border2);margin:0 auto 20px;}
+.modal-title{font-family:var(--f-cond);font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--t2);margin-bottom:16px;}
+.api-status-row{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--bg3);border-radius:var(--r);margin-bottom:12px;}
+.api-status-icon{font-size:20px;}
+.api-status-text{flex:1;}
+.api-status-name{font-size:12px;font-weight:500;color:var(--t1);letter-spacing:.5px;}
+.api-status-sub{font-size:9px;color:var(--t3);margin-top:2px;letter-spacing:.5px;}
+.api-status-badge{font-size:9px;padding:3px 8px;border-radius:3px;font-family:var(--f-cond);font-weight:700;letter-spacing:1px;}
+.api-status-badge.active{background:var(--acc3);border:1px solid rgba(200,255,0,.3);color:var(--acc);}
+.api-status-badge.inactive{background:var(--bg1);border:1px solid var(--border);color:var(--t3);}
 
-/* ── EMPTY STATE ── */
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 20px;
-  gap: 12px;
-  opacity: 0.4;
+/* ══════════════════════════════════════════════
+   MOBILE EXTRAS
+══════════════════════════════════════════════ */
+@media(max-width:480px){
+  .bpm-big{font-size:56px;min-width:110px;}
+  .modal-sheet{border-radius:0;max-width:100%;}
 }
-.empty-state .big { font-family: var(--display); font-size: 80px; letter-spacing: 6px; color: var(--border2); line-height: 1; }
-.empty-state p { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
-
-/* ═══ SETTINGS PAGE ════════════════════════════════════ */
-.settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.setting-item { padding: 14px; background: var(--panel); border: 1px solid var(--border); border-radius: var(--r); }
-.setting-label { font-size: 9px; letter-spacing: 2px; color: var(--text3); text-transform: uppercase; margin-bottom: 8px; }
-.setting-val { font-family: var(--display); font-size: 24px; color: var(--acc); letter-spacing: 2px; }
-
-/* ═══ RESPONSIVE ════════════════════════════════════════ */
-@media (max-width: 720px) {
-  .panel-left { width: 100%; max-height: none; border-right: none; border-bottom: 1px solid var(--border); }
-  .page.active { flex-direction: column; }
-  .rhyme-grid-wrap { grid-template-columns: 1fr; }
-  .settings-grid { grid-template-columns: 1fr; }
-  .current-word { font-size: 52px; }
-}
-
-/* ── ANIMATIONS ── */
-.fade-in { animation: fadein 0.3s ease-out; }
-@keyframes fadein { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-
-.word-enter { animation: wordenter 0.15s cubic-bezier(0.23,1,0.32,1); }
-@keyframes wordenter { from{opacity:0;transform:translateX(-12px)} to{opacity:1;transform:translateX(0)} }
-
-/* ── API KEY INPUT ── */
-.apikey-wrap {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-input.apikey-input {
-  flex: 1;
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 8px 10px;
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 10px;
-  outline: none;
-  transition: border-color 0.2s;
-  letter-spacing: 1px;
-}
-input.apikey-input:focus { border-color: var(--acc); }
-input.apikey-input::placeholder { color: var(--text3); }
-.apikey-note { font-size: 9px; color: var(--text3); line-height: 1.7; margin-top: 6px; }
-.apikey-note a { color: var(--cyan); text-decoration: none; }
-.cors-alert {
-  background: rgba(255,59,59,0.08);
-  border: 1px solid rgba(255,59,59,0.25);
-  border-radius: var(--r);
-  padding: 10px 12px;
-  font-size: 10px;
-  color: #ff9090;
-  line-height: 1.7;
-  margin-bottom: 10px;
-}
-.cors-alert b { color: var(--red); }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════ HEADER ═══════════════════ -->
-<header>
-  <div class="wordmark">
-    <span class="wordmark-wuka">WUKA</span><span class="wordmark-culture">CULTURE</span>
-    <div class="wordmark-sep"></div>
-    <span class="wordmark-rap">RAP</span><span class="wordmark-studio">STUDIO</span>
+<!-- ══════════════ TOP BAR ══════════════ -->
+<div id="top-bar">
+  <div class="logo">
+    <span class="logo-w">WUKA</span><span class="logo-c">CULTURE</span>
+    <div class="logo-div"></div>
+    <span class="logo-r">RAP</span><span class="logo-s">STUDIO</span>
   </div>
-  <div class="header-tabs">
-    <button class="htab active" id="tab-fs" onclick="goTab('fs')">FREESTYLE</button>
-    <button class="htab" id="tab-rh" onclick="goTab('rh')">KAFİYE</button>
-    <button class="htab" id="tab-st" onclick="goTab('st')">AYARLAR</button>
-  </div>
-  <div class="header-status">
-    <div class="hstatus-dot" id="hsDot"></div>
-    <span id="hsLabel">HAZIR</span>
-  </div>
-</header>
-
-<!-- ═══════════════════ FREESTYLE PAGE ═══════════════════ -->
-<div class="page active" id="page-fs">
-
-  <!-- LEFT PANEL -->
-  <div class="panel-left">
-
-    <!-- Upload -->
-    <div>
-      <div class="sec-label">ALTYAPI YÜKLE</div>
-      <div class="upload-zone" id="uploadZone">
-        <input type="file" id="audioFile" accept="audio/*">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 19V6l12-3v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="15" r="3"/></svg>
-        <div class="up-title">DOSYA SÜRÜKLE</div>
-        <div class="up-sub">MP3 · WAV · FLAC · OGG · M4A</div>
-      </div>
-    </div>
-
-    <!-- YouTube -->
-    <div>
-      <div class="sec-label">YOUTUBE LİNKİ</div>
-      <div class="card" style="padding:12px;">
-        <div class="yt-input-wrap" style="margin-bottom:8px;">
-          <span class="yt-badge">YT</span>
-          <input type="text" class="yt-url" id="ytUrl" placeholder="youtu.be/... veya watch?v=...">
-          <button class="btn btn-red btn-sm" onclick="loadYT()">YÜK</button>
-        </div>
-        <div class="toast show info" id="ytHint" style="font-size:9px;">
-          ℹ YouTube videosu embed olarak açılır — videoyu orada oynat, BPM'i ayarla, BAŞLAT'a bas.
-        </div>
-      </div>
-    </div>
-
-    <!-- BPM Engine -->
-    <div>
-      <div class="sec-label">BPM MOTORU</div>
-      <div class="card">
-        <div class="bpm-display">
-          <div class="bpm-number" id="bpmDisp">90<span class="bpm-unit">BPM</span></div>
-          <div class="bpm-info">
-            <div class="bpm-info-row">Bar süresi: <b id="barMs">2667ms</b></div>
-            <div class="bpm-info-row">Vuruş arası: <b id="beatMs">667ms</b></div>
-            <div class="bpm-info-row">Kaynak: <b id="bpmSrc">—</b></div>
-          </div>
-        </div>
-        <div class="bpm-slider-wrap">
-          <div class="slider-row">
-            <span style="font-size:9px;color:var(--text3);">60</span>
-            <input type="range" id="bpmSlider" min="60" max="200" value="90" oninput="onBPMSlide(+this.value)">
-            <span style="font-size:9px;color:var(--text3);">200</span>
-            <span class="slider-val" id="bpmSlideVal">90</span>
-          </div>
-        </div>
-        <div class="bpm-badge-row">
-          <div class="sec-label" style="margin:0;width:100%;margin-bottom:4px;">TAP BPM</div>
-          <button class="btn btn-ghost btn-sm" onclick="tapBPM()" id="tapBtn" style="flex:1;">👆 TAP</button>
-          <button class="btn btn-ghost btn-sm" onclick="resetTap()">SFR</button>
-        </div>
-        <div class="bpm-badge-row" style="margin-top:10px;">
-          <div class="sec-label" style="margin:0;width:100%;margin-bottom:4px;">GENRE PRESET</div>
-          <span class="bpm-badge genre" onclick="setPreset('Lofi',75)">LoFi 75</span>
-          <span class="bpm-badge genre" onclick="setPreset('OldSch',88)">Old 88</span>
-          <span class="bpm-badge genre" onclick="setPreset('Boom',96)">Boom 96</span>
-          <span class="bpm-badge genre" onclick="setPreset('Trap',140)">Trap 140</span>
-          <span class="bpm-badge genre" onclick="setPreset('Drill',145)">Drill 145</span>
-        </div>
-        <div style="margin-top:10px;">
-          <button class="btn btn-ghost btn-sm" onclick="runAutoDetect()" style="width:100%;">🔍 OTO BPM ALGI (yerel dosya)</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pool status -->
-    <div>
-      <div class="sec-label">KELİME HAVUZU</div>
-      <div class="pool-status">
-        <div class="pool-indicator" id="poolInd"></div>
-        <span class="pool-count" id="poolCount">0</span>
-        <span>kelime</span>
-        <span class="pool-loading" id="poolLoading" style="display:none;">YÜKLENİYOR...</span>
-        <button class="btn btn-ghost btn-sm" onclick="triggerRefill()" style="margin-left:auto;font-size:8px;">+ YENİLE</button>
-      </div>
-    </div>
-
-    <!-- Stream settings -->
-    <div class="card" style="display:none;" id="streamSettCard">
-      <div class="sec-label" style="margin-bottom:10px;">AKIŞ AYARLARI</div>
-      <div class="control-group" style="margin-bottom:10px;">KEL/BAR
-        <input type="range" id="wRate" min="1" max="4" step="1" value="2" oninput="onRateChange(+this.value)">
-        <span class="control-val" id="wRateVal">2</span>
-      </div>
-      <div class="control-group" style="margin-bottom:10px;">GÖRÜNTÜ
-        <input type="range" id="wKeep" min="3" max="10" step="1" value="6" oninput="document.getElementById('wKeepVal').textContent=this.value">
-        <span class="control-val" id="wKeepVal">6</span>
-      </div>
-    </div>
-
-  </div><!-- /panel-left -->
-
-  <!-- RIGHT PANEL -->
-  <div class="panel-right">
-
-    <!-- Status toast -->
-    <div class="toast" id="fsToast" style="margin-bottom:14px;"></div>
-
-    <!-- YT Embed -->
-    <div class="yt-embed" id="ytEmbed">
-      <iframe id="ytFrame" frameborder="0" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe>
-      <div class="yt-info-bar">
-        <span class="yt-badge">YT</span>
-        <span id="ytIdLabel" style="color:var(--cyan);font-size:9px;"></span>
-        <span style="margin-left:auto;font-size:9px;">Videoyu oyna → BPM ayarla → BAŞLAT'a bas</span>
-      </div>
-    </div>
-
-    <!-- Transport (local audio) -->
-    <div class="card" id="transportCard" style="display:none;margin-bottom:14px;">
-      <div class="transport" style="margin-bottom:12px;">
-        <button class="btn-play" id="playBtn" onclick="togglePlay()">▶</button>
-        <div class="transport-info">
-          <div class="track-title" id="trackTitle">—</div>
-          <div class="track-meta" id="trackMeta">—</div>
-        </div>
-      </div>
-      <div class="waveform-wrap" id="waveWrap" onclick="seekAudio(event)">
-        <div class="waveform-progress" id="waveProgress"></div>
-        <div class="waveform-bars" id="waveBars"></div>
-      </div>
-      <div class="waveform-time"><span id="curTime">0:00</span><span id="durTime">0:00</span></div>
-    </div>
-
-    <!-- YT Transport (manual controls) -->
-    <div class="card" id="ytTransportCard" style="display:none;margin-bottom:14px;">
-      <div class="transport">
-        <div class="transport-info">
-          <div class="track-title">YouTube Altyapısı</div>
-          <div class="track-meta" id="ytTrackMeta">—</div>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
-        <button class="btn btn-acc" onclick="ytStartFlow()" id="ytStartBtn">▶ BAŞLAT</button>
-        <button class="btn btn-ghost" onclick="ytStopFlow()">⏹ DURDUR</button>
-      </div>
-    </div>
-
-    <!-- Beat grid + bar counter -->
-    <div class="card" id="beatCard" style="display:none;margin-bottom:14px;">
-      <div class="bar-counter">
-        <div class="bar-num"><span id="barCount">1</span><small>BAR</small></div>
-        <div class="beat-dots" id="beatDots"></div>
-        <div style="margin-left:auto;display:flex;gap:4px;align-items:center;">
-          <span style="font-size:9px;color:var(--text3);">BEAT</span>
-          <span style="font-family:var(--display);font-size:18px;color:var(--text2);" id="beatNum">1</span>
-          <span style="font-size:9px;color:var(--text3);">/4</span>
-        </div>
-      </div>
-      <div class="beat-grid" id="beatGrid"></div>
-    </div>
-
-    <!-- Stream stage -->
-    <div class="stream-stage" id="streamStage">
-      <div class="stream-controls" id="streamCtrl" style="display:none;">
-        <div class="control-group">KEL/BAR
-          <input type="range" id="wRate2" min="1" max="4" step="1" value="2" oninput="onRateChange(+this.value);document.getElementById('wRate').value=this.value;document.getElementById('wRateVal').textContent=this.value;">
-          <span class="control-val" id="wRate2Val">2</span>
-        </div>
-        <div class="control-group" style="margin-left:auto;">
-          <span style="color:var(--text3);" id="streamBpm">90 BPM</span>
-        </div>
-      </div>
-      <div class="current-word" id="currentWord">—</div>
-      <div class="word-queue" id="wordQueue"></div>
-      <div class="word-history-strip" id="wordHistStrip"></div>
-    </div>
-
-  </div><!-- /panel-right -->
-</div><!-- /page-fs -->
-
-<!-- ═══════════════════ RHYME PAGE ═══════════════════ -->
-<div class="page" id="page-rh" style="padding:28px;max-width:1000px;margin:0 auto;display:none;">
-  <div class="rhyme-hero">
-    <input type="text" class="rhyme-input-big" id="rhymeInput" placeholder="KELİME..." oninput="onRhymeType()" onkeydown="if(event.key==='Enter')findRhymes()">
-    <button class="btn btn-acc" style="height:64px;padding:0 22px;font-size:12px;" onclick="findRhymes()">KAFİYE<br>BUL</button>
-  </div>
-  <div class="toast" id="rhymeToast" style="margin-bottom:14px;"></div>
-  <div id="rhymeResults">
-    <div class="empty-state"><div class="big">KAFİYE</div><p>bir kelime yaz · sınırsız kafiye ağı</p></div>
+  <div class="header-right">
+    <div class="api-dot" id="apiDot"></div>
+    <span class="api-label" id="apiLabel">API</span>
+    <button class="btn-settings" onclick="openSettings()" title="Ayarlar">⚙</button>
   </div>
 </div>
 
-<!-- ═══════════════════ SETTINGS PAGE ═══════════════════ -->
-<div class="page" id="page-st" style="padding:28px;max-width:700px;margin:0 auto;display:none;">
+<!-- ══════════════ APP ══════════════ -->
+<div id="app">
 
-  <div style="margin-bottom:24px;">
-    <div class="sec-label">API AYARI (KAFİYE + KELİME HAVUZU)</div>
-    <div class="cors-alert">
-      <b>⚠ CORS Uyarısı:</b> Uygulama <code>file://</code> protokolünden açıldığında tarayıcı API isteklerini engeller.<br>
-      Çözüm: Dosyayı bir web sunucusundan aç (hosting, Netlify, VS Code Live Server vb.) — <code>https://</code> üzerinden açılınca her şey çalışır.
+  <!-- ── PAGE: FREESTYLE ── -->
+  <div class="page active" id="page-fs">
+    <div class="page-inner">
+      <div class="desktop-cols">
+
+        <!-- LEFT COL: Upload + BPM -->
+        <div>
+          <!-- Upload -->
+          <div class="card" style="margin-bottom:12px;">
+            <div class="card-head">
+              <span class="card-head-title">Altyapı</span>
+              <span class="card-head-badge" id="srcBadge">YOK</span>
+            </div>
+            <div class="card-body" style="padding-bottom:12px;">
+              <div class="upload-zone" id="uploadZone">
+                <input type="file" id="audioFile" accept="audio/*">
+                <div class="uz-icon">🎵</div>
+                <div class="uz-title">Dosya Sürükle / Seç</div>
+                <div class="uz-sub">MP3 · WAV · FLAC · OGG · M4A</div>
+              </div>
+              <div class="yt-row">
+                <span class="yt-tag">YT</span>
+                <input type="text" class="input" id="ytUrl" placeholder="youtube.com/watch?v=... veya youtu.be/..." style="font-size:11px;">
+                <button class="btn btn-red btn-sm" onclick="loadYT()">YÜKLE</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- BPM Engine -->
+          <div class="card" style="margin-bottom:12px;">
+            <div class="card-head">
+              <span class="card-head-title">BPM Motoru</span>
+              <span class="card-head-badge" id="bpmSrcBadge">—</span>
+              <div class="card-head-action">
+                <button class="btn btn-ghost btn-sm" onclick="runAutoDetect()">🔍 AUTO</button>
+              </div>
+            </div>
+            <div class="bpm-hero">
+              <div class="bpm-big" id="bpmDisp">90<span class="bpm-unit">BPM</span></div>
+              <div class="bpm-meta">
+                <div class="bpm-meta-row">Bar: <b id="barMsDisp">2667ms</b></div>
+                <div class="bpm-meta-row">Beat: <b id="beatMsDisp">667ms</b></div>
+                <div class="bpm-presets">
+                  <span class="chip" onclick="setPreset('LoFi',75,this)">LoFi 75</span>
+                  <span class="chip" onclick="setPreset('OldSch',88,this)">Old 88</span>
+                  <span class="chip" onclick="setPreset('BoomBap',96,this)">Boom 96</span>
+                  <span class="chip" onclick="setPreset('Trap',140,this)">Trap 140</span>
+                  <span class="chip" onclick="setPreset('Drill',145,this)">Drill 145</span>
+                </div>
+              </div>
+            </div>
+            <div class="card-body" style="padding-top:0;">
+              <div class="slider-row" style="margin-bottom:14px;">
+                <span style="font-size:9px;color:var(--t3);">60</span>
+                <input type="range" class="slider" id="bpmSlider" min="60" max="200" value="90" oninput="onBPMSlide(+this.value)">
+                <span style="font-size:9px;color:var(--t3);">200</span>
+                <span class="slider-val" id="bpmSlideVal">90</span>
+              </div>
+              <button class="tap-btn" id="tapBtn" onclick="tapBPM()">👆 TAP BPM — <span id="tapCount">vur</span></button>
+            </div>
+          </div>
+
+          <!-- Pool status (desktop) -->
+          <div class="card" id="poolCard">
+            <div class="pool-bar">
+              <div class="pdots-wrap pool-dots" id="poolDots" style="display:flex;gap:2px;"></div>
+              <span class="pool-count-big" id="poolCount">0</span>
+              <span style="font-size:9px;letter-spacing:1px;color:var(--t3);">kelime</span>
+              <div class="pool-spin" id="poolSpin"></div>
+              <button class="btn btn-ghost btn-sm" onclick="triggerRefill()" style="margin-left:auto;">+ YENİLE</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT COL: Player + Stream -->
+        <div class="desktop-col-right">
+
+          <!-- Toast -->
+          <div class="toast" id="fsToast"></div>
+
+          <!-- YT Embed -->
+          <div class="yt-embed" id="ytEmbed">
+            <iframe id="ytFrame" frameborder="0" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe>
+            <div class="yt-bar">
+              <span class="yt-tag">YT</span>
+              <span id="ytIdLabel" style="color:var(--cyan);font-size:9px;"></span>
+              <span style="margin-left:auto;font-size:9px;">Videoyu oyna → BPM ayarla → BAŞLAT</span>
+            </div>
+          </div>
+
+          <!-- Local player -->
+          <div class="card" id="localPlayerCard" style="display:none;">
+            <div class="transport">
+              <button class="btn btn-round btn-round-acc" id="playBtn" onclick="togglePlay()">▶</button>
+              <div class="track-info">
+                <div class="track-title" id="trackTitle">—</div>
+                <div class="track-sub" id="trackSub">—</div>
+              </div>
+            </div>
+            <div class="progress-wrap">
+              <div class="progress-bar" id="progressBar" onclick="seekAudio(event)">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <div class="time-row"><span id="curTime">0:00</span><span id="durTime">0:00</span></div>
+            </div>
+          </div>
+
+          <!-- YT player controls -->
+          <div class="card" id="ytPlayerCard" style="display:none;">
+            <div class="transport">
+              <div class="track-info">
+                <div class="track-title">YouTube Altyapısı</div>
+                <div class="track-sub" id="ytSubLabel">Video oynuyor → BAŞLAT'a bas</div>
+              </div>
+            </div>
+            <div style="padding:0 16px 14px;display:flex;gap:8px;">
+              <button class="btn btn-acc" onclick="ytStart()" id="ytStartBtn" style="flex:1;">▶ BAŞLAT</button>
+              <button class="btn btn-ghost" onclick="ytStop()">⏹</button>
+            </div>
+          </div>
+
+          <!-- Beat grid -->
+          <div class="card" id="beatCard" style="display:none;">
+            <div class="beat-row" id="beatRow"></div>
+          </div>
+
+          <!-- Stream stage -->
+          <div class="stream-stage" id="streamStage">
+            <div class="bar-counter">
+              <div class="bar-num-big">BAR <span id="barNum">0</span></div>
+              <div class="beat-dots-row" id="beatDotsRow"></div>
+              <div class="bpm-pill"><b id="bpmPill">90</b> BPM</div>
+            </div>
+            <div class="current-word-wrap">
+              <div class="current-word" id="currentWord">—</div>
+            </div>
+            <div class="word-queue" id="wordQueue"></div>
+            <div class="hist-strip" id="histStrip"></div>
+          </div>
+
+          <!-- Stream controls -->
+          <div class="card" id="streamCtrlCard" style="display:none;">
+            <div class="stream-ctrl">
+              <div class="ctrl-grp">Kel/Bar
+                <input type="range" class="slider" id="wRate" min="1" max="4" step="1" value="2" oninput="onRateChange(+this.value)">
+                <span class="ctrl-val" id="wRateVal">2</span>
+              </div>
+              <div class="ctrl-grp">Ekranda
+                <input type="range" class="slider" id="wKeep" min="2" max="8" step="1" value="5" oninput="document.getElementById('wKeepVal').textContent=this.value">
+                <span class="ctrl-val" id="wKeepVal">5</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /desktop-cols -->
     </div>
-    <div class="card">
-      <div class="sec-label">GOOGLE GEMINI API KEY</div>
-      <div class="apikey-wrap">
-        <input type="password" class="apikey-input" id="apiKeyInput" placeholder="AIzaSy...">
-        <button class="btn btn-acc btn-sm" onclick="saveApiKey()">KAYDET</button>
-        <button class="btn btn-ghost btn-sm" onclick="clearApiKey()">SİL</button>
+  </div><!-- /page-fs -->
+
+  <!-- ── PAGE: RHYME / KAFİYE ── -->
+  <div class="page" id="page-rh">
+    <div class="page-inner">
+      <div class="rhyme-search-card">
+        <input type="text" class="rhyme-input-big" id="rhymeInput" placeholder="KELİME YAZ..." oninput="onRhymeType()" onkeydown="if(event.key==='Enter')findRhymes()" autocomplete="off" autocorrect="off" autocapitalize="off">
+        <div class="rhyme-search-row">
+          <button class="btn btn-acc" onclick="findRhymes()" style="flex:1;">🔍 KAFİYE BUL</button>
+          <button class="btn btn-ghost btn-sm" onclick="saveCurrentRhyme()" id="saveRhymeBtn" style="display:none;">💾 KAYDET</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearRhyme()">✕</button>
+        </div>
+        <div class="rhyme-cats" id="rhymeCats">
+          <span class="slabel" style="width:100%;margin-bottom:0;">Örnek:</span>
+          <span class="rcat-btn" onclick="quickRhyme('gece')">gece</span>
+          <span class="rcat-btn" onclick="quickRhyme('yalnız')">yalnız</span>
+          <span class="rcat-btn" onclick="quickRhyme('sokak')">sokak</span>
+          <span class="rcat-btn" onclick="quickRhyme('kalp')">kalp</span>
+          <span class="rcat-btn" onclick="quickRhyme('zaman')">zaman</span>
+          <span class="rcat-btn" onclick="quickRhyme('ses')">ses</span>
+          <span class="rcat-btn" onclick="quickRhyme('şehir')">şehir</span>
+          <span class="rcat-btn" onclick="quickRhyme('ruh')">ruh</span>
+        </div>
       </div>
-      <div class="apikey-note">
-        🔑 <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> → Google hesabınla giriş → <b>Create API Key</b><br>
-        Ücretsiz · Kart gerekmez · <b>AIzaSy...</b> formatında olmalı · model: Gemini 2.0 Flash<br>
-        Key localStorage'da saklanır. Kelime havuzu API olmadan da çalışır (offline seed).
+
+      <div class="toast" id="rhymeToast"></div>
+      <div id="rhymeOut"></div>
+
+      <!-- Saved rhymes -->
+      <div id="savedSection" style="display:none;margin-top:20px;">
+        <div class="slabel">Kaydettiklerim</div>
+        <div class="saved-list" id="savedList"></div>
       </div>
     </div>
   </div>
 
-  <div style="margin-bottom:24px;">
-    <div class="sec-label">UYGULAMA BİLGİSİ</div>
-    <div class="settings-grid">
-      <div class="setting-item"><div class="setting-label">VERSİYON</div><div class="setting-val">2.1</div></div>
-      <div class="setting-item"><div class="setting-label">AI MODELİ</div><div class="setting-val" style="font-size:14px;letter-spacing:1px;">GEMINI</div></div>
-      <div class="setting-item"><div class="setting-label">KELİME HAVUZU</div><div class="setting-val" id="stPoolCount">0</div></div>
-      <div class="setting-item"><div class="setting-label">AKTİF BPM</div><div class="setting-val" id="stBpm">90</div></div>
-      <div class="setting-item"><div class="setting-label">MOD</div><div class="setting-val" id="stMode">—</div></div>
+  <!-- ── PAGE: NOTEBOOK / DEFTERİM ── -->
+  <div class="page" id="page-nb">
+    <div class="page-inner">
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-head">
+          <span class="card-head-title">Söz Defteri</span>
+          <div class="card-head-action" style="display:flex;gap:6px;">
+            <button class="btn btn-ghost btn-sm" onclick="addLyricLine()">+ Satır</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearNotebook()">Temizle</button>
+            <button class="btn btn-ghost btn-sm" onclick="exportLyrics()">⬇ İndir</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="lyric-lines" id="lyricLines"></div>
+          <button class="btn btn-ghost" onclick="addLyricLine()" style="width:100%;margin-top:8px;font-size:10px;">+ Yeni satır ekle</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-head-title">Serbest Not</span></div>
+        <div class="card-body">
+          <textarea class="notebook-area" id="notebookArea" placeholder="Fikirlerini, kafiyelerini, notlarını buraya yaz..."></textarea>
+          <div class="notebook-meta">
+            <span id="noteWordCount">0 kelime</span>
+            <span id="noteCharCount">0 karakter</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div>
-    <div class="sec-label">KLAVYE KISA YOLLARI</div>
-    <div class="card" style="font-size:10px;color:var(--text2);line-height:2.4;letter-spacing:1px;">
-      <span style="color:var(--acc);">SPACE</span> — Oynat / Durdur (yerel dosya)<br>
-      <span style="color:var(--acc);">T</span> — Tap BPM<br>
-      <span style="color:var(--acc);">N</span> — Sonraki kelime (manuel)<br>
-      <span style="color:var(--acc);">R</span> — Havuzu yenile<br>
-      <span style="color:var(--acc);">←→</span> — BPM ±1<br>
+  <!-- ── PAGE: SETTINGS ── -->
+  <div class="page" id="page-st">
+    <div class="page-inner" style="max-width:520px;">
+
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-head"><span class="card-head-title">Google Gemini API</span></div>
+        <div class="card-body">
+          <div class="api-status-row" id="apiStatusRow">
+            <div class="api-status-icon" id="apiStatusIcon">🔑</div>
+            <div class="api-status-text">
+              <div class="api-status-name" id="apiStatusName">API Key Girilmedi</div>
+              <div class="api-status-sub">Kafiye Bulucu + Kelime Havuzu genişletme için gerekli</div>
+            </div>
+            <span class="api-status-badge inactive" id="apiStatusBadge">PASİF</span>
+          </div>
+          <div class="input-row" style="margin-bottom:8px;">
+            <input type="password" class="input" id="apiKeyInput" placeholder="AIzaSy..." style="font-size:11px;letter-spacing:1px;">
+            <button class="btn btn-acc btn-sm" onclick="saveApiKey()">KAYDET</button>
+            <button class="btn btn-ghost btn-sm" onclick="clearApiKey()">SİL</button>
+          </div>
+          <div style="font-size:10px;color:var(--t3);line-height:1.8;">
+            🔗 <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--cyan);text-decoration:none;">aistudio.google.com/apikey</a> → Ücretsiz · Kart gerekmez<br>
+            Model: <b style="color:var(--t2);">Gemini 1.5 Flash</b> · 1500 istek/gün ücretsiz
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-head"><span class="card-head-title">Uygulama Ayarları</span></div>
+        <div class="card-body">
+          <div class="settings-section">
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">Kelime Havuzu Otomatik Yenile</div>
+                <div class="setting-desc">Havuz azaldığında API ile yeni kelime çek</div>
+              </div>
+              <label class="toggle setting-control"><input type="checkbox" id="settAutoRefill" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">Beat Ses Efekti</div>
+                <div class="setting-desc">Her beat'te klik sesi çal (metronom)</div>
+              </div>
+              <label class="toggle setting-control"><input type="checkbox" id="settClick"><span class="toggle-slider"></span></label>
+            </div>
+            <div class="setting-row">
+              <div>
+                <div class="setting-label">Kelimeyi Vurgula</div>
+                <div class="setting-desc">Yeni kelimede flash animasyonu</div>
+              </div>
+              <label class="toggle setting-control"><input type="checkbox" id="settFlash" checked><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:12px;">
+        <div class="card-head"><span class="card-head-title">Klavye Kısayolları</span></div>
+        <div class="card-body">
+          <div class="shortcuts-grid">
+            <div class="sc-item"><span class="sc-key">SPACE</span><span>Oynat/Durdur</span></div>
+            <div class="sc-item"><span class="sc-key">T</span><span>Tap BPM</span></div>
+            <div class="sc-item"><span class="sc-key">N</span><span>Sonraki kelime</span></div>
+            <div class="sc-item"><span class="sc-key">R</span><span>Havuz yenile</span></div>
+            <div class="sc-item"><span class="sc-key">← →</span><span>BPM ±1</span></div>
+            <div class="sc-item"><span class="sc-key">ESC</span><span>Durdur</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-head-title">Hakkında</span></div>
+        <div class="card-body" style="font-size:10px;color:var(--t3);line-height:2;">
+          <b style="color:var(--acc);">WukaCulture RapStudio</b> v3.0<br>
+          Havuz: <b style="color:var(--t2);" id="stPoolCount">0</b> kelime &nbsp;·&nbsp;
+          Aktif BPM: <b style="color:var(--t2);" id="stBpm">90</b> &nbsp;·&nbsp;
+          Model: <b style="color:var(--t2);">Gemini 1.5 Flash</b>
+        </div>
+      </div>
+
     </div>
   </div>
 
+</div><!-- /app -->
+
+<!-- ══════════════ BOTTOM NAV ══════════════ -->
+<nav id="bottom-nav">
+  <button class="bnav-item active" id="bn-fs" onclick="goPage('fs')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19V6l12-3v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="15" r="3"/></svg>
+    <span class="bnav-label">Freestyle</span>
+  </button>
+  <button class="bnav-item" id="bn-rh" onclick="goPage('rh')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span class="bnav-label">Kafiye</span>
+  </button>
+  <button class="bnav-item" id="bn-nb" onclick="goPage('nb')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <span class="bnav-label">Defter</span>
+  </button>
+  <button class="bnav-item" id="bn-st" onclick="goPage('st')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <span class="bnav-label">Ayarlar</span>
+  </button>
+</nav>
+
+<!-- ══════════════ SETTINGS MODAL ══════════════ -->
+<div id="settings-modal" onclick="if(event.target===this||event.target.classList.contains('modal-backdrop'))closeSettings()">
+  <div class="modal-backdrop"></div>
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Hızlı Ayarlar</div>
+    <div class="api-status-row" id="modalApiRow">
+      <div class="api-status-icon" id="modalApiIcon">🔑</div>
+      <div class="api-status-text">
+        <div class="api-status-name" id="modalApiName">API Key Girilmedi</div>
+        <div class="api-status-sub">Kafiye + Kelime Havuzu için gerekli</div>
+      </div>
+      <span class="api-status-badge inactive" id="modalApiBadge">PASİF</span>
+    </div>
+    <div class="input-row" style="margin-bottom:14px;">
+      <input type="password" class="input" id="modalApiKey" placeholder="AIzaSy..." style="font-size:11px;">
+      <button class="btn btn-acc btn-sm" onclick="saveApiKeyModal()">KAYDET</button>
+    </div>
+    <div style="font-size:10px;color:var(--t3);line-height:1.8;margin-bottom:16px;">
+      <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--cyan);text-decoration:none;">aistudio.google.com/apikey</a> → Ücretsiz · AIzaSy... formatı
+    </div>
+    <button class="btn btn-ghost" onclick="closeSettings()" style="width:100%;">KAPAT</button>
+  </div>
 </div>
 
 <audio id="audioEl"></audio>
 
 <script>
-// ═══════════════════════════════════════════════════════════════════════
-// WUKACULTURE RAPSTUDIO v2.0
-// CORS-SAFE: API sadece kafiye için, kelime havuzu tamamen offline
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+// WUKACULTURE RAPSTUDIO v3.0 — FINAL
+// ══════════════════════════════════════════════════════════
 
-// ── CONFIG ─────────────────────────────────────────────
 const CFG = {
-  POOL_MIN: 100,
-  POOL_TARGET: 300,
-  WORD_KEEP: 6,
-  HISTORY_MAX: 20,
-  TAP_WINDOW: 3000,
-  GEMINI_MODEL: 'gemini-2.0-flash',
+  POOL_MIN: 80,
+  POOL_TARGET: 250,
+  HISTORY_MAX: 24,
+  TAP_WINDOW: 3500,
+  GEMINI_MODEL: 'gemini-1.5-flash',
   GEMINI_URL: 'https://generativelanguage.googleapis.com/v1beta/models/',
+  RETRY_DELAY: 45000,
 };
 
-// ── STATE ──────────────────────────────────────────────
 let S = {
-  bpm: 90,
-  playing: false,
-  ytMode: false,
-  ytFlowing: false,
-  beatCount: 0,
-  barCount: 0,
-  beatInBar: 0,
-  activePreset: null,
-  tapTimes: [],
-  poolBusy: false,
-  apiKey: '',
+  bpm:90, playing:false, ytMode:false, ytFlowing:false,
+  beatCount:0, barCount:0, beatInBar:0,
+  tapTimes:[], poolBusy:false, apiKey:'',
+  lastRhymeWord:'', savedRhymes:[], retryTO:null,
+  clickCtx:null,
 };
-
-let T = { beat:null, word:null }; // timers
-
-// ── WORD POOL (offline-first, massive seed) ─────────────────────────
-let wordPool = [
-  /* Sokak / Şehir */
-  "asfalt","beton","çelik","demir","kaldırım","sokak","cadde","mahalle","semt","gecekondu",
-  "köprü","tünel","bina","çatı","bodrum","apartman","kapı","kilit","anahtar","pencere",
-  "duvar","barikat","bariyar","kamera","ışık","karanlık","neon","gece","şehir","metropol",
-  "varoş","kenar","merkez","polis","sirene","helikopter","drone","gözetim","cephane",
-
-  /* Duygu / İç dünya */
-  "öfke","acı","keder","hüzün","yalnızlık","aşk","nefret","umut","korku","cesaret",
-  "gurur","inat","direniş","isyan","sabır","çılgınlık","tutku","hayal","özlem","pişmanlık",
-  "kıskançlık","öfke","intikam","kin","af","merhamet","şefkat","sevgi","bağlılık","sadakat",
-  "ihanet","aldatma","yıkım","çöküş","diriliş","kurtuluş","özgürlük","esaret","kafes","demir",
-
-  /* Güç / Çatışma */
-  "silah","bıçak","kılıç","kalkan","zırh","savaş","barış","zafer","yenilgi","meydan",
-  "düşman","müttefik","ordu","asker","komutan","strateji","taktik","baskı","hâkimiyet","güç",
-  "kudret","taht","kral","imparator","köle","sömürge","devrim","darbe","isyan","halk",
-  "cephe","çatışma","ateşkes","anlaşma","koşul","hakikat","gerçek","yalan","gizem","sır",
-
-  /* Doğa */
-  "toprak","su","ateş","rüzgar","yağmur","kar","buz","güneş","ay","yıldız",
-  "orman","dağ","deniz","nehir","çöl","ufuk","gökyüzü","bulut","fırtına","kasırga",
-  "yıldırım","volkan","deprem","tsunami","lavabo","sel","kıyı","kaya","taş","kum",
-  "bitki","ağaç","kök","dal","yaprak","çiçek","tohum","toprak","humus","çürüme",
-
-  /* Zaman / Soyut */
-  "zaman","an","geçmiş","gelecek","bilinmez","sonsuz","boşluk","evren","kader","alın",
-  "yazı","ruh","zihin","bilinç","düşünce","hayal","vizyon","gerçeklik","illüzyon","yanılsama",
-  "hafıza","unutuş","geçicilik","ebediyet","döngü","spiral","kaos","düzen","denge","kırılma",
-  "eşik","sınır","duvar","kapı","geçit","yol","iz","iz bırakmak","miras","birikim",
-
-  /* Müzik / Rap */
-  "ritim","beat","flow","kafiye","çubuk","kıta","nakarat","rekor","albüm","single",
-  "mikrofon","sahne","stüdyo","konsol","ekipman","ses","frekans","titreşim","yankı","bas",
-  "melodi","armoni","akord","nota","ölçü","metronom","tempo","groove","senkop","poliritmik",
-  "freestyle","cypher","battle","punch","bar","vers","hook","intro","outro","interlude",
-
-  /* Para / Sistem */
-  "para","altın","gümüş","dolar","borç","kredi","faiz","vergi","sistem","düzen",
-  "kapitalizm","tüketim","reklam","marka","prestij","statü","sınıf","hiyerarşi","kölelik","özgür",
-  "bankacı","patron","işçi","grev","sendika","sömürü","artı değer","emek","alın teri","emeklilik",
-  "yoksulluk","açlık","eşitsizlik","ayrımcılık","baskı","protesto","miting","sokak eylemi",
-
-  /* Kimlik / Kültür */
-  "kimlik","köken","kültür","gelenek","miras","tarih","ata","nesil","değişim","dönüşüm",
-  "dil","lisan","şive","aksan","lehçe","söz","anlatı","mitoloji","efsane","destan",
-  "kahraman","anti-kahraman","halk","millet","vatan","bayrak","toprak","sınır","pasaport","sürgün",
-  "diaspora","göç","yurt","özlem","aidiyet","yabancılık","öteki","biz","onlar","birlik",
-
-  /* Güçlü eylem kelimeleri */
-  "koşmak","kaçmak","savaşmak","dikilmek","yıkmak","inşa","haykırmak","susmak","yazmak",
-  "okumak","düşünmek","isyan","kabullenmek","reddetmek","sorgulamak","araştırmak","bulmak",
-  "yaratmak","yok etmek","dönüştürmek","aşmak","geçmek","bırakmak","tutmak","bırakmak",
-
-  /* Argo / Rap özgün */
-  "kafam","beyin","akıl","kafa","ses","tını","çevre","çember","dost","düşman",
-  "kardeş","bacanak","hemşeri","abi","abi","reis","patron","boss","lider","usta",
-  "çaylak","acemi","veteran","emektar","tecrübe","cesaret","gözüpek","yürekli","korkak","çekingen",
-
-  /* Ek güçlü kelimeler */
-  "hayalet","gölge","yansıma","ayna","maske","yüz","yüzleşme","kaçış","sürgün","dönüş",
-  "patlama","kıvılcım","alev","yanmak","yakmak","külü","yeniden","doğmak","ölmek","uyumak",
-  "uyanmak","görmek","kör","duymak","sağır","hissetmek","uyuşmak","titremek","sarsmak","sarılmak",
-  "bırakmak","tutunmak","düşmek","kalkmak","yükselmek","alçalmak","kıvrılmak","gerilmek","kopmak",
-];
-
+let T = { beat:null, word:null };
+let wordPool = [];
 let wordHistory = [];
 
-// ═══════════════════════════════════════════════════════════════════════
+// ── SEED POOL (350+ words, always available offline) ───────────────
+const SEED = [
+  "asfalt","beton","çelik","demir","kaldırım","sokak","cadde","mahalle","semt","gecekondu",
+  "köprü","tünel","bina","çatı","bodrum","apartman","kapı","kilit","pencere","duvar",
+  "barikat","kamera","ışık","karanlık","neon","gece","şehir","metropol","varoş","merkez",
+  "polis","siren","helikopter","gözetim","sokak lambası","çöp","grafiti","duvar yazısı",
+  "öfke","acı","keder","hüzün","yalnızlık","aşk","nefret","umut","korku","cesaret",
+  "gurur","inat","direniş","isyan","sabır","çılgınlık","tutku","hayal","özlem","pişmanlık",
+  "kıskançlık","intikam","kin","af","merhamet","şefkat","sevgi","sadakat","ihanet","yıkım",
+  "çöküş","diriliş","kurtuluş","özgürlük","esaret","kafes","zincir","bağ","kopuş","ayrılık",
+  "silah","bıçak","kılıç","kalkan","zırh","savaş","barış","zafer","yenilgi","meydan",
+  "düşman","müttefik","ordu","strateji","baskı","güç","kudret","taht","kral","köle",
+  "sömürge","devrim","darbe","halk","cephe","çatışma","ateşkes","hakikat","gerçek","yalan",
+  "gizem","sır","şifre","kilit","kapan","tuzak","ağ","ördek","avcı","av",
+  "toprak","su","ateş","rüzgar","yağmur","kar","buz","güneş","ay","yıldız",
+  "orman","dağ","deniz","nehir","çöl","ufuk","gökyüzü","bulut","fırtına","kasırga",
+  "yıldırım","volkan","deprem","sel","kıyı","kaya","taş","kum","dal","kök",
+  "ağaç","yaprak","çiçek","tohum","çürüme","küle dönmek","yanmak","doğmak","büyümek",
+  "zaman","an","geçmiş","gelecek","sonsuz","boşluk","evren","kader","alın yazısı",
+  "ruh","zihin","bilinç","düşünce","hayal","gerçeklik","illüzyon","yanılsama","hafıza","unutuş",
+  "döngü","spiral","kaos","düzen","denge","kırılma","eşik","sınır","geçit","yol","iz",
+  "miras","birikim","köken","nesil","değişim","dönüşüm","evrim","çözülme","eriyiş",
+  "ritim","beat","flow","kafiye","kıta","nakarat","albüm","mikrofon","sahne","stüdyo",
+  "ses","frekans","titreşim","yankı","bas","melodi","armoni","nota","tempo","groove",
+  "freestyle","cypher","battle","punch","bar","vers","hook","intro","outro","döngü",
+  "para","altın","borç","kredi","vergi","sistem","düzen","kapitalizm","tüketim","marka",
+  "prestij","statü","sınıf","hiyerarşi","sömürü","emek","yoksulluk","açlık","eşitsizlik",
+  "kimlik","köken","kültür","gelenek","miras","tarih","ata","dil","anlatı","efsane",
+  "destan","kahraman","vatan","millet","bayrak","sürgün","diaspora","göç","özlem","aidiyet",
+  "koşmak","kaçmak","savaşmak","yıkmak","haykırmak","susmak","yazmak","düşünmek",
+  "yaratmak","dönüştürmek","aşmak","reddetmek","sorgulamak","bulmak","yok etmek",
+  "kafam","beyin","akıl","ses","tını","çevre","dost","düşman","kardeş","reis",
+  "patron","boss","lider","usta","veteran","tecrübe","cesaret","yürekli","gözüpek",
+  "hayalet","gölge","yansıma","ayna","maske","yüzleşme","kaçış","dönüş","patlama",
+  "kıvılcım","alev","kül","yeniden","doğmak","ölmek","uyanmak","titremek","sarsmak",
+  "düşmek","kalkmak","yükselmek","alçalmak","kopmak","tutunmak","sarılmak","bırakmak",
+  "çığlık","sessizlik","yankı","haykırış","enkaz","cephe","nöbet","infaz","lanet","dua",
+  "volkan","sel","kül","meydan","hançer","kudret","kibir","derin","kör","sağır",
+];
+wordPool = [...SEED];
+
+// ══════════════════════════════════════════════════════════
 // INIT
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
-  buildBeatGrid();
+  buildBeatRow();
   buildBeatDots();
-  buildWaveBars();
-  buildPoolIndicator();
+  buildPoolDots();
+  updateBPM(90, 'Başlangıç');
+  loadStoredData();
+  initNotebook();
   updatePoolUI();
-  updateBPMDisplay(90);
-  loadApiKey();
+  updateApiUI();
   setTimeout(silentRefill, 2000);
 });
 
-// ─ API Key ──────────────────────────────────────────────────────────
-function getApiKey() {
-  // Memory önce, sonra localStorage
-  if (S.apiKey && S.apiKey.length > 10) return S.apiKey;
-  try { return localStorage.getItem('wuka_apikey') || ''; } catch(e) { return ''; }
-}
-function loadApiKey() {
-  try { S.apiKey = localStorage.getItem('wuka_apikey') || ''; } catch(e) { S.apiKey = ''; }
-  if (S.apiKey) document.getElementById('apiKeyInput').value = S.apiKey;
-}
-function saveApiKey() {
-  const k = document.getElementById('apiKeyInput').value.trim();
-  if (!k) { showToast('fsToast', '⚠ API key boş olamaz', 'err'); return; }
-  if (!k.startsWith('AIza')) {
-    showToast('fsToast', '⚠ Geçersiz format — Gemini key AIzaSy... ile başlamalı', 'err'); return;
+function loadStoredData() {
+  try {
+    S.apiKey = localStorage.getItem('wuka_key') || '';
+    const saved = localStorage.getItem('wuka_saved');
+    if (saved) S.savedRhymes = JSON.parse(saved);
+    const nb = localStorage.getItem('wuka_notebook');
+    if (nb) document.getElementById('notebookArea').value = nb;
+  } catch(e) {}
+  if (S.apiKey) {
+    document.getElementById('apiKeyInput').value = S.apiKey;
+    document.getElementById('modalApiKey').value = S.apiKey;
   }
+  renderSavedRhymes();
+  updateApiUI();
+}
+
+// ══════════════════════════════════════════════════════════
+// NAVIGATION
+// ══════════════════════════════════════════════════════════
+function goPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  document.getElementById('bn-' + id).classList.add('active');
+  if (id === 'st') updateSettingsPage();
+  window.scrollTo(0, 0);
+}
+
+// ══════════════════════════════════════════════════════════
+// SETTINGS MODAL
+// ══════════════════════════════════════════════════════════
+function openSettings() {
+  document.getElementById('settings-modal').classList.add('open');
+  document.getElementById('modalApiKey').value = S.apiKey;
+}
+function closeSettings() {
+  document.getElementById('settings-modal').classList.remove('open');
+}
+function saveApiKeyModal() {
+  const k = document.getElementById('modalApiKey').value.trim();
+  doSaveKey(k);
+  closeSettings();
+}
+
+// ══════════════════════════════════════════════════════════
+// API KEY
+// ══════════════════════════════════════════════════════════
+function getKey() {
+  if (S.apiKey && S.apiKey.startsWith('AIza')) return S.apiKey;
+  try { const k = localStorage.getItem('wuka_key'); if (k) { S.apiKey = k; return k; } } catch(e) {}
+  return '';
+}
+function saveApiKey() { doSaveKey(document.getElementById('apiKeyInput').value.trim()); }
+function doSaveKey(k) {
+  if (!k) { toast('fsToast','⚠ API key boş','err'); return; }
+  if (!k.startsWith('AIza')) { toast('fsToast','⚠ Format hatalı — AIzaSy... ile başlamalı','err'); return; }
   S.apiKey = k;
-  try { localStorage.setItem('wuka_apikey', k); } catch(e) {}
-  showToast('fsToast', '✓ Gemini API key kaydedildi — Kafiye Bulucu + Kelime Havuzu aktif', 'ok');
-  setHeaderStatus('GEMINI AKTİF', 'on');
+  try { localStorage.setItem('wuka_key', k); } catch(e) {}
+  document.getElementById('apiKeyInput').value = k;
+  document.getElementById('modalApiKey').value = k;
+  updateApiUI();
+  toast('fsToast','✓ Gemini API key kaydedildi — Kafiye Bulucu aktif','ok');
+  silentRefill();
 }
 function clearApiKey() {
   S.apiKey = '';
   document.getElementById('apiKeyInput').value = '';
-  try { localStorage.removeItem('wuka_apikey'); } catch(e){}
+  try { localStorage.removeItem('wuka_key'); } catch(e) {}
+  updateApiUI();
 }
-
-// ═══════════════════════════════════════════════════════════════════════
-// TAB NAVIGATION
-// ═══════════════════════════════════════════════════════════════════════
-function goTab(t) {
-  document.querySelectorAll('.htab').forEach(e => e.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(e => { e.classList.remove('active'); e.style.display='none'; });
-  document.getElementById('tab-'+t).classList.add('active');
-  const pg = document.getElementById('page-'+t);
-  pg.classList.add('active');
-  pg.style.display = t === 'fs' ? 'flex' : 'block';
-  if (t === 'st') updateSettingsPage();
+function updateApiUI() {
+  const has = !!(S.apiKey && S.apiKey.startsWith('AIza'));
+  const dot = document.getElementById('apiDot');
+  const lbl = document.getElementById('apiLabel');
+  dot.className = 'api-dot' + (has ? ' on' : '');
+  lbl.textContent = has ? 'GEMINI' : 'API';
+  // settings page
+  const badge = document.getElementById('apiStatusBadge');
+  const name = document.getElementById('apiStatusName');
+  const icon = document.getElementById('apiStatusIcon');
+  if (badge) {
+    badge.textContent = has ? 'AKTİF' : 'PASİF';
+    badge.className = 'api-status-badge ' + (has ? 'active' : 'inactive');
+    name.textContent = has ? 'Gemini 1.5 Flash — Bağlı' : 'API Key Girilmedi';
+    icon.textContent = has ? '✅' : '🔑';
+  }
+  // modal badge
+  const mb = document.getElementById('modalApiBadge');
+  const mn = document.getElementById('modalApiName');
+  if (mb) {
+    mb.textContent = has ? 'AKTİF' : 'PASİF';
+    mb.className = 'api-status-badge ' + (has ? 'active' : 'inactive');
+    mn.textContent = has ? 'Gemini 1.5 Flash — Bağlı' : 'API Key Girilmedi';
+    document.getElementById('modalApiIcon').textContent = has ? '✅' : '🔑';
+  }
 }
-
 function updateSettingsPage() {
-  document.getElementById('stPoolCount').textContent = wordPool.length;
-  document.getElementById('stBpm').textContent = S.bpm;
-  document.getElementById('stMode').textContent = S.ytMode ? 'YOUTUBE' : (S.playing ? 'YEREL' : '—');
+  const el = document.getElementById('stPoolCount');
+  const bpmEl = document.getElementById('stBpm');
+  if (el) el.textContent = wordPool.length;
+  if (bpmEl) bpmEl.textContent = S.bpm;
+  updateApiUI();
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// TOAST NOTIFICATIONS
-// ═══════════════════════════════════════════════════════════════════════
-function showToast(id, msg, type='info') {
+// ══════════════════════════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════════════════════════
+const _toastTOs = {};
+function toast(id, msg, type='info', dur=5000) {
   const el = document.getElementById(id);
+  if (!el) return;
   el.textContent = msg;
   el.className = 'toast show ' + type;
-}
-function hideToast(id) {
-  document.getElementById(id).classList.remove('show');
-}
-
-function setHeaderStatus(label, state) {
-  document.getElementById('hsLabel').textContent = label;
-  const dot = document.getElementById('hsDot');
-  dot.className = 'hstatus-dot' + (state ? ' ' + state : '');
+  clearTimeout(_toastTOs[id]);
+  if (dur > 0) _toastTOs[id] = setTimeout(() => el.classList.remove('show'), dur);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// FILE UPLOAD
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+// AUDIO / LOCAL FILE
+// ══════════════════════════════════════════════════════════
 const audioEl = document.getElementById('audioEl');
 
 document.getElementById('audioFile').addEventListener('change', e => {
-  const f = e.target.files[0]; if (!f) return; loadFile(f);
+  const f = e.target.files[0]; if (f) loadFile(f);
 });
 const uz = document.getElementById('uploadZone');
 uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag'); });
@@ -1245,628 +997,586 @@ uz.addEventListener('drop', e => {
 function loadFile(file) {
   S.ytMode = false; hardStop();
   document.getElementById('ytEmbed').classList.remove('show');
-  document.getElementById('ytTransportCard').style.display = 'none';
+  document.getElementById('ytPlayerCard').style.display = 'none';
   document.getElementById('ytFrame').src = '';
-
   const url = URL.createObjectURL(file);
   audioEl.src = url; audioEl.load();
-
-  document.getElementById('trackTitle').textContent = file.name.replace(/\.[^.]+$/, '');
-  document.getElementById('trackMeta').textContent = 'Yerel · ' + (file.size/1024/1024).toFixed(1) + ' MB · ' + file.type;
-
-  uz.classList.add('has-file');
-  uz.querySelector('.up-title').textContent = file.name.replace(/\.[^.]+$/, '').substring(0,24);
-  uz.querySelector('.up-sub').textContent = (file.size/1024/1024).toFixed(1) + ' MB';
-
-  document.getElementById('transportCard').style.display = 'block';
+  const name = file.name.replace(/\.[^.]+$/, '');
+  document.getElementById('trackTitle').textContent = name;
+  document.getElementById('trackSub').textContent = (file.size/1024/1024).toFixed(1) + ' MB · ' + (file.type||'audio');
+  document.getElementById('localPlayerCard').style.display = 'block';
   document.getElementById('beatCard').style.display = 'block';
-  document.getElementById('streamStage').classList.add('active');
-  document.getElementById('streamSettCard').style.display = 'block';
-  document.getElementById('streamCtrl').style.display = 'flex';
-
+  document.getElementById('streamCtrlCard').style.display = 'block';
+  document.getElementById('streamStage').classList.add('on');
+  document.getElementById('srcBadge').textContent = 'DOSYA';
+  uz.classList.add('loaded');
+  uz.querySelector('.uz-title').textContent = name.substring(0, 22);
+  uz.querySelector('.uz-sub').textContent = (file.size/1024/1024).toFixed(1) + ' MB';
   audioEl.onloadedmetadata = () => {
     document.getElementById('durTime').textContent = fmt(audioEl.duration);
-    generateWaveBars();
-    showToast('fsToast', '✓ Dosya yüklendi — AUTO BPM veya kaydırıcı ile ayarla, ▶ bas', 'ok');
-    setHeaderStatus('YÜKLÜ', 'on');
+    toast('fsToast', '✓ Yüklendi — AUTO ile BPM tespit et veya Tap BPM kullan', 'ok');
     autoDetectBPM(url);
   };
-  audioEl.onerror = () => {
-    showToast('fsToast', '⚠ Dosya oynatılamıyor — farklı format dene (MP3 önerilir)', 'err');
-    setHeaderStatus('HATA', 'err');
-  };
+  audioEl.onerror = () => toast('fsToast', '⚠ Dosya oynatılamıyor — MP3/WAV dene', 'err');
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// YOUTUBE — EMBED ONLY (CORS-safe)
-// ═══════════════════════════════════════════════════════════════════════
-function loadYT() {
-  const raw = document.getElementById('ytUrl').value.trim();
-  if (!raw) { showToast('fsToast', '⚠ YouTube linki gir', 'err'); return; }
-  const vid = extractYTID(raw);
-  if (!vid) {
-    showToast('fsToast', '⚠ Video ID bulunamadı. Örnek: youtube.com/watch?v=dQw4w9WgXcQ', 'err');
-    return;
-  }
-
-  S.ytMode = true; S.ytFlowing = false; hardStop();
-  audioEl.src = ''; S.playing = false;
-
-  // YouTube nocookie embed — CORS yok, privacy-enhanced
-  const embedSrc = `https://www.youtube-nocookie.com/embed/${vid}?rel=0&modestbranding=1&playsinline=1&color=white`;
-  document.getElementById('ytFrame').src = embedSrc;
-  document.getElementById('ytEmbed').classList.add('show');
-  document.getElementById('ytIdLabel').textContent = vid;
-  document.getElementById('ytTrackMeta').textContent = 'ID: ' + vid;
-  document.getElementById('ytTransportCard').style.display = 'block';
-  document.getElementById('transportCard').style.display = 'none';
-  document.getElementById('beatCard').style.display = 'block';
-  document.getElementById('streamStage').classList.add('active');
-  document.getElementById('streamCtrl').style.display = 'flex';
-  document.getElementById('streamSettCard').style.display = 'block';
-
-  document.getElementById('ytHint').style.display = 'none';
-  showToast('fsToast', `✓ YouTube yüklendi (${vid}) — BPM kaydır → videoyu oynat → BAŞLAT'a bas`, 'ok');
-  setHeaderStatus('YT HAZIR', 'on');
-}
-
-function extractYTID(url) {
-  const patterns = [
-    /[?&]v=([a-zA-Z0-9_-]{11})/,
-    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
-    /\/(?:shorts|embed|v|live)\/([a-zA-Z0-9_-]{11})/,
-    /^([a-zA-Z0-9_-]{11})$/,
-  ];
-  for (const p of patterns) { const m = url.match(p); if (m) return m[1]; }
-  return null;
-}
-
-function ytStartFlow() {
-  if (S.ytFlowing) return;
-  S.ytFlowing = true;
-  document.getElementById('ytStartBtn').textContent = '⏸ DEVAM EDİYOR';
-  document.getElementById('ytStartBtn').className = 'btn btn-ghost';
-  startFlow();
-  setHeaderStatus('AKIYOR', 'on');
-}
-function ytStopFlow() {
-  S.ytFlowing = false;
-  document.getElementById('ytStartBtn').textContent = '▶ BAŞLAT';
-  document.getElementById('ytStartBtn').className = 'btn btn-acc';
-  stopFlow();
-  setHeaderStatus('YT HAZIR', 'on');
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// LOCAL AUDIO CONTROLS
-// ═══════════════════════════════════════════════════════════════════════
 audioEl.addEventListener('timeupdate', () => {
   if (!audioEl.duration) return;
-  const pct = audioEl.currentTime / audioEl.duration;
-  document.getElementById('waveProgress').style.width = (pct * 100) + '%';
+  const p = audioEl.currentTime / audioEl.duration;
+  document.getElementById('progressFill').style.width = (p*100) + '%';
   document.getElementById('curTime').textContent = fmt(audioEl.currentTime);
-  updateWaveHead(pct);
 });
-audioEl.addEventListener('ended', () => { S.playing = false; setPlayBtn(false); stopFlow(); setHeaderStatus('BİTTİ', null); });
+audioEl.addEventListener('ended', () => {
+  S.playing = false; setPlayBtn(false); stopFlow();
+});
 
 function togglePlay() {
   if (!audioEl.src) return;
   if (S.playing) {
-    audioEl.pause(); S.playing = false; setPlayBtn(false); stopFlow(); setHeaderStatus('DURAKLATILDI', null);
+    audioEl.pause(); S.playing = false; setPlayBtn(false); stopFlow();
   } else {
-    audioEl.play().catch(e => showToast('fsToast', '⚠ Oynatma hatası: ' + e.message, 'err'));
-    S.playing = true; setPlayBtn(true); startFlow(); setHeaderStatus('OYNUYOR', 'on');
+    audioEl.play().catch(e => toast('fsToast','⚠ '+e.message,'err'));
+    S.playing = true; setPlayBtn(true); startFlow();
   }
 }
-function setPlayBtn(playing) {
-  const btn = document.getElementById('playBtn');
-  btn.textContent = playing ? '⏸' : '▶';
-  btn.classList.toggle('playing', playing);
+function setPlayBtn(on) {
+  const b = document.getElementById('playBtn');
+  b.textContent = on ? '⏸' : '▶';
+  b.classList.toggle('playing', on);
 }
 function seekAudio(e) {
   if (!audioEl.duration) return;
   const r = e.currentTarget.getBoundingClientRect();
   audioEl.currentTime = ((e.clientX - r.left) / r.width) * audioEl.duration;
 }
-function hardStop() {
-  stopFlow(); S.playing = false; S.ytFlowing = false;
-  if (document.getElementById('playBtn')) setPlayBtn(false);
+
+// ══════════════════════════════════════════════════════════
+// YOUTUBE
+// ══════════════════════════════════════════════════════════
+function loadYT() {
+  const raw = document.getElementById('ytUrl').value.trim();
+  if (!raw) { toast('fsToast','⚠ YouTube linki gir','err'); return; }
+  const vid = extractYTID(raw);
+  if (!vid) { toast('fsToast','⚠ Video ID bulunamadı. youtube.com/watch?v=XXX formatını dene','err'); return; }
+  S.ytMode = true; S.ytFlowing = false; hardStop();
+  audioEl.src = ''; S.playing = false;
+  document.getElementById('ytFrame').src = `https://www.youtube-nocookie.com/embed/${vid}?rel=0&modestbranding=1&playsinline=1`;
+  document.getElementById('ytEmbed').classList.add('show');
+  document.getElementById('ytIdLabel').textContent = vid;
+  document.getElementById('ytSubLabel').textContent = 'ID: ' + vid;
+  document.getElementById('localPlayerCard').style.display = 'none';
+  document.getElementById('ytPlayerCard').style.display = 'block';
+  document.getElementById('beatCard').style.display = 'block';
+  document.getElementById('streamCtrlCard').style.display = 'block';
+  document.getElementById('streamStage').classList.add('on');
+  document.getElementById('srcBadge').textContent = 'YOUTUBE';
+  toast('fsToast', `✓ YouTube hazır (${vid}) — BPM ayarla → Videoyu oyna → BAŞLAT'a bas`, 'ok');
+}
+function extractYTID(u) {
+  const ps = [/[?&]v=([a-zA-Z0-9_-]{11})/,/youtu\.be\/([a-zA-Z0-9_-]{11})/,/\/(?:shorts|embed|v|live)\/([a-zA-Z0-9_-]{11})/,/^([a-zA-Z0-9_-]{11})$/];
+  for (const p of ps) { const m = u.match(p); if (m) return m[1]; }
+  return null;
+}
+function ytStart() {
+  if (S.ytFlowing) return;
+  S.ytFlowing = true;
+  document.getElementById('ytStartBtn').textContent = '⏸ AKIYOR';
+  document.getElementById('ytStartBtn').className = 'btn btn-ghost';
+  document.getElementById('ytStartBtn').onclick = ytStop;
+  startFlow();
+}
+function ytStop() {
+  S.ytFlowing = false;
   document.getElementById('ytStartBtn').textContent = '▶ BAŞLAT';
   document.getElementById('ytStartBtn').className = 'btn btn-acc';
-  setHeaderStatus('HAZIR', null);
+  document.getElementById('ytStartBtn').onclick = ytStart;
+  stopFlow();
+}
+function hardStop() {
+  stopFlow(); S.playing = false; S.ytFlowing = false;
+  setPlayBtn(false);
+  const sb = document.getElementById('ytStartBtn');
+  if (sb) { sb.textContent = '▶ BAŞLAT'; sb.className = 'btn btn-acc'; sb.onclick = ytStart; }
 }
 
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 // BPM ENGINE
-// ═══════════════════════════════════════════════════════════════════════
-function updateBPMDisplay(val) {
+// ══════════════════════════════════════════════════════════
+function updateBPM(val, src) {
   S.bpm = val;
   document.getElementById('bpmDisp').innerHTML = val + '<span class="bpm-unit">BPM</span>';
   document.getElementById('bpmSlider').value = val;
   document.getElementById('bpmSlideVal').textContent = val;
-  document.getElementById('streamBpm').textContent = val + ' BPM';
-  document.getElementById('barMs').textContent = Math.round(60000/val*4) + 'ms';
-  document.getElementById('beatMs').textContent = Math.round(60000/val) + 'ms';
+  document.getElementById('bpmPill').textContent = val;
+  document.getElementById('barMsDisp').textContent = Math.round(60000/val*4) + 'ms';
+  document.getElementById('beatMsDisp').textContent = Math.round(60000/val) + 'ms';
+  if (src) document.getElementById('bpmSrcBadge').textContent = src;
   document.getElementById('stBpm') && (document.getElementById('stBpm').textContent = val);
 }
-
-function onBPMSlide(val) {
-  updateBPMDisplay(val);
-  document.getElementById('bpmSrc').textContent = 'Manuel';
-  S.activePreset = null;
-  document.querySelectorAll('.bpm-badge.genre').forEach(b => b.classList.remove('active-genre'));
+function onBPMSlide(v) {
+  updateBPM(v, 'Manuel');
+  document.querySelectorAll('.bpm-presets .chip').forEach(c => c.classList.remove('active'));
+  if (S.playing || S.ytFlowing) { stopFlow(); startFlow(); }
+}
+function setPreset(name, bpm, el) {
+  updateBPM(bpm, name);
+  document.querySelectorAll('.bpm-presets .chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
   if (S.playing || S.ytFlowing) { stopFlow(); startFlow(); }
 }
 
-function setPreset(name, bpmVal) {
-  updateBPMDisplay(bpmVal);
-  document.getElementById('bpmSrc').textContent = name + ' Preset';
-  document.querySelectorAll('.bpm-badge.genre').forEach(b => b.classList.remove('active-genre'));
-  event.target.classList.add('active-genre');
-  if (S.playing || S.ytFlowing) { stopFlow(); startFlow(); }
-}
-
-// ── TAP BPM ────────────────────────────────────────────
+// Tap BPM
+let tapFlashTO = null;
 function tapBPM() {
   const now = Date.now();
   S.tapTimes = S.tapTimes.filter(t => now - t < CFG.TAP_WINDOW);
   S.tapTimes.push(now);
+  const btn = document.getElementById('tapBtn');
+  btn.classList.add('flash');
+  clearTimeout(tapFlashTO);
+  tapFlashTO = setTimeout(() => btn.classList.remove('flash'), 150);
   if (S.tapTimes.length >= 2) {
     const diffs = [];
     for (let i = 1; i < S.tapTimes.length; i++) diffs.push(S.tapTimes[i] - S.tapTimes[i-1]);
-    const avg = diffs.reduce((a,b) => a+b, 0) / diffs.length;
-    const detected = Math.round(60000 / avg);
-    const clamped = Math.max(60, Math.min(200, detected));
-    updateBPMDisplay(clamped);
-    document.getElementById('bpmSrc').textContent = 'Tap (' + S.tapTimes.length + ' vuruş)';
+    const avg = diffs.reduce((a,b)=>a+b,0)/diffs.length;
+    const d = Math.max(60, Math.min(200, Math.round(60000/avg)));
+    updateBPM(d, 'Tap (' + S.tapTimes.length + ')');
+    document.getElementById('tapCount').textContent = S.tapTimes.length + ' vuruş';
     if (S.playing || S.ytFlowing) { stopFlow(); startFlow(); }
+  } else {
+    document.getElementById('tapCount').textContent = 'tekrar vur...';
   }
-  // Visual feedback
-  const btn = document.getElementById('tapBtn');
-  btn.style.background = 'var(--acc)'; btn.style.color = '#000';
-  setTimeout(() => { btn.style.background = ''; btn.style.color = ''; }, 100);
 }
-function resetTap() { S.tapTimes = []; document.getElementById('bpmSrc').textContent = 'Tap sıfırlandı'; }
+function resetTap() { S.tapTimes = []; document.getElementById('tapCount').textContent = 'vur'; }
 
-// ── AUTO DETECT ─────────────────────────────────────────
+// Auto BPM detect
 function runAutoDetect() {
-  if (!audioEl.src) { showToast('fsToast', '⚠ Önce yerel dosya yükle', 'err'); return; }
+  if (!audioEl.src) { toast('fsToast','⚠ Önce yerel dosya yükle','warn'); return; }
   autoDetectBPM(audioEl.src);
 }
-
 async function autoDetectBPM(url) {
-  document.getElementById('bpmSrc').textContent = 'Analiz...';
-  showToast('fsToast', '🔍 BPM analiz ediliyor (birkaç saniye)...', 'info');
+  document.getElementById('bpmSrcBadge').textContent = 'Analiz...';
+  toast('fsToast','🔍 BPM analiz ediliyor...','info', 0);
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     const res = await fetch(url);
     if (!res.ok) throw new Error('fetch');
     const buf = await res.arrayBuffer();
-    const decoded = await ctx.decodeAudioData(buf);
+    const dec = await ctx.decodeAudioData(buf);
     ctx.close();
-    const detected = computeBPM(decoded);
-    updateBPMDisplay(detected);
-    document.getElementById('bpmSrc').textContent = 'Otomatik Algı';
-    showToast('fsToast', '✓ BPM tespit: ' + detected + ' — ▶ ile başlat', 'ok');
+    const d = computeBPM(dec);
+    updateBPM(d, 'Otomatik');
+    toast('fsToast','✓ BPM tespit edildi: ' + d + ' — ▶ ile başlat','ok');
   } catch(e) {
-    document.getElementById('bpmSrc').textContent = 'Algılanamadı';
-    showToast('fsToast', 'ℹ BPM otomatik algılanamadı — Tap veya kaydırıcı kullan', 'warn');
+    toast('fsToast','ℹ BPM otomatik algılanamadı (CORS kısıtı olabilir) — Tap BPM veya kaydırıcı kullan','warn');
+    document.getElementById('bpmSrcBadge').textContent = 'Manuel';
   }
 }
-
 function computeBPM(ab) {
   const data = ab.getChannelData(0), sr = ab.sampleRate;
-  const wSize = Math.floor(sr * 0.01);
-  const limit = Math.min(data.length, sr * 45); // max 45sn
+  const ws = Math.floor(sr * 0.01), lim = Math.min(data.length, sr*45);
   const en = [];
-  for (let i = 0; i < limit - wSize; i += wSize) {
-    let e = 0;
-    for (let j = 0; j < wSize; j++) e += data[i+j] * data[i+j];
-    en.push(e / wSize);
+  for (let i = 0; i < lim-ws; i += ws) {
+    let e = 0; for (let j = 0; j < ws; j++) e += data[i+j]*data[i+j]; en.push(e/ws);
   }
-  const avg = en.reduce((a,b) => a+b, 0) / en.length;
-  const thr = avg * 1.5;
-  const peaks = [];
-  let lastPeak = -50;
-  for (let i = 1; i < en.length - 1; i++) {
-    if (en[i] > thr && en[i] > en[i-1] && en[i] > en[i+1] && i - lastPeak > 5) {
-      peaks.push(i); lastPeak = i;
-    }
+  const avg = en.reduce((a,b)=>a+b,0)/en.length, thr = avg*1.5;
+  const pks = []; let last = -50;
+  for (let i = 1; i < en.length-1; i++) {
+    if (en[i]>thr && en[i]>en[i-1] && en[i]>en[i+1] && i-last>5) { pks.push(i); last=i; }
   }
-  if (peaks.length < 4) return 90;
+  if (pks.length < 4) return 90;
   const diffs = [];
-  for (let i = 1; i < Math.min(peaks.length, 60); i++) diffs.push(peaks[i] - peaks[i-1]);
-  diffs.sort((a,b) => a-b);
+  for (let i = 1; i < Math.min(pks.length,60); i++) diffs.push(pks[i]-pks[i-1]);
+  diffs.sort((a,b)=>a-b);
   const med = diffs[Math.floor(diffs.length/2)];
-  const spb = (med * wSize) / sr;
-  let d = Math.round(60 / spb);
-  while (d < 70) d *= 2;
-  while (d > 180) d = Math.round(d / 2);
+  let d = Math.round(60 / ((med*ws)/sr));
+  while (d<70) d*=2; while (d>180) d=Math.round(d/2);
   return Math.max(70, Math.min(180, d));
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// FLOW ENGINE
-// ═══════════════════════════════════════════════════════════════════════
+// Click sound (metronome)
+function initClickCtx() {
+  if (S.clickCtx) return;
+  try { S.clickCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {}
+}
+function playClick(strong) {
+  if (!document.getElementById('settClick').checked) return;
+  initClickCtx(); if (!S.clickCtx) return;
+  const o = S.clickCtx.createOscillator();
+  const g = S.clickCtx.createGain();
+  o.connect(g); g.connect(S.clickCtx.destination);
+  o.frequency.value = strong ? 1000 : 800;
+  g.gain.setValueAtTime(strong ? 0.3 : 0.15, S.clickCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001, S.clickCtx.currentTime + 0.05);
+  o.start(); o.stop(S.clickCtx.currentTime + 0.05);
+}
+
+// ══════════════════════════════════════════════════════════
+// BEAT / FLOW ENGINE
+// ══════════════════════════════════════════════════════════
+function buildBeatRow() {
+  const r = document.getElementById('beatRow');
+  r.innerHTML = '';
+  for (let i = 0; i < 16; i++) {
+    const c = document.createElement('div'); c.className = 'beat-cell';
+    const q = Math.floor(i/4);
+    c.classList.add(['b1','b2','b3','b4'][q]);
+    r.appendChild(c);
+  }
+}
+function buildBeatDots() {
+  const r = document.getElementById('beatDotsRow'); r.innerHTML = '';
+  for (let i = 0; i < 4; i++) {
+    const d = document.createElement('div'); d.className = 'bdot'; r.appendChild(d);
+  }
+}
+
 function startFlow() {
   stopFlow();
   if (wordPool.length < CFG.POOL_MIN) silentRefill();
-
-  const msPerBeat = (60 / S.bpm) * 1000;
-  const wPerBar = parseInt(document.getElementById('wRate').value) || 2;
-  const msPerBar = msPerBeat * 4;
-  const wordMs = msPerBar / wPerBar;
-
+  const msB = (60/S.bpm)*1000;
+  const wPB = parseInt(document.getElementById('wRate').value)||2;
+  const wMs = (msB*4)/wPB;
   S.beatCount = 0; S.barCount = 0; S.beatInBar = 0;
-
   T.beat = setInterval(() => {
     S.beatCount++;
-    S.beatInBar = ((S.beatCount - 1) % 4);
+    S.beatInBar = (S.beatCount-1) % 4;
     if (S.beatInBar === 0) S.barCount++;
     updateBeatUI();
-  }, msPerBeat);
-
-  T.word = setInterval(pushWord, wordMs);
+    playClick(S.beatInBar === 0);
+  }, msB);
+  T.word = setInterval(pushWord, wMs);
+  // Show stream
+  document.getElementById('barNum').textContent = S.barCount;
 }
-
 function stopFlow() {
-  clearInterval(T.beat); clearInterval(T.word);
-  T.beat = null; T.word = null;
+  clearInterval(T.beat); clearInterval(T.word); T.beat=null; T.word=null;
 }
-
 function updateBeatUI() {
-  // Beat dots
-  document.querySelectorAll('.bdot').forEach((d, i) => {
-    d.classList.toggle('on', i === S.beatInBar);
-  });
-  document.getElementById('beatNum').textContent = S.beatInBar + 1;
-  document.getElementById('barCount').textContent = S.barCount;
-
-  // Beat grid (16 steps)
+  // Dots
+  document.querySelectorAll('.bdot').forEach((d,i) => d.classList.toggle('on', i===S.beatInBar));
+  document.getElementById('barNum').textContent = S.barCount;
+  // Grid
   const step = S.beatCount % 16;
-  document.querySelectorAll('.beat-cell').forEach((c, i) => {
-    c.classList.remove('active');
-    if (i < step) {
-      const q = Math.floor(i / 4);
-      c.classList.add(['q1','q2','q3','q4'][q]);
-    } else {
-      c.classList.remove('q1','q2','q3','q4');
-    }
-  });
-  const activeCell = document.querySelector('.beat-cell:nth-child(' + (step + 1) + ')');
-  if (activeCell) activeCell.classList.add('active');
+  document.querySelectorAll('.beat-cell').forEach((c,i) => c.classList.toggle('active', i===step));
 }
 
-// ─ push word ──────────────────────────────────────────────────────────
 function pushWord() {
   if (!wordPool.length) { silentRefill(); return; }
-  const word = wordPool[Math.floor(Math.random() * wordPool.length)].toUpperCase();
-
-  // Big display
-  const cw = document.getElementById('currentWord');
-  cw.textContent = word;
-  cw.classList.remove('flash', 'word-enter');
-  void cw.offsetWidth; // reflow
-  cw.classList.add('flash', 'word-enter');
-
-  // History
+  const word = wordPool[Math.floor(Math.random()*wordPool.length)].toUpperCase();
   wordHistory.unshift(word);
   if (wordHistory.length > CFG.HISTORY_MAX) wordHistory.pop();
 
-  // Queue (prev words)
-  const keep = parseInt(document.getElementById('wKeep').value) || 6;
-  const qWords = wordHistory.slice(1, Math.min(keep + 1, wordHistory.length));
-  document.getElementById('wordQueue').innerHTML = qWords
-    .map((w, i) => `<span class="wq-chip${i<2?' pin':''}" onclick="pinWord('${w}')">${w}</span>`)
-    .join('');
+  // Main word
+  const cw = document.getElementById('currentWord');
+  cw.textContent = word;
+  if (document.getElementById('settFlash').checked) {
+    cw.classList.remove('flash'); void cw.offsetWidth; cw.classList.add('flash');
+  }
 
-  // History strip (bottom)
-  document.getElementById('wordHistStrip').innerHTML = wordHistory.slice(keep+1, keep+11)
-    .map(w => `<span class="hist-pill">${w}</span>`)
-    .join('');
+  // Queue
+  const keep = parseInt(document.getElementById('wKeep').value)||5;
+  const qEl = document.getElementById('wordQueue');
+  qEl.innerHTML = wordHistory.slice(1, keep+1).map((w,i) =>
+    `<span class="wq-item${i<2?' recent':''}" onclick="this.classList.toggle('pinned')">${w}</span>`
+  ).join('');
 
-  if (wordPool.length < CFG.POOL_MIN && !S.poolBusy) silentRefill();
-}
+  // History strip
+  document.getElementById('histStrip').innerHTML =
+    wordHistory.slice(keep+1, keep+9).map(w=>`<span class="hist-pill">${w}</span>`).join('');
 
-function pinWord(w) {
-  // User clicked a queued word — bring to front
-  document.getElementById('currentWord').textContent = w;
+  if (wordPool.length < CFG.POOL_MIN && !S.poolBusy && document.getElementById('settAutoRefill').checked)
+    silentRefill();
 }
 
 function onRateChange(v) {
   document.getElementById('wRateVal').textContent = v;
-  document.getElementById('wRate2Val') && (document.getElementById('wRate2Val').textContent = v);
   if (S.playing || S.ytFlowing) { stopFlow(); startFlow(); }
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// WORD POOL — OFFLINE FIRST + Claude API enhancement
-// ═══════════════════════════════════════════════════════════════════════
-const POOL_CATEGORIES = [
-  'sokak şehir beton gece sis kalabalık marjinal',
-  'öfke isyan direniş baskı özgürlük devrim',
-  'doğa fırtına deniz dağ kaya toprak kök',
-  'zaman hafıza geçmiş unutuş kader döngü',
-  'güç iktidar sömürü yoksulluk eşitsizlik',
-  'müzik ritim ses titreşim yankı melodi',
-  'kimlik kültür aidiyet diaspora yabancı',
-  'aşk ihaneт yalnızlık özlem acı keder',
-  'savaş barış silah kan zafer yenilgi',
-  'bilinç zihin hayal gerçek illüzyon kırılma',
-  'metal demir paslanma eskiyen çürüme yıkım',
-  'ışık karanlık gölge yansıma ayna maske',
-  'hız ivme çarpmak kaçmak kovalamak varmak',
-  'söz yalan hakikat kanıt yargı vicdan',
+// ══════════════════════════════════════════════════════════
+// WORD POOL — Offline-first + Gemini expand
+// ══════════════════════════════════════════════════════════
+const POOL_CATS = [
+  'sokak şehir beton gece varoş marjinal','öfke isyan direniş baskı özgürlük halk',
+  'doğa fırtına deniz dağ kaya toprak','zaman hafıza kader döngü boşluk sonsuzluk',
+  'güç iktidar sömürü yoksulluk eşitsizlik','müzik ritim ses frekans titreşim yankı',
+  'kimlik kültür aidiyet diaspora yabancı nesil','aşk ihanet yalnızlık özlem acı keder',
+  'savaş barış silah kan zafer yenilgi','bilinç zihin hayal gerçek illüzyon kırılma',
+  'metal demir paslanma çürüme yıkım enkaz','ışık karanlık gölge yansıma ayna maske',
+  'hız ivme çarpmak kovalamak kaçmak varmak','söz yalan hakikat kanıt yargı vicdan',
   'nefes hayat ölüm doğum yeniden başlangıç',
 ];
+let _poolCatIdx = 0;
 
 async function silentRefill() {
   if (S.poolBusy) return;
   S.poolBusy = true;
-  document.getElementById('poolLoading').style.display = 'block';
-
-  const cat = POOL_CATEGORIES[Math.floor(Math.random() * POOL_CATEGORIES.length)];
-
-  // Determine API key
-  const key = getApiKey();
-
-  if (key && key.startsWith('AIza')) {
+  document.getElementById('poolSpin').classList.add('on');
+  const cat = POOL_CATS[_poolCatIdx++ % POOL_CATS.length];
+  const key = getKey();
+  if (key) {
     try {
-      const url = `${CFG.GEMINI_URL}${CFG.GEMINI_MODEL}:generateContent?key=${key}`;
+      const url = CFG.GEMINI_URL + CFG.GEMINI_MODEL + ':generateContent?key=' + key;
       const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({
-          contents: [{ parts: [{ text:
-            `Türkçe rap için güçlü kelimeler üret. Konu: "${cat}". Sadece JSON döndür, başka hiçbir şey yazma: {"words":["kelime1","kelime2",...]} — 50 tekil Türkçe kelime, küçük harf, cümle değil, güçlü çağrışımlı, tekrarsız.`
-          }] }],
-          generationConfig: { temperature: 0.9, maxOutputTokens: 600 }
+          contents:[{parts:[{text:
+            `Türkçe rap için güçlü kelimeler üret. Konu: "${cat}". Sadece JSON: {"words":["k1","k2",...]} — 50 tekil kelime, küçük harf, güçlü çağrışımlı, tekrarsız, cümle değil.`
+          }]}],
+          generationConfig:{temperature:0.9, maxOutputTokens:500}
         })
       });
       if (res.ok) {
         const data = await res.json();
         const txt = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        const clean = txt.replace(/```json|```/g, '').trim();
-        const parsed = JSON.parse(clean);
-        mergeWords(parsed.words || []);
-      } else {
-        addFallbackWords();
-      }
-    } catch(e) { addFallbackWords(); }
-  } else {
-    addFallbackWords();
-  }
-
+        try {
+          const p = JSON.parse(txt.replace(/```json|```/g,'').trim());
+          mergePool(p.words || []);
+        } catch(e) { addFallback(); }
+      } else { addFallback(); }
+    } catch(e) { addFallback(); }
+  } else { addFallback(); }
   S.poolBusy = false;
-  document.getElementById('poolLoading').style.display = 'none';
+  document.getElementById('poolSpin').classList.remove('on');
   updatePoolUI();
 }
 
-function mergeWords(newWords) {
-  const existing = new Set(wordPool.map(w => w.toLowerCase()));
-  const added = newWords.filter(w => typeof w==='string' && w.length>1 && !existing.has(w.toLowerCase()));
-  wordPool.push(...added);
-}
-
-const FALLBACK_BANKS = [
-  ['çığlık','sessizlik','yankı','titreşim','haykırış','patlama','kıvılcım','alev','kül','enkaz'],
-  ['cephe','nöbet','ateşkes','çatışma','meydan','taht','hançer','darbe','infaz','sürgün'],
-  ['yol','iz','sır','ayna','maske','bağ','köklü','yabancı','ışık','perde'],
-  ['akıl','vicdan','suç','ceza','lanet','dua','kehanet','kader','alın','yazı'],
-  ['volkan','deprem','seller','tsunami','çöl','bozkır','tundra','mağara','uçurum','vadi'],
-  ['para','altın','borç','vergi','sistem','düzen','kölelik','zincirlenmek','kurtulmak','özgürleşmek'],
-  ['kimlik','bellek','travma','iyileşme','yara','skar','iz','kanıt','tanık','hatıra'],
-  ['kaçmak','koşmak','yükselmek','düşmek','tırmanmak','çökmek','kalkmak','direnmek','savaşmak','kazanmak'],
+const _fallbackBanks = [
+  ['çığlık','yankı','titreşim','patlama','kıvılcım','enkaz','cephe','nöbet','lanet','dua'],
+  ['yol','iz','sır','ayna','bağ','köklü','vicdan','infaz','adak','kurban'],
+  ['volkan','deprem','seller','çöl','bozkır','mağara','uçurum','vadi','tepe','ova'],
+  ['bilek','omuz','nefes','adım','koşu','yüzme','dalma','çıkma','girme','geçme'],
+  ['sabah','akşam','gün','hafta','ay','yıl','asır','çağ','devir','dönem'],
 ];
-let fallbackIdx = 0;
-function addFallbackWords() {
-  const bank = FALLBACK_BANKS[fallbackIdx % FALLBACK_BANKS.length];
-  fallbackIdx++;
-  mergeWords(bank);
+let _fbIdx = 0;
+function addFallback() { mergePool(_fallbackBanks[_fbIdx++ % _fallbackBanks.length]); }
+function mergePool(words) {
+  const ex = new Set(wordPool.map(w=>w.toLowerCase()));
+  wordPool.push(...words.filter(w=>typeof w==='string'&&w.length>1&&!ex.has(w.toLowerCase())));
 }
+function triggerRefill() { S.poolBusy=false; silentRefill(); }
 
-function triggerRefill() {
-  S.poolBusy = false;
-  silentRefill();
+function buildPoolDots() {
+  const c = document.getElementById('poolDots'); c.innerHTML = '';
+  for (let i=0;i<12;i++) { const d=document.createElement('div'); d.className='pdot'; c.appendChild(d); }
 }
-
 function updatePoolUI() {
   const n = wordPool.length;
   document.getElementById('poolCount').textContent = n;
   document.getElementById('stPoolCount') && (document.getElementById('stPoolCount').textContent = n);
-
-  // Indicator bars
-  const ind = document.getElementById('poolInd');
-  const bars = ind.querySelectorAll('.pi');
-  const fillPct = Math.min(n / CFG.POOL_TARGET, 1);
-  bars.forEach((b, i) => {
-    const pos = i / bars.length;
-    b.classList.toggle('filled', pos < fillPct * 0.7);
-    b.classList.toggle('half', pos >= fillPct * 0.7 && pos < fillPct);
+  const pct = Math.min(n/CFG.POOL_TARGET, 1);
+  document.querySelectorAll('.pdot').forEach((d,i) => {
+    const p = i/12;
+    d.className = 'pdot' + (p<pct*0.65?' on':p<pct?' half':'');
   });
 }
 
-function buildPoolIndicator() {
-  const ind = document.getElementById('poolInd');
-  ind.innerHTML = '';
-  for (let i = 0; i < 10; i++) {
-    const b = document.createElement('div'); b.className = 'pi'; ind.appendChild(b);
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// WAVEFORM UI
-// ═══════════════════════════════════════════════════════════════════════
-function buildWaveBars() {
-  const wrap = document.getElementById('waveBars');
-  wrap.innerHTML = '';
-  for (let i = 0; i < 60; i++) {
-    const b = document.createElement('div'); b.className = 'wbar'; wrap.appendChild(b);
-  }
-}
-
-function generateWaveBars() {
-  const bars = document.querySelectorAll('.wbar');
-  bars.forEach(b => { b.style.height = (Math.random() * 70 + 15) + '%'; });
-}
-
-function updateWaveHead(pct) {
-  const bars = document.querySelectorAll('.wbar');
-  const headIdx = Math.floor(pct * bars.length);
-  bars.forEach((b, i) => {
-    b.classList.remove('played','head');
-    if (i < headIdx) b.classList.add('played');
-    else if (i === headIdx) b.classList.add('head');
-  });
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// BEAT GRID UI
-// ═══════════════════════════════════════════════════════════════════════
-function buildBeatGrid() {
-  const g = document.getElementById('beatGrid');
-  g.innerHTML = '';
-  for (let i = 0; i < 16; i++) {
-    const c = document.createElement('div'); c.className = 'beat-cell'; g.appendChild(c);
-  }
-}
-function buildBeatDots() {
-  const d = document.getElementById('beatDots');
-  d.innerHTML = '';
-  for (let i = 0; i < 4; i++) {
-    const dot = document.createElement('div'); dot.className = 'bdot'; d.appendChild(dot);
-  }
-}
-
-// ═══════════════════════════════════════════════════════════════════════
-// RHYME FINDER — Claude API
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
+// RHYME FINDER
+// ══════════════════════════════════════════════════════════
 let rhymeTO = null;
 function onRhymeType() {
   clearTimeout(rhymeTO);
   const v = document.getElementById('rhymeInput').value.trim();
-  if (v.length >= 2) rhymeTO = setTimeout(findRhymes, 700);
+  if (v.length >= 2) rhymeTO = setTimeout(findRhymes, 800);
+}
+function quickRhyme(w) {
+  document.getElementById('rhymeInput').value = w;
+  document.querySelectorAll('.rcat-btn').forEach(b=>b.classList.toggle('active',b.textContent===w));
+  findRhymes();
+}
+function clearRhyme() {
+  document.getElementById('rhymeInput').value = '';
+  document.getElementById('rhymeOut').innerHTML = '';
+  document.getElementById('saveRhymeBtn').style.display = 'none';
+  document.getElementById('rhymeToast').classList.remove('show');
+  document.querySelectorAll('.rcat-btn').forEach(b=>b.classList.remove('active'));
 }
 
 async function findRhymes() {
   const word = document.getElementById('rhymeInput').value.trim();
   if (!word) return;
-
-  hideToast('rhymeToast');
-  document.getElementById('rhymeResults').innerHTML = `<div class="loading-dots"><div class="ldot"></div><div class="ldot"></div><div class="ldot"></div><span style="margin-left:8px;letter-spacing:2px;">"${word.toUpperCase()}" TARANIYOR</span></div>`;
-
-  const key = getApiKey();
-
+  S.lastRhymeWord = word;
+  document.getElementById('rhymeOut').innerHTML = `<div class="loading-row"><div class="ldot"></div><div class="ldot"></div><div class="ldot"></div><span style="margin-left:8px;letter-spacing:2px;">"${word.toUpperCase()}" TARANIYOR</span></div>`;
+  document.getElementById('rhymeToast').classList.remove('show');
+  const key = getKey();
   if (!key) {
-    showToast('rhymeToast', '⚠ API key girilmemiş — Ayarlar sekmesinden AIzaSy... formatında ekle', 'warn');
-    renderRhymes(word, localRhyme(word), true);
-    return;
+    toast('rhymeToast','⚠ API key yok — yerel eşleşme gösteriliyor. Ayarlar\'dan AIzaSy... ekle.','warn', 0);
+    renderRhymes(word, localRhyme(word), true); return;
   }
-
-  if (!key.startsWith('AIza')) {
-    showToast('rhymeToast', '⚠ API key formatı hatalı — Gemini key AIzaSy... ile başlamalı', 'err');
-    renderRhymes(word, localRhyme(word), true);
-    return;
-  }
-
   try {
-    const url = `${CFG.GEMINI_URL}${CFG.GEMINI_MODEL}:generateContent?key=${key}`;
+    const url = CFG.GEMINI_URL + CFG.GEMINI_MODEL + ':generateContent?key=' + key;
     const res = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        contents: [{ parts: [{ text:
-          `Türkçe rap için "${word}" kelimesiyle kafiye bul. Sadece JSON döndür (başka hiçbir şey yazma):
-{"perfect":["tam kafiye - son 2+ hece birebir eşleşiyor, min 20 kelime"],"near":["yakın kafiye - yüksek ses benzerliği, min 20 kelime"],"slant":["eğik kafiye - kısmi ses örtüşmesi, min 15 kelime"],"compound":["iki kelimelik kafiyeli ifade veya söz kalıbı, min 10 örnek"]}
-Türkçe fonetik kurallarına dikkat et: ünlü uyumu, sessiz yumuşaması. Rap'e uygun güçlü kelimeler. Tümü küçük harf. Sadece gerçekten kafiyeli olanları ekle.`
-        }] }],
-        generationConfig: { temperature: 0.7, maxOutputTokens: 1400 }
+        contents:[{parts:[{text:
+          `Türkçe rap şarkı yazımı için "${word}" kelimesiyle kafiyeli kelimeler bul.
+Sadece JSON döndür (başka hiçbir şey yazma):
+{"perfect":["tam kafiye - son 2+ hece birebir, min 20 kelime"],"near":["yakın kafiye - yüksek ses benzerliği, min 20"],"slant":["eğik kafiye - kısmi örtüşme, min 15"],"compound":["${word} içeren veya onunla kafiyeli iki kelimelik ifade, min 10"]}
+Türkçe fonetik: ünlü uyumu, sessiz yumuşaması. Güçlü rap kelimeleri. Küçük harf. Sadece gerçekten kafiyeli.`
+        }]}],
+        generationConfig:{temperature:0.7, maxOutputTokens:1400}
       })
     });
     if (!res.ok) {
-      const errBody = await res.json().catch(()=>({}));
-      const errMsg = errBody?.error?.message || ('HTTP ' + res.status);
-      throw new Error(errMsg);
+      const eb = await res.json().catch(()=>({}));
+      const em = eb?.error?.message || 'HTTP ' + res.status;
+      const retryM = em.match(/retry in ([\d.]+)s/i);
+      if (retryM) {
+        const secs = Math.ceil(parseFloat(retryM[1]));
+        toast('rhymeToast', `⏳ Kota doldu — ${secs}s sonra otomatik yeniden deneniyor. Şimdi yerel sonuç görünüyor.`, 'warn', 0);
+        renderRhymes(word, localRhyme(word), true);
+        clearTimeout(S.retryTO);
+        S.retryTO = setTimeout(() => { if(document.getElementById('rhymeInput').value.trim()===word) findRhymes(); }, secs*1000);
+        return;
+      }
+      throw new Error(em);
     }
     const data = await res.json();
     const txt = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     const parsed = JSON.parse(txt.replace(/```json|```/g,'').trim());
     renderRhymes(word, parsed);
+    document.getElementById('saveRhymeBtn').style.display = 'inline-flex';
   } catch(e) {
-    showToast('rhymeToast', '⚠ ' + e.message + ' — yerel eşleşme gösteriliyor', 'err');
+    toast('rhymeToast','⚠ '+e.message+' — yerel eşleşme gösteriliyor','err');
     renderRhymes(word, localRhyme(word), true);
   }
 }
 
 function localRhyme(word) {
-  const w = word.toLowerCase();
-  const e3 = w.slice(-3), e2 = w.slice(-2), e1 = w.slice(-1);
-  const p = wordPool.filter(x => x.toLowerCase().endsWith(e2) && x.toLowerCase() !== w);
-  const n = wordPool.filter(x => x.toLowerCase().endsWith(e1) && !p.includes(x) && x.toLowerCase() !== w);
-  const s = wordPool.filter(x => x !== word && !p.includes(x) && !n.includes(x)).slice(0, 15);
+  const w = word.toLowerCase(), e2=w.slice(-2), e1=w.slice(-1);
+  const p = wordPool.filter(x=>x.toLowerCase().endsWith(e2)&&x.toLowerCase()!==w);
+  const n = wordPool.filter(x=>x.toLowerCase().endsWith(e1)&&!p.includes(x)&&x.toLowerCase()!==w);
   return {
-    perfect: p.slice(0, 20),
-    near: n.slice(0, 20),
-    slant: s,
-    compound: [`${word} gibi`, `${word} değil`, `sanki ${word}`, `bir ${word}`, `tam ${word}`, `eski ${word}`, `yeni ${word}`, `sahte ${word}`, `gerçek ${word}`, `asıl ${word}`]
+    perfect:p.slice(0,20), near:n.slice(0,20),
+    slant:wordPool.filter(x=>x!==word&&!p.includes(x)&&!n.includes(x)).slice(0,15),
+    compound:[`${word} gibi`,`${word} değil`,`sanki ${word}`,`bir ${word}`,`tam ${word}`,`eski ${word}`,`asıl ${word}`,`sahte ${word}`,`gerçek ${word}`,`tek ${word}`]
   };
 }
 
 function renderRhymes(word, data, isFallback) {
   const secs = [
-    { k:'perfect', l:'TAM KAFİYE',     c:'p', desc:'Son 2+ hece birebir eşleşiyor' },
-    { k:'near',    l:'YAKIN KAFİYE',   c:'n', desc:'Yüksek ses benzerliği' },
-    { k:'slant',   l:'EĞİK KAFİYE',    c:'s', desc:'Kısmi ses örtüşmesi' },
-    { k:'compound',l:'BİRLEŞİK İFADE', c:'c', desc:'Kafiyeli söz kalıpları' },
+    {k:'perfect',l:'TAM KAFİYE',c:'p',desc:'son 2+ hece'},
+    {k:'near',l:'YAKIN KAFİYE',c:'n',desc:'ses benzerliği'},
+    {k:'slant',l:'EĞİK KAFİYE',c:'s',desc:'kısmi örtüşme'},
+    {k:'compound',l:'BİRLEŞİK İFADE',c:'c',desc:'söz kalıpları'},
   ];
-
-  let html = '<div class="rhyme-grid-wrap">';
-  secs.forEach((s, idx) => {
-    const words = data[s.k] || [];
-    const isFullWidth = s.k === 'compound';
-    html += `<div class="rhyme-col${isFullWidth?' rhyme-full':''}">
-      <div class="rhyme-col-title">${s.l} <span class="badge">${words.length}</span>
-        <span style="font-size:9px;color:var(--text3);font-weight:300;letter-spacing:1px;text-transform:none;">${s.desc}</span>
-      </div>
-      <div class="rhyme-chips">
-        ${words.map(w => `<div class="r-chip ${s.c}" onclick="useRhymeWord(this.dataset.w)" data-w="${encodeURIComponent(w)}">${w}</div>`).join('')}
-        ${words.length===0 ? '<span style="font-size:10px;color:var(--text3);">Bulunamadı</span>' : ''}
-      </div>
+  let html = '<div class="rhyme-results">';
+  secs.forEach(s => {
+    const ws = data[s.k]||[];
+    const full = s.k==='compound';
+    html+=`<div class="rhyme-col${full?' full':''}">
+      <div class="rhyme-col-head">${s.l}<span class="rcol-count">${ws.length}</span><span style="font-size:9px;color:var(--t3);font-weight:300;margin-left:4px;">${s.desc}</span></div>
+      <div class="rhyme-chips">${ws.map(w=>`<div class="r-chip ${s.c}" onclick="useRhymeWord('${encodeURIComponent(w)}')">${w}</div>`).join('')}${!ws.length?'<span style="font-size:10px;color:var(--t3);">—</span>':''}</div>
     </div>`;
   });
   html += '</div>';
-  document.getElementById('rhymeResults').innerHTML = html;
-  document.getElementById('rhymeResults').classList.add('fade-in');
+  document.getElementById('rhymeOut').innerHTML = html;
 }
 
 function useRhymeWord(w) {
-  const word = decodeURIComponent(w);
-  document.getElementById('rhymeInput').value = word;
+  document.getElementById('rhymeInput').value = decodeURIComponent(w);
   findRhymes();
 }
 
-// ═══════════════════════════════════════════════════════════════════════
+// Save rhymes
+function saveCurrentRhyme() {
+  const word = S.lastRhymeWord;
+  if (!word) return;
+  const chips = [...document.querySelectorAll('#rhymeOut .r-chip.p')].map(c=>c.textContent).slice(0,8);
+  if (!S.savedRhymes.find(r=>r.w===word)) {
+    S.savedRhymes.unshift({w:word, r:chips});
+    if (S.savedRhymes.length > 20) S.savedRhymes.pop();
+    try { localStorage.setItem('wuka_saved', JSON.stringify(S.savedRhymes)); } catch(e){}
+    renderSavedRhymes();
+    toast('rhymeToast','✓ Kaydedildi','ok');
+  }
+}
+function renderSavedRhymes() {
+  const sec = document.getElementById('savedSection');
+  const list = document.getElementById('savedList');
+  if (!S.savedRhymes.length) { sec.style.display='none'; return; }
+  sec.style.display = 'block';
+  list.innerHTML = S.savedRhymes.map((r,i) =>
+    `<div class="saved-item"><span class="saved-word">${r.w}</span><span class="saved-rhymes">${r.r.join(' · ')}</span><span class="saved-del" onclick="deleteSaved(${i})">✕</span></div>`
+  ).join('');
+}
+function deleteSaved(i) {
+  S.savedRhymes.splice(i,1);
+  try { localStorage.setItem('wuka_saved',JSON.stringify(S.savedRhymes)); } catch(e){}
+  renderSavedRhymes();
+}
+
+// ══════════════════════════════════════════════════════════
+// NOTEBOOK
+// ══════════════════════════════════════════════════════════
+function initNotebook() {
+  addLyricLine(); addLyricLine(); addLyricLine(); addLyricLine();
+  const nb = document.getElementById('notebookArea');
+  nb.addEventListener('input', () => {
+    const words = nb.value.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('noteWordCount').textContent = words + ' kelime';
+    document.getElementById('noteCharCount').textContent = nb.value.length + ' karakter';
+    try { localStorage.setItem('wuka_notebook', nb.value); } catch(e){}
+  });
+}
+function addLyricLine() {
+  const lines = document.getElementById('lyricLines');
+  const num = lines.children.length + 1;
+  const div = document.createElement('div'); div.className = 'lyric-line';
+  div.innerHTML = `<span class="line-num">${num}</span>
+    <textarea class="line-text" rows="1" placeholder="Satır ${num}..." oninput="autoResizeLine(this)"></textarea>
+    <div class="line-actions">
+      <button class="la-btn" onclick="deleteLyricLine(this)" title="Sil">✕</button>
+    </div>`;
+  lines.appendChild(div);
+}
+function autoResizeLine(el) {
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+function deleteLyricLine(btn) {
+  btn.closest('.lyric-line').remove();
+  // Renumber
+  document.querySelectorAll('.lyric-line .line-num').forEach((n,i)=>n.textContent=i+1);
+}
+function clearNotebook() {
+  if (!confirm('Tüm satırları temizle?')) return;
+  document.getElementById('lyricLines').innerHTML = '';
+  addLyricLine(); addLyricLine();
+}
+function exportLyrics() {
+  const lines = [...document.querySelectorAll('.line-text')].map(t=>t.value).join('\n');
+  const note = document.getElementById('notebookArea').value;
+  const all = (lines.trim() ? '--- SÖZLER ---\n' + lines : '') + (note.trim() ? '\n\n--- NOTLAR ---\n' + note : '');
+  if (!all.trim()) { toast('fsToast','Defter boş','warn'); return; }
+  const a = document.createElement('a');
+  a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(all);
+  a.download = 'wuka-sözler-' + new Date().toISOString().slice(0,10) + '.txt';
+  a.click();
+}
+
+// ══════════════════════════════════════════════════════════
 // KEYBOARD SHORTCUTS
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 document.addEventListener('keydown', e => {
   const tag = document.activeElement.tagName;
-  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-
-  if (e.code === 'Space') { e.preventDefault(); if (!S.ytMode) togglePlay(); }
-  if (e.key === 't' || e.key === 'T') tapBPM();
-  if (e.key === 'n' || e.key === 'N') { if (S.playing || S.ytFlowing) pushWord(); }
-  if (e.key === 'r' || e.key === 'R') triggerRefill();
-  if (e.key === 'ArrowRight') { onBPMSlide(Math.min(200, S.bpm + 1)); }
-  if (e.key === 'ArrowLeft')  { onBPMSlide(Math.max(60,  S.bpm - 1)); }
+  if (tag==='INPUT'||tag==='TEXTAREA') return;
+  if (e.code==='Space'){e.preventDefault();if(!S.ytMode)togglePlay();}
+  if (e.key==='t'||e.key==='T') tapBPM();
+  if (e.key==='n'||e.key==='N'){if(S.playing||S.ytFlowing)pushWord();}
+  if (e.key==='r'||e.key==='R') triggerRefill();
+  if (e.key==='ArrowRight') onBPMSlide(Math.min(200,S.bpm+1));
+  if (e.key==='ArrowLeft')  onBPMSlide(Math.max(60, S.bpm-1));
+  if (e.key==='Escape') hardStop();
 });
 
-// ═══════════════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════
 // HELPERS
-// ═══════════════════════════════════════════════════════════════════════
-function fmt(s) {
-  if (!s || isNaN(s)) return '0:00';
-  return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2, '0');
-}
+// ══════════════════════════════════════════════════════════
+function fmt(s){if(!s||isNaN(s))return'0:00';return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');}
 </script>
 </body>
 </html>
+
