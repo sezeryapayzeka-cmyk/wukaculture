@@ -10,7 +10,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Barlow+Condensed:ital,wght@0,300;0,600;0,800;1,400&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════
-   WUKACULTURE RAPSTUDIO v5 (Hatalar Giderildi)
+   WUKACULTURE RAPSTUDIO v5
+   No external AI deps · Pure offline-first
 ═══════════════════════════════════════════════ */
 :root{
   --ink:#060608; --p1:#0d0e14; --p2:#131520; --p3:#191c28; --p4:#1f2230;
@@ -31,6 +32,7 @@
 html{height:100%;overscroll-behavior:none;}
 body{background:var(--ink);color:var(--t0);font-family:var(--fm);font-size:13px;
   min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+/* Grain overlay */
 body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
   opacity:.55;}
@@ -173,6 +175,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
   position:relative;overflow:hidden;transition:all .06s;}
 .bc::after{content:'';position:absolute;inset:0;background:var(--lime);
   transform:scaleY(0);transform-origin:bottom;transition:transform .06s;}
+.bc.q1::after{transform:scaleY(.62);}
+.bc.q2::after{transform:scaleY(.36);}
+.bc.q3::after{transform:scaleY(.50);}
+.bc.q4::after{transform:scaleY(.26);}
 .bc.cur{background:var(--p4);}
 .bc.cur::after{transform:scaleY(1)!important;box-shadow:0 0 7px var(--lime);}
 
@@ -390,6 +396,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
 </head>
 <body>
 
+<!-- TOP BAR -->
 <div id="tb">
   <div class="logo">
     <span class="lw">WUKA</span><span class="lc">CULTURE</span>
@@ -401,13 +408,17 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
   </div>
 </div>
 
+<!-- APP -->
 <div id="app">
 
+<!-- ═══ FREESTYLE ═══ -->
 <div class="pg on" id="pg-fs">
 <div class="w">
 <div class="twocol">
 
+<!-- LEFT: Upload + BPM -->
 <div>
+  <!-- Upload -->
   <div class="card">
     <div class="ch"><span class="cht">Altyapı</span><span class="chb" id="srcTag">YOK</span></div>
     <div class="cb" style="padding-bottom:8px;">
@@ -425,6 +436,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
     </div>
   </div>
 
+  <!-- BPM -->
   <div class="card">
     <div class="ch">
       <span class="cht">BPM</span>
@@ -461,6 +473,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
     </div>
   </div>
 
+  <!-- Pool + Genre -->
   <div class="card">
     <div class="genre-row">
       <span style="font-size:8px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;align-self:center;">TARZ →</span>
@@ -482,9 +495,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
   </div>
 </div>
 
+<!-- RIGHT: Player + Stage -->
 <div class="rcol">
   <div class="toast" id="ft"></div>
 
+  <!-- YT embed -->
   <div class="yt-emb" id="ytemb">
     <iframe id="ytf" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen
       sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
@@ -495,6 +510,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
     </div>
   </div>
 
+  <!-- Local player -->
   <div class="card" id="lpc" style="display:none;">
     <div class="tp">
       <button class="btn-circ btn-circ-lime" id="playBtn" onclick="togglePlay()">▶</button>
@@ -506,20 +522,23 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
     </div>
   </div>
 
+  <!-- YT controls -->
   <div class="card" id="ytc" style="display:none;">
     <div class="tp">
       <div class="ti"><div class="tt">YouTube Altyapısı</div><div class="ts" id="ytSub">—</div></div>
     </div>
     <div style="padding:0 13px 11px;display:flex;gap:7px;">
-      <button class="btn btn-lime" id="ytSBtn" onclick="ytToggle()">▶ BAŞLAT</button>
+      <button class="btn btn-lime" id="ytSBtn" onclick="ytToggle()" style="flex:1;">▶ BAŞLAT</button>
       <button class="btn btn-ghost" onclick="hardStop()">⏹</button>
     </div>
   </div>
 
+  <!-- Beat grid -->
   <div class="card" id="beatCard" style="display:none;">
     <div class="bgrid" id="bgrid"></div>
   </div>
 
+  <!-- Stream stage -->
   <div class="stage" id="stage">
     <div class="stb">
       <div class="bar-info">
@@ -529,16 +548,19 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
       <div class="bpm-pill"><b id="bpmPill">90</b> BPM</div>
     </div>
 
+    <!-- Mode selector: Bar / Verse -->
     <div class="mode-sel">
       <button class="mode-btn on" id="m-bar" onclick="setMode('bar')">Bar · Tek Kelime</button>
       <button class="mode-btn" id="m-verse" onclick="setMode('verse')">Verse · 4 Kelime</button>
     </div>
 
+    <!-- Bar mode -->
     <div id="bar-display">
       <div class="bwrap"><div class="bword" id="bword">—</div></div>
       <div class="wqueue" id="wqueue"></div>
     </div>
 
+    <!-- Verse mode -->
     <div id="verse-display" style="display:none;">
       <div class="verse-wrap">
         <div class="verse-words" id="verseWords"></div>
@@ -557,7 +579,14 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
       </div>
     </div>
   </div>
-</div></div></div></div><div class="pg" id="pg-rh">
+</div><!-- /rcol -->
+
+</div><!-- /twocol -->
+</div><!-- /w -->
+</div><!-- /pg-fs -->
+
+<!-- ═══ RHYME ═══ -->
+<div class="pg" id="pg-rh">
 <div class="w">
   <div class="rhero">
     <input type="text" class="rbi" id="rInput"
@@ -599,6 +628,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
 </div>
 </div>
 
+<!-- ═══ NOTEBOOK ═══ -->
 <div class="pg" id="pg-nb">
 <div class="w">
   <div class="card">
@@ -624,9 +654,11 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
 </div>
 </div>
 
+<!-- ═══ SETTINGS ═══ -->
 <div class="pg" id="pg-st">
 <div class="w" style="max-width:500px;">
 
+  <!-- API -->
   <div class="card">
     <div class="ch"><span class="cht">AI / Kafiye API</span></div>
     <div class="cb">
@@ -653,6 +685,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
     </div>
   </div>
 
+  <!-- App settings -->
   <div class="card">
     <div class="ch"><span class="cht">Ayarlar</span></div>
     <div class="cb">
@@ -671,6 +704,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
     </div>
   </div>
 
+  <!-- Shortcuts -->
   <div class="card">
     <div class="ch"><span class="cht">Klavye</span></div>
     <div class="cb">
@@ -686,6 +720,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
     </div>
   </div>
 
+  <!-- About -->
   <div class="card">
     <div class="ch"><span class="cht">Hakkında</span></div>
     <div class="cb" style="font-size:9px;color:var(--t3);line-height:2.1;">
@@ -699,7 +734,10 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
 </div>
 </div>
 
-</div><nav id="bn">
+</div><!-- /app -->
+
+<!-- BOTTOM NAV -->
+<nav id="bn">
   <button class="nb on" id="nb-fs" onclick="goPage('fs')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 19V6l12-3v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="15" r="3"/></svg>
     <span class="nb-l">Freestyle</span>
@@ -721,18 +759,31 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
 <audio id="audioEl"></audio>
 
 <script>
-'use strict';
 
+'use strict';
+/* ═══════════════════════════════════════════════════
+   WUKACULTURE RAPSTUDIO v5
+   • No Puter / no external AI dependency
+   • Gemini API (optional, user-provided key)
+   • Advanced 3-method BPM detection
+   • Bar + Verse modes
+   • Genre-based word pools
+   • Anti-repeat filter
+   • YT auto-start on iframe play detection
+═══════════════════════════════════════════════════ */
+
+// ── CONFIG ──────────────────────────────────────────
 const CFG = {
   POOL_MIN: 70,
   POOL_TARGET: 280,
   HIST_MAX: 30,
-  RECENT_FILTER: 30,   
+  RECENT_FILTER: 30,   // anti-repeat window
   TAP_WIN: 3500,
-  VERSE_BARS: 4,       
+  VERSE_BARS: 4,       // words per verse cycle
   GEMINI_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=',
 };
 
+// ── STATE ───────────────────────────────────────────
 const S = {
   bpm:90, playing:false, ytMode:false, ytFlowing:false,
   ytCheckInt:null,
@@ -741,26 +792,91 @@ const S = {
   apiKey:'', genre:'all', mode:'bar',
   lastRhymeWord:'', retryTO:null,
   verseWords:[], versePosInCycle:0,
-  recentWords: new Set(),  
+  recentWords: new Set(),  // anti-repeat
 };
 const T = {beat:null, word:null};
 
+// ── GENRE-BASED WORD POOLS ──────────────────────────
 const POOLS = {
-  all: ["asfalt","beton","çelik","demir","kaldırım","sokak","cadde","mahalle","semt","köprü","tünel","bina","çatı","kapı","kilit","pencere","duvar","gece","şehir","öfke","acı","keder","hüzün","yalnızlık","aşk","nefret","umut","korku","cesaret","gurur","inat","direniş","isyan","sabır","tutku","hayal","özlem","pişmanlık","ihanet","silah","bıçak","kılıç","savaş","barış","zafer","yenilgi","meydan","düşman","güç","kudret","taht","kral","köle","devrim","darbe","halk","cephe","hakikat","yalan","toprak","su","ateş","rüzgar","yağmur","kar","buz","güneş","ay","yıldız","orman","dağ","deniz","nehir","çöl","ufuk","fırtına","kasırga","yıldırım","kıyı","zaman","an","geçmiş","gelecek","sonsuz","boşluk","evren","kader","ruh","zihin","bilinç","düşünce","gerçeklik","illüzyon","hafıza","döngü","kaos","düzen","kırılma","ritim","beat","flow","kafiye","kıta","nakarat","mikrofon","sahne","stüdyo","ses","frekans","yankı","bas","melodi","tempo","groove","freestyle","cypher","battle","bar","para","borç","vergi","sistem","sömürü","emek","yoksulluk","eşitsizlik","hak","kimlik","köken","kültür","gelenek","miras","tarih","dil","efsane","kahraman","vatan","hayalet","gölge","ayna","maske","yüzleşme","patlama","kıvılcım","alev","kül","enkaz","nefes","kalp","yürek","damar","kan","beyin","akıl","ses","dost","kardeş","düşman","yol","iz","sır","bağ","kopuş","uyanmak","titremek","kopmak","yükselmek","düşmek"],
-  trap: ["para","altın","dolar","kredi","prestij","statü","marka","lüks","zincir","saat","araba","villa","takı","pırlanta","konvoy","muhafız","silah","mermi","kasa","gece","kulüp","sahne","ışık","duman","şişe","kalabalık","kraliçe","patron","boss","düşman","arkadaş","ihanet","sadakat","sokak","mahalle","kök","köken","aile","saygı","güç","korku","saygı","ün","şöhret","hit","rekor","zirve","taht","tek","kral","hızlı","sert","acımasız","soğuk","keskin","yankı","bas","bum","trap","808","hata","ders","yükseliş","çöküş","direniş","koşul","yük","omuz","ağır","gerçek"],
-  boom: ["söz","kafiye","uyak","dörtlük","satır","kalem","defter","kâğıt","kelime","anlam","bilinç","farkındalık","hakikat","soru","cevap","bilge","usta","saygı","emek","ter","tarih","kültür","köken","şehir","sokak","blok","mahalle","semt","meydan","kavşak","ritim","vuruş","ölçü","nota","frekans","titreşim","ruh","derin","düşünce","iz","kahraman","anti","sistem","düzen","baskı","isyan","ses","güç","özgür","halk","gece","sabah","güneş","ufuk","ışık","yıldız","karanlık","sis","duman","yol","emekçi","alın","ter","ekmek","iş","fabrika","patron","işçi","grev","hak"],
-  lofi: ["yağmur","pencere","çay","gece","sis","sessizlik","kitap","kalem","anı","özlem","uzak","yakın","eski","yeni","hatıra","solmak","sararmak","eskimek","bitmek","hüzün","melankoli","nostalji","yalnızlık","boşluk","beklemek","geçmek","kaymak","rüzgar","yaprak","sonbahar","kış","kar","soğuk","sıcak","yumuşak","hafif","derin","ay","yıldız","bulut","gök","uzay","sonsuz","sessiz","dingin","sakin","yumuşak","müzik","melodi","nota","akor","gitar","piyano","keman","ninni","şarkı","nağme","uyku","uyanış","rüya","düş","gölge","yansıma","ayna","zaman","an","şimdi"],
-  drill: ["blok","semt","postane","sokak","köşe","çatı","bodrum","depo","park","mahalle","sert","katı","soğuk","acımasız","keskin","hızlı","gürültü","patlama","alarm","siren","gece","karanlık","sis","gölge","kamera","gözetim","kaçmak","kovalamak","saklanmak","düşman","rakip","çete","güç","alan","bölge","kontrol","hâkimiyet","saygı","korku","zırh","kalkan","cephe","savaş","çatışma","oyun","plan","tuzak","hamle","strateji","gerçek","sokaklarda","büyümek","öğrenmek","hayatta kalmak","mücadele","direnç"],
-  emo: ["aşk","kalp","kırık","yara","ağlamak","gözyaşı","özlem","hasret","eksiklik","boşluk","yalnız","sessiz","karanlık","soğuk","uzak","kaybolmak","bulmak","tutunmak","bırakmak","geçmiş","hatıra","anı","fotoğraf","ses","koku","dokunuş","temas","sıcaklık","soğukluk","yanlış","doğru","hata","af","pişmanlık","özür","anlamamak","anlatamamak","suskunluk","ruh","keder","hüzün","melankoli","çöküş","diriliş","umut","ışık","gün","yeni","şarkı","melodiki","nağme","şiir","dize","mısra","söz","anlam","his","duygu"],
-  street: ["asfalt","beton","kaldırım","sokak","cadde","köşe","çatı","yıkık","grafiti","duman","mahalle","semt","varoş","kenar","blok","arka","dar","uzun","bozuk","eski","lamba","ışık","gece","seher","sabah","öğle","akşam","gün","karanlık","aydınlık","koşmak","yürümek","durmak","kaçmak","izlemek","beklemek","dinlemek","görmek","satıcı","alıcı","para","değer","fiyat","pazar","çarşı","dükkân","mağaza","market","çocuk","genç","yaşlı","komşu","bakkal","esnaf","sokak","sesi","şehir","gürültü","yağmur","çamur","ıslak","kuru","rüzgar","soğuk","sıcak","nemli","bunaltıcı","boğucu"],
+  all: [
+    "asfalt","beton","çelik","demir","kaldırım","sokak","cadde","mahalle","semt",
+    "köprü","tünel","bina","çatı","kapı","kilit","pencere","duvar","gece","şehir",
+    "öfke","acı","keder","hüzün","yalnızlık","aşk","nefret","umut","korku","cesaret",
+    "gurur","inat","direniş","isyan","sabır","tutku","hayal","özlem","pişmanlık","ihanet",
+    "silah","bıçak","kılıç","savaş","barış","zafer","yenilgi","meydan","düşman","güç",
+    "kudret","taht","kral","köle","devrim","darbe","halk","cephe","hakikat","yalan",
+    "toprak","su","ateş","rüzgar","yağmur","kar","buz","güneş","ay","yıldız",
+    "orman","dağ","deniz","nehir","çöl","ufuk","fırtına","kasırga","yıldırım","kıyı",
+    "zaman","an","geçmiş","gelecek","sonsuz","boşluk","evren","kader","ruh","zihin",
+    "bilinç","düşünce","gerçeklik","illüzyon","hafıza","döngü","kaos","düzen","kırılma",
+    "ritim","beat","flow","kafiye","kıta","nakarat","mikrofon","sahne","stüdyo","ses",
+    "frekans","yankı","bas","melodi","tempo","groove","freestyle","cypher","battle","bar",
+    "para","borç","vergi","sistem","sömürü","emek","yoksulluk","eşitsizlik","hak",
+    "kimlik","köken","kültür","gelenek","miras","tarih","dil","efsane","kahraman","vatan",
+    "hayalet","gölge","ayna","maske","yüzleşme","patlama","kıvılcım","alev","kül","enkaz",
+    "nefes","kalp","yürek","damar","kan","beyin","akıl","ses","dost","kardeş","düşman",
+    "yol","iz","sır","bağ","kopuş","uyanmak","titremek","kopmak","yükselmek","düşmek",
+  ],
+  trap: [
+    "para","altın","dolar","kredi","prestij","statü","marka","lüks","zincir","saat",
+    "araba","villa","takı","pırlanta","konvoy","muhafız","silah","mermi","kasa",
+    "gece","kulüp","sahne","ışık","duman","şişe","kalabalık","kraliçe","patron","boss",
+    "düşman","arkadaş","ihanet","sadakat","sokak","mahalle","kök","köken","aile","saygı",
+    "güç","korku","saygı","ün","şöhret","hit","rekor","zirve","taht","tek","kral",
+    "hızlı","sert","acımasız","soğuk","keskin","yankı","bas","bum","trap","808",
+    "hata","ders","yükseliş","çöküş","direniş","koşul","yük","omuz","ağır","gerçek",
+  ],
+  boom: [
+    "söz","kafiye","uyak","dörtlük","satır","kalem","defter","kâğıt","kelime","anlam",
+    "bilinç","farkındalık","hakikat","soru","cevap","bilge","usta","saygı","emek","ter",
+    "tarih","kültür","köken","şehir","sokak","blok","mahalle","semt","meydan","kavşak",
+    "ritim","vuruş","ölçü","nota","frekans","titreşim","ruh","derin","düşünce","iz",
+    "kahraman","anti","sistem","düzen","baskı","isyan","ses","güç","özgür","halk",
+    "gece","sabah","güneş","ufuk","ışık","yıldız","karanlık","sis","duman","yol",
+    "emekçi","alın","ter","ekmek","iş","fabrika","patron","işçi","grev","hak",
+  ],
+  lofi: [
+    "yağmur","pencere","çay","gece","sis","sessizlik","kitap","kalem","anı","özlem",
+    "uzak","yakın","eski","yeni","hatıra","solmak","sararmak","eskimek","bitmek",
+    "hüzün","melankoli","nostalji","yalnızlık","boşluk","beklemek","geçmek","kaymak",
+    "rüzgar","yaprak","sonbahar","kış","kar","soğuk","sıcak","yumuşak","hafif","derin",
+    "ay","yıldız","bulut","gök","uzay","sonsuz","sessiz","dingin","sakin","yumuşak",
+    "müzik","melodi","nota","akor","gitar","piyano","keman","ninni","şarkı","nağme",
+    "uyku","uyanış","rüya","düş","gölge","yansıma","ayna","zaman","an","şimdi",
+  ],
+  drill: [
+    "blok","semt","postane","sokak","köşe","çatı","bodrum","depo","park","mahalle",
+    "sert","katı","soğuk","acımasız","keskin","hızlı","gürültü","patlama","alarm","siren",
+    "gece","karanlık","sis","gölge","kamera","gözetim","kaçmak","kovalamak","saklanmak",
+    "düşman","rakip","çete","güç","alan","bölge","kontrol","hâkimiyet","saygı","korku",
+    "zırh","kalkan","cephe","savaş","çatışma","oyun","plan","tuzak","hamle","strateji",
+    "gerçek","sokaklarda","büyümek","öğrenmek","hayatta kalmak","mücadele","direnç",
+  ],
+  emo: [
+    "aşk","kalp","kırık","yara","ağlamak","gözyaşı","özlem","hasret","eksiklik","boşluk",
+    "yalnız","sessiz","karanlık","soğuk","uzak","kaybolmak","bulmak","tutunmak","bırakmak",
+    "geçmiş","hatıra","anı","fotoğraf","ses","koku","dokunuş","temas","sıcaklık","soğukluk",
+    "yanlış","doğru","hata","af","pişmanlık","özür","anlamamak","anlatamamak","suskunluk",
+    "ruh","keder","hüzün","melankoli","çöküş","diriliş","umut","ışık","gün","yeni",
+    "şarkı","melodiki","nağme","şiir","dize","mısra","söz","anlam","his","duygu",
+  ],
+  street: [
+    "asfalt","beton","kaldırım","sokak","cadde","köşe","çatı","yıkık","grafiti","duman",
+    "mahalle","semt","varoş","kenar","blok","arka","dar","uzun","bozuk","eski",
+    "lamba","ışık","gece","seher","sabah","öğle","akşam","gün","karanlık","aydınlık",
+    "koşmak","yürümek","durmak","kaçmak","izlemek","beklemek","dinlemek","görmek",
+    "satıcı","alıcı","para","değer","fiyat","pazar","çarşı","dükkân","mağaza","market",
+    "çocuk","genç","yaşlı","komşu","bakkal","esnaf","sokak","sesi","şehir","gürültü",
+    "yağmur","çamur","ıslak","kuru","rüzgar","soğuk","sıcak","nemli","bunaltıcı","boğucu",
+  ],
 };
 
+// Şu anki aktif havuz + genre
 let activePool = [];
 let wordHistory = [];
 let savedRhymes = [];
 
-const TR_DICT = ["abanmak", "abanoz", "abartmak", "abdest", "abece", "abes", "abide", "abla", "abluka", "abstre", "absürt", "acayip", "acele", "acemi", "acı", "acıkmak", "acil", "adalet", "adam", "adap", "adet", "adil", "adım", "af", "afet", "affetmek", "ahali", "ahbap", "ahenk", "aheste", "ahit", "ahlak", "ahmak", "ahret", "ahtapot", "ahval", "ahşap", "aile", "ajanda", "akademi", "akar", "akbaba", "akciğer", "akıbet", "akide", "akis", "akıl", "akın", "akıntı", "akış", "akşam", "alay", "alaz", "albüm", "aldatmak", "alem", "alev", "algı", "alkış", "allak", "almak", "alp", "alt", "altın", "altı", "alçak", "alçalmak", "alık", "alım", "alın", "alışmak", "aman", "ambar", "amele", "ameliyat", "amir", "ampul", "an", "ana", "analiz", "anarşi", "anlam", "anlatmak", "anlayış", "anlaşmak", "anmak", "anons", "antika", "anıt", "apartman", "aptal", "araba", "arazi", "araç", "ardıç", "arif", "arka", "armoni", "artık", "artış", "arzu", "arı", "arınmak", "arıtmak", "asalet", "asfalt", "asgari", "asil", "asker", "aslan", "aslında", "asma", "ast", "asıl", "asır", "ata", "atalet", "ateş", "atik", "atlas", "atlatmak", "atık", "atılım", "atış", "av", "avanta", "avare", "avaz", "avcı", "avdet", "avlanmak", "avlu", "ay", "ayak", "ayar", "ayaz", "aydın", "aydınlık", "aylık", "ayna", "ayran", "ayrılık", "ayrım", "ayrışmak", "az", "azalmak", "azap", "azim", "aziz", "azot", "azınlık", "aç", "açgözlü", "açmak", "açmaz", "açı", "açılış", "ağ", "ağa", "ağaç", "ağlamak", "ağlayış", "ağrı", "ağu", "ağır", "ağırlık", "ağıt", "ağız", "aş", "aşağı", "aşk", "aşmak", "aşırı"];
-
+// ── INIT ────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   buildBeatGrid();
   buildBeatDots();
@@ -785,6 +901,7 @@ function loadStorage() {
   updateApiUI();
 }
 
+// ── NAVIGATION ──────────────────────────────────────
 function goPage(id) {
   document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
@@ -794,6 +911,7 @@ function goPage(id) {
   window.scrollTo(0,0);
 }
 
+// ── TOAST ───────────────────────────────────────────
 const _tTO = {};
 function toast(id, msg, type='info', dur=5000) {
   const el = document.getElementById(id);
@@ -804,16 +922,19 @@ function toast(id, msg, type='info', dur=5000) {
   if (dur > 0) _tTO[id] = setTimeout(() => el.classList.remove('on'), dur);
 }
 
+// ── GENRE SYSTEM ────────────────────────────────────
 function setGenre(g, el) {
   S.genre = g;
   document.querySelectorAll('.gen').forEach(x => x.classList.remove('on'));
   el.classList.add('on');
+  // Rebuild active pool: combine 'all' base + genre-specific
   const base = [...POOLS.all];
   if (g !== 'all' && POOLS[g]) {
     const extra = POOLS[g];
     const existing = new Set(base.map(w=>w.toLowerCase()));
     extra.forEach(w => { if (!existing.has(w.toLowerCase())) base.push(w); });
   }
+  // Shuffle
   activePool = shuffle(base);
   S.recentWords.clear();
   wordHistory = [];
@@ -831,6 +952,7 @@ function shuffle(arr) {
   return a;
 }
 
+// ── MODE: Bar / Verse ───────────────────────────────
 function setMode(m) {
   S.mode = m;
   document.getElementById('m-bar').classList.toggle('on', m==='bar');
@@ -841,6 +963,7 @@ function setMode(m) {
   S.versePosInCycle = 0;
 }
 
+// ── AUDIO ────────────────────────────────────────────
 const audioEl = document.getElementById('audioEl');
 
 document.getElementById('afile').addEventListener('change', e => {
@@ -856,8 +979,10 @@ uz.addEventListener('drop', e => {
 
 function loadFile(f) {
   S.ytMode = false; hardStop();
+  clearYTCheck();
   document.getElementById('ytemb').classList.remove('on');
   document.getElementById('ytc').style.display = 'none';
+  document.getElementById('ytf').src = '';
   const url = URL.createObjectURL(f);
   audioEl.src = url; audioEl.load();
   const name = f.name.replace(/\.[^.]+$/, '');
@@ -872,8 +997,10 @@ function loadFile(f) {
   uz.querySelector('.uz-s').textContent = (f.size/1024/1024).toFixed(1)+' MB';
   audioEl.onloadedmetadata = () => {
     document.getElementById('dur').textContent = fmt(audioEl.duration);
+    toast('ft','✓ Yüklendi — AUTO BPM veya Tap kullan · ▶ başlat','ok');
     autoDetectBPM(url);
   };
+  audioEl.onerror = () => toast('ft','⚠ Dosya oynatılamıyor — MP3 veya WAV dene','err');
 }
 
 audioEl.addEventListener('timeupdate', () => {
@@ -896,6 +1023,7 @@ function togglePlay() {
 function setPB(on) {
   const b = document.getElementById('playBtn');
   b.textContent = on ? '⏸' : '▶';
+  b.classList.toggle('off', on);
 }
 function seekAudio(e) {
   if (!audioEl.duration) return;
@@ -903,11 +1031,15 @@ function seekAudio(e) {
   audioEl.currentTime = ((e.clientX - r.left) / r.width) * audioEl.duration;
 }
 
+// ── YOUTUBE ──────────────────────────────────────────
 function loadYT() {
   const raw = document.getElementById('ytUrl').value.trim();
+  if (!raw) { toast('ft','⚠ YouTube linki gir','err'); return; }
   const vid = ytID(raw);
-  if (!vid) return;
-  S.ytMode=true; S.ytFlowing=false; hardStop();
+  if (!vid) { toast('ft','⚠ Video ID bulunamadı — youtube.com/watch?v=XXX formatı dene','err'); return; }
+  S.ytMode=true; S.ytFlowing=false; hardStop(); clearYTCheck();
+  audioEl.src=''; S.playing=false;
+  // Embed with enablejsapi — aria-hidden warning önlemek için allow attribute minimal tutuldu
   const src = `https://www.youtube-nocookie.com/embed/${vid}?rel=0&modestbranding=1&playsinline=1&enablejsapi=0`;
   document.getElementById('ytf').src = src;
   document.getElementById('ytemb').classList.add('on');
@@ -918,6 +1050,10 @@ function loadYT() {
   document.getElementById('beatCard').style.display = 'block';
   document.getElementById('stage').classList.add('on');
   document.getElementById('srcTag').textContent = 'YOUTUBE';
+  toast('ft','✓ YouTube yüklendi — Videoyu oynat, akış otomatik başlar','ok');
+
+  // Auto-detect: iframe yüklenince kullanıcı oynatmaya başlarsa başlat
+  // YT embed'i dinleyemeyiz doğrudan (cross-origin) ama kullanıcı BAŞLAT'a basar
 }
 
 function ytID(u) {
@@ -930,21 +1066,28 @@ function ytToggle() {
   if (S.ytFlowing) {
     S.ytFlowing=false;
     document.getElementById('ytSBtn').textContent='▶ BAŞLAT';
+    document.getElementById('ytSBtn').className='btn btn-lime';
     stopFlow();
   } else {
     S.ytFlowing=true;
     document.getElementById('ytSBtn').textContent='⏸ DURDUR';
+    document.getElementById('ytSBtn').className='btn btn-ghost';
     startFlow();
   }
+}
+
+function clearYTCheck() {
+  clearInterval(S.ytCheckInt); S.ytCheckInt=null;
 }
 
 function hardStop() {
   stopFlow(); S.playing=false; S.ytFlowing=false;
   setPB(false);
   const sb=document.getElementById('ytSBtn');
-  if(sb) sb.textContent='▶ BAŞLAT';
+  if(sb){sb.textContent='▶ BAŞLAT';sb.className='btn btn-lime';}
 }
 
+// ── BPM ENGINE — 3-METHOD CONSENSUS ─────────────────
 function setBPM(v, src) {
   S.bpm = v;
   document.getElementById('bpmDisp').innerHTML = v+'<span class="bpm-unit">BPM</span>';
@@ -954,35 +1097,206 @@ function setBPM(v, src) {
   document.getElementById('barMs').textContent = Math.round(60000/v*4)+'ms';
   document.getElementById('beatMs').textContent = Math.round(60000/v)+'ms';
   document.getElementById('bpmSrc').textContent = src||'—';
+  document.getElementById('stBpm')&&(document.getElementById('stBpm').textContent=v);
   if(S.playing||S.ytFlowing){stopFlow();startFlow();}
 }
-function onBPMSl(v){ setBPM(v,'Manuel'); }
+function onBPMSl(v){
+  setBPM(v,'Manuel');
+  document.querySelectorAll('.pre').forEach(p=>p.classList.remove('on'));
+}
 function setPre(name,bpm,el){
   setBPM(bpm,name);
   document.querySelectorAll('.pre').forEach(p=>p.classList.remove('on'));
   el.classList.add('on');
 }
 
+// TAP BPM
+let _tapTO=null;
 function tapBPM(){
   const now=Date.now();
   S.tapTimes=S.tapTimes.filter(t=>now-t<CFG.TAP_WIN);
   S.tapTimes.push(now);
   const btn=document.getElementById('tapBtn');
   btn.classList.add('fl');
-  setTimeout(()=>btn.classList.remove('fl'),150);
+  clearTimeout(_tapTO);
+  _tapTO=setTimeout(()=>btn.classList.remove('fl'),150);
   if(S.tapTimes.length>=2){
     const diffs=[];
     for(let i=1;i<S.tapTimes.length;i++) diffs.push(S.tapTimes[i]-S.tapTimes[i-1]);
     const avg=diffs.reduce((a,b)=>a+b,0)/diffs.length;
-    const d=Math.round(60000/avg);
-    setBPM(d, 'Tap');
+    const d=Math.max(60,Math.min(200,Math.round(60000/avg)));
+    document.getElementById('bpmDisp').innerHTML=d+'<span class="bpm-unit">BPM</span>';
+    document.getElementById('bpmSl').value=d;
+    document.getElementById('bpmSlV').textContent=d;
+    document.getElementById('bpmPill').textContent=d;
+    document.getElementById('barMs').textContent=Math.round(60000/d*4)+'ms';
+    document.getElementById('beatMs').textContent=Math.round(60000/d)+'ms';
+    document.getElementById('bpmSrc').textContent='Tap';
+    document.getElementById('tapInfo').textContent=S.tapTimes.length+' vuruş · '+d+' BPM';
+    S.bpm=d;
+    if(S.playing||S.ytFlowing){stopFlow();startFlow();}
+  } else {
+    document.getElementById('tapInfo').textContent='tekrar dokun...';
   }
 }
 
-async function autoDetectBPM(url){
-  setBPM(90, 'Auto-Analiz');
+function runAuto(){
+  if(!audioEl.src){toast('ft','⚠ Önce yerel dosya yükle','warn');return;}
+  autoDetectBPM(audioEl.src);
 }
 
+async function autoDetectBPM(url){
+  document.getElementById('bpmSrc').textContent='Analiz...';
+  toast('ft','🔍 BPM — 3 algoritma çalışıyor...','info',0);
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const res=await fetch(url);
+    if(!res.ok) throw new Error('fetch');
+    const raw=await res.arrayBuffer();
+    const dec=await ctx.decodeAudioData(raw);
+    await ctx.close();
+
+    // Run all 3 methods
+    const r1=await bpm_Energy(dec);
+    const r2=await bpm_Autocorr(dec);
+    const r3=await bpm_Onset(dec);
+    const results=[r1,r2,r3].filter(x=>x>=60&&x<=180);
+
+    let final=90;
+    if(results.length===0){ final=90; }
+    else if(results.length===1){ final=results[0]; }
+    else{
+      // Weighted median: prefer results that agree
+      results.sort((a,b)=>a-b);
+      if(results.length===2){
+        final=Math.abs(results[0]-results[1])<12 ? Math.round((results[0]+results[1])/2) : results[1];
+      } else {
+        // All 3: pick median unless 2 agree closely
+        const d01=Math.abs(results[0]-results[1]);
+        const d12=Math.abs(results[1]-results[2]);
+        const d02=Math.abs(results[0]-results[2]);
+        if(d01<10) final=Math.round((results[0]+results[1])/2);
+        else if(d12<10) final=Math.round((results[1]+results[2])/2);
+        else if(d02<10) final=Math.round((results[0]+results[2])/2);
+        else final=results[1]; // median
+      }
+    }
+    final=Math.max(60,Math.min(200,Math.round(final)));
+    setBPM(final,'Auto');
+    toast('ft',`✓ BPM: ${final}  [${results.join(' · ')}]`,'ok');
+  }catch(e){
+    toast('ft','ℹ BPM tespit edilemedi (CORS?) — Tap veya kaydırıcı kullan','warn');
+    document.getElementById('bpmSrc').textContent='Manuel';
+  }
+}
+
+// Method 1: RMS energy peaks
+async function bpm_Energy(ab){
+  return new Promise(resolve=>{
+    const data=ab.getChannelData(0),sr=ab.sampleRate;
+    const ws=Math.floor(sr*.01); // 10ms windows
+    const lim=Math.min(data.length,sr*45);
+    const en=[];
+    for(let i=0;i<lim-ws;i+=ws){
+      let e=0;for(let j=0;j<ws;j++)e+=data[i+j]*data[i+j];en.push(Math.sqrt(e/ws));
+    }
+    // Adaptive threshold per section
+    const secSize=Math.floor(en.length/8);
+    const pks=[];let last=-100;
+    for(let s=0;s<8;s++){
+      const sec=en.slice(s*secSize,(s+1)*secSize);
+      const avg=sec.reduce((a,b)=>a+b,0)/sec.length;
+      const thr=avg*1.6;
+      for(let i=s*secSize+1;i<(s+1)*secSize-1;i++){
+        if(en[i]>thr&&en[i]>en[i-1]&&en[i]>en[i+1]&&i-last>4){pks.push(i);last=i;}
+      }
+    }
+    if(pks.length<6){resolve(0);return;}
+    const diffs=[];
+    for(let i=1;i<Math.min(pks.length,80);i++) diffs.push(pks[i]-pks[i-1]);
+    // Histogram vote
+    const hist={};
+    diffs.forEach(d=>{
+      const bpm=Math.round(60/((d*ws)/sr));
+      const k=Math.round(bpm/2)*2; // group by 2
+      hist[k]=(hist[k]||0)+1;
+    });
+    let best=0,bestV=0;
+    Object.entries(hist).forEach(([k,v])=>{if(v>bestV){bestV=v;best=+k;}});
+    let d=best;
+    while(d<70)d*=2;while(d>180)d=Math.round(d/2);
+    resolve(Math.max(60,Math.min(180,d)));
+  });
+}
+
+// Method 2: Autocorrelation (most reliable)
+async function bpm_Autocorr(ab){
+  return new Promise(resolve=>{
+    const data=ab.getChannelData(0),sr=ab.sampleRate;
+    // Downsample to ~4kHz
+    const step=Math.floor(sr/4000);
+    const ds=[];
+    const lim=Math.min(data.length,sr*30);
+    for(let i=0;i<lim;i+=step) ds.push(Math.abs(data[i]));
+    const sr4=sr/step;
+    const minLag=Math.floor(sr4*60/180);
+    const maxLag=Math.floor(sr4*60/60);
+    // Compute normalized autocorrelation
+    let bestLag=minLag,bestCorr=-1;
+    const n=Math.min(ds.length-maxLag,Math.floor(sr4*8));
+    // Mean
+    let mean=0;for(let i=0;i<n;i++)mean+=ds[i];mean/=n;
+    let varr=0;for(let i=0;i<n;i++)varr+=(ds[i]-mean)**2;
+    for(let lag=minLag;lag<=maxLag;lag++){
+      let corr=0;
+      for(let i=0;i<n;i++) corr+=(ds[i]-mean)*(ds[i+lag]-mean);
+      corr/=varr;
+      if(corr>bestCorr){bestCorr=corr;bestLag=lag;}
+    }
+    let d=Math.round(60/(bestLag/sr4));
+    while(d<70)d*=2;while(d>180)d=Math.round(d/2);
+    resolve(Math.max(60,Math.min(180,d)));
+  });
+}
+
+// Method 3: Spectral flux onset detection
+async function bpm_Onset(ab){
+  return new Promise(resolve=>{
+    const data=ab.getChannelData(0),sr=ab.sampleRate;
+    const hop=Math.floor(sr*.01);
+    const lim=Math.min(data.length,sr*30);
+    const env=[];
+    for(let i=0;i<lim-hop;i+=hop){
+      let e=0;for(let j=0;j<hop;j++)e+=data[i+j]**2;env.push(Math.sqrt(e/hop));
+    }
+    // Half-wave rectified first-order difference
+    const onsets=[];
+    let lastOn=-50;
+    for(let i=2;i<env.length;i++){
+      const d=env[i]-env[i-1];
+      const d2=env[i-1]-env[i-2];
+      // Positive flux above local mean
+      if(d>0&&d2>0&&d>0.015&&i-lastOn>3){onsets.push(i);lastOn=i;}
+    }
+    if(onsets.length<6){resolve(0);return;}
+    const iois=[];
+    for(let i=1;i<Math.min(onsets.length,60);i++) iois.push(onsets[i]-onsets[i-1]);
+    // Weighted histogram
+    const hist={};
+    iois.forEach(ioi=>{
+      const bpm=Math.round(60/((ioi*hop)/sr));
+      const k=Math.round(bpm/2)*2;
+      hist[k]=(hist[k]||0)+1;
+    });
+    let best=0,bestV=0;
+    Object.entries(hist).forEach(([k,v])=>{if(v>bestV){bestV=v;best=+k;}});
+    let d=best;
+    while(d<70)d*=2;while(d>180)d=Math.round(d/2);
+    resolve(Math.max(60,Math.min(180,d)));
+  });
+}
+
+// ── BEAT GRID ────────────────────────────────────────
 function buildBeatGrid(){
   const g=document.getElementById('bgrid');g.innerHTML='';
   for(let i=0;i<16;i++){
@@ -999,12 +1313,15 @@ function buildPoolDots(){
   for(let i=0;i<12;i++){const b=document.createElement('div');b.className='pd';d.appendChild(b);}
 }
 
+// ── FLOW ENGINE ──────────────────────────────────────
 function startFlow(){
   stopFlow();
   const msB=(60/S.bpm)*1000;
   const wPB=+document.getElementById('wRate').value||2;
   const wMs=(msB*4)/wPB;
-  S.beatCount=0;S.barCount=0;
+  S.beatCount=0;S.barCount=0;S.beatInBar=0;
+  S.verseWords=[];S.versePosInCycle=0;
+
   T.beat=setInterval(()=>{
     S.beatCount++;
     S.beatInBar=(S.beatCount-1)%4;
@@ -1012,10 +1329,11 @@ function startFlow(){
     updateBeatUI();
     if(document.getElementById('sClick').checked) playClick(S.beatInBar===0);
   },msB);
+
   T.word=setInterval(()=>{ if(S.mode==='verse') pushVerse(); else pushWord(); },wMs);
 }
 
-function stopFlow(){clearInterval(T.beat);clearInterval(T.word);}
+function stopFlow(){clearInterval(T.beat);clearInterval(T.word);T.beat=null;T.word=null;}
 
 function updateBeatUI(){
   document.querySelectorAll('.bdot').forEach((d,i)=>d.classList.toggle('on',i===S.beatInBar));
@@ -1024,15 +1342,32 @@ function updateBeatUI(){
   document.querySelectorAll('.bc').forEach((c,i)=>c.classList.toggle('cur',i===step));
 }
 
+// ── ANTI-REPEAT RANDOM PICK ──────────────────────────
 function pickWord(){
-  if(!activePool.length) return 'RAP';
-  const word=activePool[Math.floor(Math.random()*activePool.length)];
+  if(!activePool.length) return 'RAPSTÜDYo';
+  const noRep=document.getElementById('sNoRep').checked;
+  // Filter recent if enabled and pool is large enough
+  let candidates=activePool;
+  if(noRep && activePool.length>CFG.RECENT_FILTER){
+    candidates=activePool.filter(w=>!S.recentWords.has(w.toLowerCase()));
+    if(!candidates.length) candidates=activePool;
+  }
+  const word=candidates[Math.floor(Math.random()*candidates.length)];
+  // Track recent
+  S.recentWords.add(word.toLowerCase());
+  if(S.recentWords.size>CFG.RECENT_FILTER){
+    const first=S.recentWords.values().next().value;
+    S.recentWords.delete(first);
+  }
   return word;
 }
 
+// ── BAR MODE ─────────────────────────────────────────
 function pushWord(){
   const word=pickWord().toUpperCase();
   wordHistory.unshift(word);
+  if(wordHistory.length>CFG.HIST_MAX) wordHistory.pop();
+
   const bw=document.getElementById('bword');
   bw.textContent=word;
   if(document.getElementById('sFlash').checked){
@@ -1040,21 +1375,38 @@ function pushWord(){
   }
   const keep=+document.getElementById('wKeep').value||4;
   document.getElementById('wqueue').innerHTML=
-    wordHistory.slice(1,keep+1).map((w,i)=>`<span class="wq">${w}</span>`).join('');
+    wordHistory.slice(1,keep+1).map((w,i)=>`<span class="wq${i<2?' r':''}">${w}</span>`).join('');
   document.getElementById('whist').innerHTML=
     wordHistory.slice(keep+1,keep+9).map(w=>`<span class="hp">${w}</span>`).join('');
 }
 
+// ── VERSE MODE ───────────────────────────────────────
+// Verse: 4 bars = 1 döngü, her bar'da wPB kelime — tam 1 verse (4 kelime satırı)
 function pushVerse(){
   const word=pickWord();
   S.verseWords.push(word);
   wordHistory.unshift(word.toUpperCase());
+  if(wordHistory.length>CFG.HIST_MAX) wordHistory.pop();
+
+  // Keep last 16 words for verse display
   const display=S.verseWords.slice(-16);
-  document.getElementById('verseWords').innerHTML=display.map((w,i)=>{
+  const html=display.map((w,i)=>{
     const isLast=i===display.length-1;
     const cls=isLast?'vw cur':(i>=display.length-4?'vw next':'vw done');
-    return `<span class="${cls}">${w.toUpperCase()}</span>`;
+    const sz=isLast?'clamp(40px,9vw,70px)':i>=display.length-4?'clamp(22px,5vw,36px)':'clamp(14px,3vw,22px)';
+    return`<span class="${cls}" style="font-size:${sz}">${w.toUpperCase()}</span>`;
   }).join('');
+  document.getElementById('verseWords').innerHTML=html;
+  document.getElementById('whist').innerHTML=
+    wordHistory.slice(8,16).map(w=>`<span class="hp">${w}</span>`).join('');
+
+  // Auto-clear after 16 words (1 verse complete)
+  if(S.verseWords.length>=16){
+    setTimeout(()=>{
+      S.verseWords=[];
+      document.getElementById('verseWords').innerHTML='';
+    },500);
+  }
 }
 
 function onRate(v){
@@ -1062,83 +1414,378 @@ function onRate(v){
   if(S.playing||S.ytFlowing){stopFlow();startFlow();}
 }
 
+// ── POOL ─────────────────────────────────────────────
 function updatePoolUI(){
-  document.getElementById('pn').textContent=activePool.length;
+  const n=activePool.length;
+  document.getElementById('pn').textContent=n;
+  document.getElementById('stPool')&&(document.getElementById('stPool').textContent=n);
+  const pct=Math.min(n/CFG.POOL_TARGET,1);
+  document.querySelectorAll('.pd').forEach((d,i)=>{
+    const p=i/12;
+    d.className='pd'+(p<pct*.65?' on':p<pct?' h':'');
+  });
 }
 function trigRefill(){
-  setGenre(S.genre, document.querySelector('.gen.on'));
+  // Re-shuffle + add extra random words from all genres
+  const all=[];
+  Object.values(POOLS).forEach(p=>p.forEach(w=>{if(!all.includes(w))all.push(w);}));
+  const ex=new Set(activePool.map(w=>w.toLowerCase()));
+  shuffle(all).forEach(w=>{if(!ex.has(w.toLowerCase()))activePool.push(w);});
+  S.recentWords.clear();
+  activePool=shuffle(activePool);
+  updatePoolUI();
+  toast('ft','✓ Havuz yenilendi — '+activePool.length+' kelime','ok',2500);
 }
 
+// ── CLICK / METRONOME ────────────────────────────────
+let _clickCtx=null;
 function playClick(strong){
-  console.log("click");
+  try{
+    if(!_clickCtx) _clickCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(_clickCtx.state==='suspended') _clickCtx.resume();
+    const o=_clickCtx.createOscillator(),g=_clickCtx.createGain();
+    o.connect(g);g.connect(_clickCtx.destination);
+    o.frequency.value=strong?1100:880;
+    g.gain.setValueAtTime(strong?.3:.14,_clickCtx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,_clickCtx.currentTime+.06);
+    o.start();o.stop(_clickCtx.currentTime+.06);
+  }catch(e){}
+}
+
+// ── TÜRKÇE FONETİK KAFIYE MOTORU ─────────────────────
+// 8652 kelimeli sözlük + AZRhymes benzeri fonetik motor
+
+const TR_DICT=["abanmak","abanmaklar","abanmaklı","abanmaklık","abanmaksız","abanmakçı","abanoz","abanozcu","abanozlar","abanozlu","abanozluk","abanozsuz","abartmak","abartmaklar","abartmaklı","abartmaklık","abartmaksız","abartmakçı","abatlar","abatlı","abatlık","abatsız","abatçı","abdal","abdalcı","abdallar","abdallı","abdallık","abdalsız","abdest","abdestler","abdestli","abdestlik","abdestsiz","abdestçi","abece","abececi","abeceler","abeceli","abecelik","abecesiz","abesler","abesli","abeslik","abessiz","abesçi","abi","abide","abideci","abideler","abideli","abidelik","abidesiz","abiler","abili","abilik","abisi","abisici","abisiler","abisili","abisilik","abisisiz","abisiz","ablalar","ablalı","ablalık","ablasız","abluka","ablukacı","ablukalar","ablukalı","ablukalık","ablukasız","abocu","abolar","abolu","aboluk","abosuz","abracı","abralar","abralı","abralık","abrasız","abstre","abstreci","abstreler","abstreli","abstrelik","abstresiz","absürd","absürdcü","absürdler","absürdlü","absürdlük","absürdsüz","aburcu","aburlar","aburlu","aburluk","abursuz","acayip","acayipler","acayipli","acayiplik","acayipsiz","acayipçi","acele","aceleci","aceleciler","acelecili","acelecilik","acelecisiz","aceleler","aceleli","acelelik","acelesi","acelesiz","acemci","acemi","acemici","acemiler","acemili","acemilik","acemisiz","acemler","acemli","acemlik","acemsiz","acesler","acesli","aceslik","acessiz","acesçi","acı","acıbadem","acıbademci","acıbademler","acıbademli","acıbademlik","acıbademsiz","acıda","acıdan","acıklı","acıklıcı","acıklılar","acıklılı","acıklılık","acıklısız","acılar","acılı","acılıcı","acılık","acılılar","acılılı","acılılık","acılısız","acıma","acımacı","acımalar","acımalı","acımalık","acımasal","acımasız","acısı","acısız","acıtmak","acıtmaklar","acıtmaklı","acıtmaklık","acıtmaksız","acıtmakçı","adacı","adalar","adale","adaleci","adaleler","adaleli","adalelik","adalesiz","adalet","adaletler","adaletli","adaletlik","adaletsel","adaletsiz","adaletsizlik","adaletçi","adalı","adalık","adamak","adamaklar","adamaklı","adamaklık","adamaksız","adamakçı","adamcı","adamlar","adamlı","adamlık","adamsız","adaplar","adaplı","adaplık","adapsız","adapçı","adarcı","adarlar","adarlı","adarlık","adarsız","adası","adasız","adaş","adaşlar","adaşlı","adaşlık","adaşsız","adaşçı","addedilmek","addetmek","addetmekler","addetmekli","addetmeklik","addetmeksiz","addetmekçi","adetler","adetli","adetlik","adetsiz","adetçi","adil","adilci","adiller","adilli","adillik","adillikler","adillikli","adilliksel","adilliksiz","adillikçi","adilsiz","adimler","adimli","adimlik","adimsiz","adocu","adolar","adolu","adoluk","adosuz","adım","adımlar","adımlı","adımlık","adımsız","af","afetin","affetmek","affetmekler","affetmekli","affetmeklik","affetmeksel","affetmeksiz","affetmekçi","aflar","aflı","aflık","afsız","ahali","ahalici","ahaliler","ahalili","ahalilik","ahalisi","ahalisiz","ahbap","ahbaplar","ahbaplı","ahbaplık","ahbapsız","ahbapçı","ahenk","ahenkler","ahenkli","ahenklik","ahenksiz","ahenkçi","aheste","ahesteci","ahesteler","ahesteli","ahestelik","ahestesiz","ahitler","ahitli","ahitlik","ahitsel","ahitsiz","ahitçi","ahlak","ahlaklar","ahlaklı","ahlaklık","ahlaksal","ahlaksız","ahlakçı","ahmak","ahmaklar","ahmaklı","ahmaklık","ahmaksız","ahmakçı","ahret","ahretler","ahretli","ahretlik","ahretsiz","ahretçi","ahtapot","ahtapotlar","ahtapotlu","ahtapotluk","ahtapotsuz","ahtapotçu","ahval","ahvalcı","ahvallar","ahvallı","ahvallık","ahvalsal","ahvalsız","ahşap","ahşaplar","ahşaplı","ahşaplık","ahşapsız","ahşapçı","aileler","aileli","ailelik","ailesel","ailesiz","ajanda","ajandacı","ajandalar","ajandalı","ajandalık","ajandasız","ak","akademi","akademici","akademiler","akademili","akademilik","akademisiz","akan","akar","akbaba","akbabacı","akbabalar","akbabalı","akbabalık","akbabasız","akciğer","akciğerci","akciğerler","akciğerli","akciğerlik","akciğersel","akciğersiz","akibet","akibetler","akibetli","akibetlik","akibetsel","akibetsiz","akibetçi","akide","akideci","akideler","akideli","akidelik","akidesiz","akisler","akisli","akislik","akissel","akissiz","akisçi","aklı","akorcu","akord","akordcu","akordlar","akordlu","akordluk","akordsal","akordsuz","akorlar","akorlu","akorluk","akorsal","akorsuz","akort","akortlar","akortlu","akortluk","akortsuz","akortçu","akraba","akrabacı","akrabalar","akrabalı","akrabalık","akrabasal","akrabasız","akrep","akrepler","akrepli","akreplik","akrepsiz","akrepçi","aksaklık","aksaklıklar","aksaklıklı","aksaklıksız","aksaklıkçı","aksilik","aksilikler","aksilikli","aksiliksiz","aksilikçi","aktarma","aktarmacı","aktarmak","aktarmaklar","aktarmaklı","aktarmaklık","aktarmaksız","aktarmakçı","aktarmalar","aktarmalı","aktarmalık","aktarmasız","aktarı","aktif","aktifler","aktifli","aktiflik","aktifsiz","aktifçi","akvarel","akvarelci","akvareller","akvarelli","akvarellik","akvarelsiz","akçe","akçeci","akçeler","akçeli","akçelik","akçesiz","akıbet","akıbetler","akıbetli","akıbetlik","akıbetsiz","akıbetçi","akıl","akılcı","akıllar","akıllı","akıllıcı","akıllık","akıllılar","akıllılı","akıllılık","akıllısız","akılsal","akılsız","akılsızcı","akılsızlar","akılsızlı","akılsızlık","akın","akıncı","akıncılar","akıncılı","akıncılık","akıncısız","akınlar","akınlı","akınlık","akınsız","akıntı","akıntıcı","akıntılar","akıntılı","akıntılık","akıntısal","akıntısız","akış","akışlar","akışlı","akışlık","akışsız","akşam","akşama","akşamcı","akşamda","akşamdan","akşamlar","akşamlı","akşamlık","akşamsal","akşamsız","akşamı","akşamım","akşamın","al","alan","alay","alaycı","alaylar","alaylı","alaylık","alaysız","alaz","alazcı","alazlar","alazlı","alazlık","alazsız","albüm","albümcü","albümler","albümlü","albümlük","albümsel","albümsüz","albümü","aldatma","aldatmaca","aldatmacacı","aldatmacalar","aldatmacalı","aldatmacalık","aldatmacasız","aldatmacı","aldatmalar","aldatmalı","aldatmalık","aldatmasız","aldı","alemci","alemler","alemli","alemlik","alemsiz","alevci","alevi","alevler","alevli","alevlik","alevsiz","algı","algıcı","algılar","algılı","algılık","algısal","algısız","aliterasyon","aljacı","aljalar","aljalı","aljalık","aljasız","alkış","alkışlar","alkışlı","alkışlık","alkışsız","alkışçı","allak","allaklar","allaklı","allaklık","allaksız","allakçı","almak","almaklar","almaklı","almaklık","almaksal","almaksız","almakçı","alpaka","alpakacı","alpakalar","alpakalı","alpakalık","alpakasız","alplar","alplı","alplık","alpsız","alpçı","altuğ","altuğcu","altuğlar","altuğlu","altuğluk","altuğsuz","altüst","altüstler","altüstlü","altüstlük","altüstsüz","altüstçü","altı","altıcı","altılar","altılı","altılık","altın","altıncı","altınlar","altınlı","altınlık","altınsal","altınsız","altını","altısal","altısız","aluvar","aluvarcı","aluvarlar","aluvarlı","aluvarlık","aluvarsız","alçak","alçaklar","alçaklı","alçaklık","alçaksız","alçalma","alçalmacı","alçalmalar","alçalmalı","alçalmalık","alçalmasal","alçalmasız","alüvyon","alüvyoncu","alüvyonlar","alüvyonlu","alüvyonluk","alüvyonsal","alüvyonsuz","alık","alıklar","alıklı","alıksız","alıkçı","alım","alın","alına","alıncı","alında","alından","alınlar","alınlı","alınlık","alınsal","alınsız","alını","alınım","alının","alış","alışagelmiş","alışkanlık","alışma","alışveriş","alışverişler","alışverişli","alışverişlik","alışverişsiz","alışverişçi","alışı","aman","amansız","amansızcı","amansızlar","amansızlı","amansızlık","amaçsızlık","ambar","ambargo","ambargocu","ambargolar","ambargolu","ambargoluk","ambargosuz","amele","ameleci","ameleler","ameleli","amelelik","amelesiz","ameliyat","ameliyatlar","ameliyatlı","ameliyatlık","ameliyatsız","ameliyatçı","ametist","ametistler","ametistli","ametistlik","ametistsiz","ametistçi","amir","amortisör","amortisörcü","amortisörler","amortisörlü","amortisörlük","amortisörsüz","ampul","an","ana","anada","anadan","analitik","analitikler","analitikli","analitiklik","analitiksiz","analitikçi","analiz","analizci","analizler","analizli","analizlik","analizsel","analizsiz","anan","anarşizm","anarşizmci","anarşizmler","anarşizmli","anarşizmlik","anarşizmsel","anarşizmsiz","anbar","andacı","andalar","andalı","andalık","andasız","anla","anlam","anlama","anlamak","anlamaklar","anlamaklı","anlamaklık","anlamaksal","anlamaksız","anlamakçı","anlamcı","anlamlar","anlamlı","anlamlık","anlamsal","anlamsız","anlamı","anlar","anlatma","anlatmak","anlatmaklar","anlatmaklı","anlatmaklık","anlatmaksal","anlatmaksız","anlatmakçı","anlatı","anlatılar","anlatılı","anlatılık","anlatısız","anlatıyor","anlatış","anlatışlar","anlatışlı","anlatışlık","anlatışsız","anlayış","anlayışlar","anlayışlı","anlayışlık","anlayışsız","anlayışçı","anlaş","anlaşma","anlaşmak","anlaşmaklar","anlaşmaklı","anlaşmaklık","anlaşmaksal","anlaşmaksız","anlaşmakçı","anlaşmalar","anlaşmalı","anlaşmalık","anlaşmasız","anlaşmazlık","anlaşıyor","anlaşış","anlı","anlık","anlıklar","anlıklı","anlıksız","anlıkçı","anlıyor","anma","anmacı","anmak","anmaklar","anmaklı","anmaklık","anmaksız","anmakçı","anmalar","anmalı","anmalık","anmasız","anons","anonslar","anonslu","anonsluk","anonssuz","anonsçu","ansız","antika","antikacı","antikalar","antikalı","antikalık","antikasız","antlar","antlaşma","antlaşmacı","antlaşmalar","antlaşmalı","antlaşmalık","antlaşmasız","antlı","antlık","antsız","antçı","anı","anıcı","anılar","anılı","anılık","anısı","anısız","anıt","anıtlar","anıtlı","anıtlık","anıtsız","anıtçı","apart","apartlar","apartlı","apartlık","apartman","apartmancı","apartmanlar","apartmanlı","apartmanlık","apartmansal","apartmansız","apartsız","apartçı","aptal","aptalca","aptalcacı","aptalcalar","aptalcalı","aptalcalık","aptalcasız","aptalcı","aptallar","aptallı","aptallık","aptalsız","ar","araba","arabacı","arabalar","arabalı","arabalık","arabasız","arama","aramak","aramaklar","aramaklı","aramaklık","aramaksal","aramaksız","aramakçı","arazi","arazici","araziler","arazili","arazilik","arazisel","arazisiz","araç","araçlar","araçlı","araçlık","araçsız","araççı","araştırma","araştırmacı","araştırmalar","araştırmalı","araştırmalık","araştırmasız","ardı","ardısıra","ardısıracı","ardısıralar","ardısıralı","ardısıralık","ardısırasız","ardıç","ardıçlar","ardıçlı","ardıçlık","ardıçsız","ardıççı","arifler","arifli","ariflik","arifsiz","arifçi","arizci","arizler","arizli","arizlik","arizsiz","arka","arketip","arketipler","arketipli","arketiplik","arketipsel","arketipsiz","arketipçi","armoni","armonici","armoniler","armonili","armonilik","armonisel","armonisiz","artı","artık","artıklar","artıklı","artıklık","artıksız","artıkçı","artığı","artış","artışlar","artışlı","artışlık","artışsız","arzular","arzulu","arzuluk","arzusuz","arı","arıcı","arık","arılar","arılı","arılık","arın","arınma","arınmak","arınmaklar","arınmaklı","arınmaklık","arınmaksız","arınmakçı","arınmalar","arınmalı","arınmalık","arınmasız","arının","arısız","arıtma","arıtmacı","arıtmak","arıtmaklar","arıtmaklı","arıtmaklık","arıtmaksız","arıtmakçı","arıtmalar","arıtmalı","arıtmalık","arıtmasız","arıyor","arış","asalcı","asalet","asaletler","asaletli","asaletlik","asaletsiz","asaletçi","asallar","asallı","asallık","asalsız","asbest","asbestler","asbestli","asbestlik","asbestsiz","asbestçi","asfalt","asfaltlar","asfaltlı","asfaltlık","asfaltsal","asfaltsız","asfaltçı","asgari","asgarici","asgariler","asgarili","asgarilik","asgarisiz","asil","asilci","asiller","asilli","asillik","asilsiz","asker","askerci","askeri","askerici","askeriler","askerili","askerilik","askerisel","askerisiz","askerler","askerli","askerlik","askersiz","aslan","aslancı","aslanlar","aslanlı","aslanlık","aslansız","aslında","aslındacı","aslındalar","aslındalı","aslındalık","aslındasız","asma","asmacı","asmalar","asmalı","asmalık","asmasız","assonans","assonanslar","assonanslı","assonanslık","assonanssal","assonanssız","assonansçı","astlar","astlı","astlık","astsız","astçı","asıl","asılcı","asıllar","asıllı","asıllık","asılsız","asır","asırcı","asırlar","asırlı","asırlık","asırsal","asırsız","at","ata","atacı","atalar","atalet","ataletler","ataletli","ataletlik","ataletsiz","ataletçi","atalı","atalık","atama","atamacı","atamalar","atamalı","atamalık","atamasız","atan","atasız","ataş","ataşlar","ataşlı","ataşlık","ataşsız","ataşçı","ateş","ateşi","ateşkes","ateşkesler","ateşkesli","ateşkeslik","ateşkessel","ateşkessiz","ateşkesçi","ateşler","ateşli","ateşlik","ateşsiz","atikler","atikli","atiklik","atiksiz","atikçi","atla","atlas","atlaslar","atlaslı","atlaslık","atlassız","atlasçı","atlatma","atlatmacı","atlatmak","atlatmaklar","atlatmaklı","atlatmaklık","atlatmaksal","atlatmaksız","atlatmakçı","atlatmalar","atlatmalı","atlatmalık","atlatmasız","atık","atıklar","atıklı","atıklık","atıksu","atıksucu","atıksular","atıksulu","atıksuluk","atıksusal","atıksusuz","atıksız","atıkçı","atılgan","atılgancı","atılganlar","atılganlı","atılganlık","atılgansız","atılım","atılımcı","atılımlar","atılımlı","atılımlık","atılımsız","atış","atışlar","atışlı","atışlık","atışsız","atışçı","atışı","av","avanta","avantacı","avantalar","avantalı","avantalık","avantasız","avare","avareci","avareler","avareli","avarelik","avaresiz","avazcı","avazlar","avazlı","avazlık","avazsız","avazı","avcı","avcılar","avcılı","avcılık","avcısız","avdet","avdetler","avdetli","avdetlik","avdetsel","avdetsiz","avdetçi","avlanmak","avlanmaklar","avlanmaklı","avlanmaklık","avlanmaksız","avlanmakçı","avlucu","avlular","avlulu","avluluk","avlusuz","avuntı","avuntıcı","avuntılar","avuntılı","avuntılık","avuntısız","ay","ayak","ayakaltı","ayakaltıcı","ayakaltılar","ayakaltılı","ayakaltılık","ayakaltısız","ayaklanma","ayaklanmacı","ayaklanmalar","ayaklanmalı","ayaklanmalık","ayaklanmasız","ayaklar","ayaklı","ayaklık","ayaksız","ayakçı","ayar","ayarcı","ayarlar","ayarlı","ayarlık","ayarsal","ayarsız","ayartmak","ayartmaklar","ayartmaklı","ayartmaklık","ayartmaksız","ayartmakçı","ayaz","ayazcı","ayazlar","ayazlı","ayazlık","ayazsız","aydın","aydıncı","aydınlar","aydınlı","aydınlık","aydınlıklar","aydınlıklı","aydınlıksal","aydınlıksız","aydınlıkçı","aydınsız","aydını","aylar","aylı","aylık","ayna","aynacı","aynalar","aynalı","aynalık","aynasız","ayran","ayrıksı","ayrıksıcı","ayrıksılar","ayrıksılı","ayrıksılık","ayrıksısız","ayrılma","ayrılmak","ayrılmaklar","ayrılmaklı","ayrılmaklık","ayrılmaksal","ayrılmaksız","ayrılmakçı","ayrılık","ayrılıklar","ayrılıklı","ayrılıksız","ayrılıkçı","ayrılıyor","ayrılış","ayrım","ayrımcı","ayrımcılık","ayrımlar","ayrımlı","ayrımlık","ayrımsız","ayrışmak","aysız","az","azalan","azalmak","azalmaklar","azalmaklı","azalmaklık","azalmaksız","azalmakçı","azaplar","azaplı","azaplık","azapsız","azapçı","azimci","azimler","azimli","azimlik","azimsel","azimsiz","azizci","azizi","azizim","azizimci","azizimler","azizimli","azizimlik","azizimsiz","azizler","azizli","azizlik","azizsiz","azmi","azotlar","azotlu","azotluk","azotsuz","azotçu","azınlık","azınlıklar","azınlıklı","azınlıksal","azınlıksız","azınlıkçı","aç","açgözlü","açgözlücü","açgözlüler","açgözlülü","açgözlülük","açgözlüsüz","açma","açmak","açmaklar","açmaklı","açmaklık","açmaksal","açmaksız","açmakçı","açmaz","açmazcı","açmazlar","açmazlı","açmazlık","açmazsal","açmazsız","açı","açıcı","açık","açıklar","açıklı","açıklık","açıklıklar","açıklıklı","açıklıksal","açıklıksız","açıklıkçı","açıksal","açıksız","açıkçı","açılar","açılı","açılık","açılış","açılışlar","açılışlı","açılışlık","açılışsız","açılışçı","açısız","açıyor","açığı","açış","ağ","ağa","ağacı","ağalar","ağalı","ağalık","ağasız","ağaç","ağaçlar","ağaçlı","ağaçlık","ağaçsal","ağaçsız","ağaççı","ağla","ağlak","ağlaklar","ağlaklı","ağlaklık","ağlaksız","ağlakçı","ağlama","ağlamak","ağlamaklar","ağlamaklı","ağlamaklık","ağlamaksal","ağlamaksız","ağlamakçı","ağlayış","ağlayışlar","ağlayışlı","ağlayışlık","ağlayışsız","ağlıyor","ağrı","ağrıcı","ağrılar","ağrılı","ağrılık","ağrısız","ağu","ağucu","ağular","ağulu","ağuluk","ağusuz","ağzı","ağır","ağırcı","ağırlar","ağırlı","ağırlık","ağırlıklar","ağırlıklı","ağırlıksal","ağırlıksız","ağırlıkçı","ağırsız","ağıt","ağıtlar","ağıtlı","ağıtlık","ağıtsal","ağıtsız","ağıtçı","ağız","ağıza","ağızcı","ağızda","ağızdan","ağızlar","ağızlı","ağızlık","ağızsal","ağızsız","ağızı","ağızım","ağızın","aş","aşağı","aşağıcı","aşağılar","aşağılı","aşağılık","aşağısız","aşk","aşka","aşkda","aşkdan","aşklar","aşklı","aşklık","aşksız","aşkçı","aşkı","aşkım","aşkın","aşkıncı","aşkınlar","aşkınlı","aşkınlık","aşkınlıklar","aşkınlıklı","aşkınlıksal","aşkınlıksız","aşkınlıkçı","aşkınsız","aşmak","aşmaklar","aşmaklı","aşmaklık","aşmaksal","aşmaksız","aşmakçı","aşındırmak","aşırı","aşırıcı","aşırılar","aşırılı","aşırılık","aşırılıklar","aşırılıklı","aşırılıksız","aşırılıkçı","aşırısız","aşırıya","aşırıyacı","aşırıyalar","aşırıyalı","aşırıyalık","aşırıyasız","baba","babada","babadan","bacak","bacaklar","bacaklı","bacaklık","bacaksal","bacaksız","bacakçı","badeci","badeler","badeli","badelik","badesiz","bahis","bahisler","bahisli","bahislik","bahissiz","bahisçi","bahtlar","bahtlı","bahtlık","bahtsız","bahtçı","bahçe","bahçeci","bahçeler","bahçeli","bahçelik","bahçesel","bahçesiz","bak","bakan","bakici","bakiler","bakili","bakilik","bakisel","bakisiz","bakiş","bakişler","bakişli","bakişlik","bakişsiz","bakişçi","bakma","bakmak","bakmaklar","bakmaklı","bakmaklık","bakmaksal","bakmaksız","bakmakçı","bakır","bakırcı","bakırlar","bakırlı","bakırlık","bakırsal","bakırsız","bakıyor","bakış","bakışlar","bakışlı","bakışlık","bakışsız","bal","balçık","balçıklar","balçıklı","balçıklık","balçıksal","balçıksız","balçıkçı","balık","balıklar","balıklı","balıksız","balıkçı","ban","bantlar","bantlı","bantlık","bantsız","bantçı","bar","barcı","bardak","bardaklar","bardaklı","bardaklık","bardaksız","bardakçı","barikat","barikatlar","barikatlı","barikatlık","barikatsal","barikatsız","barikatçı","bariyer","bariyerler","bariyerli","bariyerlik","bariyersiz","barklar","barklı","barklık","barksız","barkçı","barlar","barlı","barlık","barsız","barınak","barınaklar","barınaklı","barınaklık","barınaksız","barınakçı","barış","barışa","barışda","barışdan","barışlar","barışlı","barışlık","barışma","barışmak","barışsal","barışsız","barışçı","barışı","barışım","barışın","barışıyor","barışış","baskı","baskıcı","baskılar","baskılı","baskılık","baskısal","baskısız","baslar","baslı","baslık","basmak","basmaklar","basmaklı","basmaklık","basmaksal","basmaksız","basmakçı","bassız","bastırma","bastırmacı","bastırmak","bastırmaklar","bastırmaklı","bastırmaklık","bastırmaksız","bastırmakçı","bastırmalar","bastırmalı","bastırmalık","bastırmasız","bastırılmış","basçı","bat","bataklık","bataklıklar","bataklıklı","bataklıksal","bataklıksız","bataklıkçı","batakçı","batakçıcı","batakçılar","batakçılı","batakçılık","batakçısız","batan","battle","batık","batıl","batılcı","batıllar","batıllı","batıllık","batılsız","bay","baykuş","baykuşlar","baykuşlu","baykuşluk","baykuşsuz","baykuşçu","bayrak","bayraklar","bayraklı","bayraklık","bayraksız","bayrakçı","bayır","bayırcı","bayırlar","bayırlı","bayırlık","bayırsal","bayırsız","baz","bazı","bazıcı","bazılar","bazılı","bazılık","bazısal","bazısız","bağ","bağcı","bağcılar","bağcılı","bağcılık","bağcısız","bağdaş","bağdaşlar","bağdaşlı","bağdaşlık","bağdaşsız","bağdaşçı","bağlantı","bağlantıcı","bağlantılar","bağlantılı","bağlantılık","bağlantısız","bağlar","bağlı","bağlık","bağlılık","bağsız","bağımlı","bağımlıcı","bağımlılar","bağımlılı","bağımlılık","bağımlısız","bağımsızlık","bağır","bağırmak","bağırmaklar","bağırmaklı","bağırmaklık","bağırmaksız","bağırmakçı","bağırsak","bağırsaklar","bağırsaklı","bağırsaklık","bağırsaksal","bağırsaksız","bağırsakçı","bağışlamak","bağışıklık","baş","başa","başarma","başarmak","başarmaklar","başarmaklı","başarmaklık","başarmaksal","başarmaksız","başarmakçı","başarı","başarılar","başarılı","başarılık","başarısız","başarıyor","başarış","başda","başdan","başkaldırı","başlamak","başlamaklar","başlamaklı","başlamaklık","başlamaksal","başlamaksız","başlamakçı","başlar","başlı","başlık","başlıklar","başlıklı","başlıksız","başma","başmak","başsız","baştı","başçı","başı","başıbozuk","başıbozuklar","başıbozuklu","başıbozukluk","başıbozuksuz","başıbozukçu","başım","başın","başıyor","başış","beat","bedavacı","bedavacılar","bedavacılı","bedavacılık","bedavacısız","bedel","bedelci","bedeller","bedelli","bedellik","bedelsiz","beden","bedenci","bedenler","bedenli","bedenlik","bedensiz","bekle","bekleme","beklemek","beklemekler","beklemekli","beklemeklik","beklemeksel","beklemeksiz","beklemekçi","beklenmedik","bekliyor","bel","belacı","belalar","belalı","belalık","belasal","belasız","belediye","belediyeci","belediyeler","belediyeli","belediyelik","belediyesel","belediyesiz","belge","belgeci","belgelemek","belgeler","belgeli","belgelik","belgesiz","belirsizlik","bellek","bellekler","bellekli","belleklik","belleksiz","bellekçi","ben","bencil","bencilce","bencilceci","bencilceler","bencilceli","bencilcelik","bencilcesiz","bencilci","benciller","bencilli","bencillik","bencillikler","bencillikli","bencilliksiz","bencillikçi","bencilsiz","berrak","berraklar","berraklı","berraklık","berraksal","berraksız","berrakçı","berzah","berzahlar","berzahlı","berzahlık","berzahsal","berzahsız","berzahçı","beter","beterci","beterler","beterli","beterlik","betersiz","beton","betoncu","betonlar","betonlu","betonluk","betonsal","betonsuz","bey","beyaz","beyazcı","beyazlar","beyazlı","beyazlık","beyazsal","beyazsız","beyci","beyin","beyinci","beyinde","beyinden","beyine","beyini","beyinim","beyinin","beyinler","beyinli","beyinlik","beyinsel","beyinsiz","beyler","beyli","beylik","beysiz","bez","beğenmezlik","beş","beşler","beşli","beşlik","beşsiz","beşte","beşteci","beşteler","beşteli","beştelik","beştesel","beştesiz","beşçi","bidayet","bidayetler","bidayetli","bidayetlik","bidayetsel","bidayetsiz","bidayetçi","bil","bilek","bilekler","bilekli","bileklik","bileksel","bileksiz","bilekçi","bilen","bilge","bilgi","bilgici","bilgiler","bilgili","bilgilik","bilgisel","bilgisiz","bilhassa","bilhassacı","bilhassalar","bilhassalı","bilhassalık","bilhassasal","bilhassasız","bilinç","bilinçaltı","bilinçdışı","bilinçdışılar","bilinçdışılı","bilinçdışılık","bilinçdışısız","bilinçler","bilinçli","bilinçlik","bilinçsel","bilinçsiz","bilinççi","biliyor","biliş","bilme","bilmek","bilmekler","bilmekli","bilmeklik","bilmeksel","bilmeksiz","bilmekçi","bin","binacı","binalar","binalı","binalık","binasal","binasız","binci","binen","binler","binli","binlik","binsiz","bir","birader","biraderci","biraderler","biraderli","biraderlik","biradersel","biradersiz","biraz","birazcı","birazlar","birazlı","birazlık","birazsal","birazsız","birci","birler","birleşiyor","birleşiş","birleşme","birleşmek","birli","birlik","birlikler","birlikli","birliksel","birliksiz","birlikçi","birsiz","bitap","bitaplar","bitaplı","bitaplık","bitapsız","bitapçı","bitiş","bitişler","bitişli","bitişlik","bitişsel","bitişsiz","bitişçi","bitkinlik","bitkinlikler","bitkinlikli","bitkinliksiz","bitkinlikçi","bitmek","bitmekler","bitmekli","bitmeklik","bitmeksiz","bitmekçi","biz","biçim","biçimci","biçimler","biçimli","biçimlik","biçimsiz","biçimsizlik","bodrum","bodrumcu","bodrumlar","bodrumlu","bodrumluk","bodrumsal","bodrumsuz","bomba","bombacı","bombalar","bombalı","bombalık","bombasal","bombasız","bor","borç","borçlar","borçlu","borçluk","borçsuz","boyun","boyuncu","boyunlar","boyunlu","boyunluk","boyunsal","boyunsuz","boz","bozcu","bozgunculuk","bozkır","bozkırcı","bozkırlar","bozkırlı","bozkırlık","bozkırsal","bozkırsız","bozlar","bozlu","bozluk","bozma","bozmak","bozsuz","bozulma","bozulmacı","bozulmak","bozulmaklar","bozulmaklı","bozulmaklık","bozulmaksal","bozulmaksız","bozulmakçı","bozulmalar","bozulmalı","bozulmalık","bozulmasız","bozuyor","bozuş","boğaz","boğazcı","boğazlar","boğazlı","boğazlık","boğazsal","boğazsız","boğmak","boğmaklar","boğmaklı","boğmaklık","boğmaksız","boğmakçı","boş","boşluk","boşluklar","boşluklu","boşluksal","boşluksuz","boşlukçu","bpm","bronz","bronzcu","bronzlar","bronzlu","bronzluk","bronzsal","bronzsuz","bugün","bugüncü","bugünler","bugünlü","bugünlük","bugünsel","bugünsüz","bul","bulan","bulanık","bulanıklar","bulanıklı","bulanıklık","bulanıksal","bulanıksız","bulanıkçı","bulgu","bulgucu","bulgular","bulgulu","bulguluk","bulgusuz","bulma","bulmaca","bulmacacı","bulmacalar","bulmacalı","bulmacalık","bulmacasız","bulmak","bulmaklar","bulmaklı","bulmaklık","bulmaksal","bulmaksız","bulmakçı","bulut","bulutlar","bulutlu","bulutluk","bulutsuz","buluyor","buluş","bunaltı","bunaltıcı","bunaltıcılar","bunaltıcılı","bunaltıcılık","bunaltıcısız","bunaltılar","bunaltılı","bunaltılık","bunaltısız","bunalım","bunalımcı","bunalımlar","bunalımlı","bunalımlık","bunalımsal","bunalımsız","bur","buruk","buruklar","buruklu","burukluk","buruksuz","burukçu","burun","buruncu","burunlar","burunlu","burunluk","burunsal","burunsuz","buz","buzcu","buzlar","buzlu","buzluk","buzsuz","buzul","buzulcu","buzullar","buzullu","buzulluk","buzulsal","buzulsuz","böbrek","böbrekler","böbrekli","böbreklik","böbreksel","böbreksiz","böbrekçi","böl","bölge","bölgeci","bölgeler","bölgeli","bölgelik","bölgesiz","bölünme","bölünmeci","bölünmek","bölünmekler","bölünmekli","bölünmeklik","bölünmeksel","bölünmeksiz","bölünmekçi","bölünmeler","bölünmeli","bölünmelik","bölünmesiz","büfe","büfeci","büfeler","büfeli","büfelik","büfesel","büfesiz","bükmek","bükmekler","bükmekli","bükmeklik","bükmeksel","bükmeksiz","bükmekçi","büküm","bükümcü","bükümler","bükümlü","bükümlük","bükümsüz","bürokratik","bütün","bütüncül","bütüncülcü","bütüncüller","bütüncüllü","bütüncüllük","bütüncülsüz","bütünleşmek","bütünlük","bütünlükler","bütünlüklü","bütünlüksüz","bütünlükçü","büyü","büyüklük","büyüklükler","büyüklüklü","büyüklüksel","büyüklüksüz","büyüklükçü","büyülü","büyülücü","büyülüler","büyülülü","büyülülük","büyülüsüz","büyüme","büyümek","büyümekler","büyümekli","büyümeklik","büyümeksel","büyümeksiz","büyümekçi","büyüyor","bıkkınlık","bıkkınlıklar","bıkkınlıklı","bıkkınlıksız","bıkkınlıkçı","bırakma","bırakmak","bırakmaklar","bırakmaklı","bırakmaklık","bırakmaksal","bırakmaksız","bırakmakçı","bırakıyor","bırakış","bıçak","bıçaklar","bıçaklı","bıçaklık","bıçaksal","bıçaksız","bıçakçı","cadde","caddeci","caddeler","caddeli","caddelik","caddesel","caddesiz","can","cana","cancı","canda","candan","canlanmak","canlanmaklar","canlanmaklı","canlanmaklık","canlanmaksız","canlanmakçı","canlar","canlı","canlıcı","canlık","canlılar","canlılı","canlılık","canlısal","canlısız","cansız","canı","canım","canın","carici","cariler","carili","carilik","carisel","carisiz","cefacı","cefalar","cefalı","cefalık","cefasız","cehalet","cehaletler","cehaletli","cehaletlik","cehaletsiz","cehtler","cehtli","cehtlik","cehtsel","cehtsiz","cehtçi","cenah","cenahlar","cenahlı","cenahlık","cenahsal","cenahsız","cenahçı","cephane","cephaneci","cephaneler","cephaneli","cephanelik","cephanesel","cephanesiz","cephe","cepheci","cepheler","cepheli","cephelik","cephesel","cephesiz","cesaret","cesaretler","cesaretli","cesaretlik","cesaretlilik","cesaretsel","cesaretsiz","cesaretçi","cesur","cevaplama","cevaplamak","cevaplıyor","cezacı","cezalandırmak","cezalar","cezalı","cezalık","cezasız","cihat","cihatlar","cihatlı","cihatlık","cihatsal","cihatsız","cihatçı","cin","cor","coşku","coşkucu","coşkular","coşkulu","coşkuluk","coşkusal","coşkusuz","cypher","cömert","cömertler","cömertli","cömertlik","cömertlikler","cömertlikli","cömertliksiz","cömertsiz","cömertçi","cüret","cüretler","cüretli","cüretlik","cüretsiz","cüretçi","dahil","dahilci","dahiller","dahilli","dahillik","dahilsel","dahilsiz","daima","dakika","dakikacı","dakikalar","dakikalı","dakikalık","dakikasal","dakikasız","dal","dalak","dalaklar","dalaklı","dalaklık","dalaksal","dalaksız","dalakçı","dalcı","dallar","dallı","dallık","dalsız","dam","damar","damarcı","damarlar","damarlı","damarlık","damarsal","damarsız","dan","dar","darbe","darbeci","darbeler","darbeli","darbelik","darbesel","darbesiz","darlık","darlıklar","darlıklı","darlıksal","darlıksız","darlıkçı","dav","day","dayanak","dayanaklar","dayanaklı","dayanaklık","dayanaksız","dayanakçı","dayanmak","dayanmaklar","dayanmaklı","dayanmaklık","dayanmaksal","dayanmaksız","dayanmakçı","dayanışma","dayatmak","dayatmaklar","dayatmaklı","dayatmaklık","dayatmaksız","dayatmakçı","daz","dağ","dağa","dağcı","dağda","dağdan","dağlar","dağlı","dağlık","dağsız","dağı","dağılma","dağılmacı","dağılmak","dağılmaklar","dağılmaklı","dağılmaklık","dağılmaksız","dağılmakçı","dağılmalar","dağılmalı","dağılmalık","dağılmasız","dağım","dağın","dağınık","dağınıklar","dağınıklı","dağınıklık","dağınıksız","dağınıkçı","daş","dehşet","dehşetler","dehşetli","dehşetlik","dehşetsel","dehşetsiz","dehşetçi","del","delta","deltacı","deltalar","deltalı","deltalık","deltasal","deltasız","dem","demek","demekler","demekli","demeklik","demeksel","demeksiz","demekçi","demir","demirci","demirler","demirli","demirlik","demirsel","demirsiz","demokrasi","demokrat","demokratlar","demokratlı","demokratlık","demokratsal","demokratsız","demokratçı","den","deneyim","deneyimci","deneyimler","deneyimli","deneyimlik","deneyimsel","deneyimsiz","denge","dengeci","dengeler","dengeli","dengelik","dengesel","dengesiz","dengesizlik","deniz","denizci","denizde","denizden","denize","denizi","denizim","denizin","denizler","denizli","denizlik","denizsel","denizsiz","depocu","depolar","depolu","depoluk","deposal","deposuz","deprem","depremci","depremler","depremli","depremlik","depremsel","depremsiz","depresyon","depresyonlar","depresyonlu","depresyonluk","depresyonsuz","dereci","dereler","dereli","derelik","deresel","deresiz","derin","derinler","derinli","derinlik","derinlikler","derinlikli","derinliksel","derinliksiz","derinlikçi","derinsiz","dertler","dertli","dertlik","dertsel","dertsiz","dertçi","destan","destancı","destanlar","destanlı","destanlık","destansal","destansız","devir","devirci","devirler","devirli","devirlik","devirmek","devirmekler","devirmekli","devirmeklik","devirmeksel","devirmeksiz","devirmekçi","devirsel","devirsiz","devlet","devletler","devletli","devletlik","devletsel","devletsiz","devletçi","devrim","devrimci","devrimler","devrimli","devrimlik","devrimsel","devrimsiz","dezenformasyon","değer","değerci","değerler","değerli","değerlik","değersel","değersiz","değersizlik","değişim","değişimci","değişimler","değişimli","değişimlik","değişimsiz","değişiyor","değişiş","değişme","değişmek","değiştirmek","deş","diken","dikenci","dikenler","dikenli","dikenlici","dikenlik","dikenliler","dikenlili","dikenlilik","dikenlisiz","dikensel","dikensiz","diktatorlük","dil","dilci","diller","dilli","dillik","dilsiz","din","dinci","dinginlik","dinle","dinleme","dinlemek","dinlemekler","dinlemekli","dinlemeklik","dinlemeksel","dinlemeksiz","dinlemekçi","dinlenmek","dinler","dinli","dinlik","dinliyor","dinmez","dinmezci","dinmezler","dinmezli","dinmezlik","dinmezsiz","dinsiz","dip","direniş","direnişler","direnişli","direnişlik","direnişsel","direnişsiz","direnişçi","direnmek","direnmekler","direnmekli","direnmeklik","direnmeksel","direnmeksiz","direnmekçi","direnç","dirençler","dirençli","dirençlik","dirençsel","dirençsiz","direnççi","diri","dirsek","dirsekler","dirsekli","dirseklik","dirseksel","dirseksiz","dirsekçi","dissler","dissli","disslik","dissçi","divan","divancı","divanlar","divanlı","divanlık","divansız","diyalektik","diyor","diz","dizci","dizler","dizli","dizlik","dizsiz","diş","dişler","dişli","dişlici","dişlik","dişliler","dişlili","dişlilik","dişlisiz","dişsiz","dişçi","dj","dokunma","dokunmak","dokunmaklar","dokunmaklı","dokunmaklık","dokunmaksal","dokunmaksız","dokunmakçı","dokunuyor","dokunuş","dokuz","dokuzcu","dokuzlar","dokuzlu","dokuzluk","dokuzsal","dokuzsuz","dolaylı","dolaylıcı","dolaylılar","dolaylılı","dolaylılık","dolaylısız","dolu","doluluğu","doluluğucu","doluluğular","doluluğulu","doluluğuluk","doluluğusal","doluluğusuz","doncu","donlar","donlu","donluk","donsuz","donuk","donuklar","donuklu","donukluk","donuksal","donuksuz","donukçu","doruk","doruklar","doruklu","dorukluk","doruksuz","dorukçu","dost","dosta","dostda","dostdan","dostlar","dostlu","dostluk","dostsuz","dostu","dostum","dostun","doyum","doyumcu","doyumlar","doyumlu","doyumluk","doyumsal","doyumsuz","doğallık","doğallıklar","doğallıklı","doğallıksız","doğru","doğruluk","doğruluklar","doğruluklu","doğruluksuz","doğrulukçu","drill","dul","duman","dumanlı","dumanlıcı","dumanlılar","dumanlılı","dumanlılık","dumanlısal","dumanlısız","dur","durma","durmak","durmaklar","durmaklı","durmaklık","durmaksal","durmaksız","durmakçı","duruyor","duruş","dut","duvar","duvarcı","duvarlar","duvarlı","duvarlık","duvarsal","duvarsız","duy","duygu","duygucu","duygular","duygulu","duyguluk","duygusal","duygusuz","duyucu","duyular","duyulu","duyuluk","duyurum","duyurumcu","duyurumlar","duyurumlu","duyurumluk","duyurumsuz","duyusal","duyusuz","döl","dön","dönem","dönemci","dönemler","dönemli","dönemlik","dönemsel","dönemsiz","dönen","döngü","döngücü","döngüler","döngülü","döngülük","döngüsel","döngüsüz","dönüşme","dönüşmek","dönüşüm","dönüşümcü","dönüşümler","dönüşümlü","dönüşümlük","dönüşümsel","dönüşümsüz","dönüşüyor","dönüşüş","dört","dörtler","dörtlü","dörtlük","dörtlükler","dörtlüklü","dörtlüksel","dörtlüksüz","dörtlükçü","dörtsel","dörtsüz","dörtte","dörtteci","dörtteler","dörtteli","dörttelik","dörttesel","dörttesiz","dörtçü","dükkan","dükkancı","dükkanlar","dükkanlı","dükkanlık","dükkansal","dükkansız","dün","düncü","dünler","dünlü","dünlük","dünsüz","dürüstlük","düzen","düzenci","düzenler","düzenli","düzenlik","düzensiz","düzgün","düzlük","düzlükler","düzlüklü","düzlüksel","düzlüksüz","düzlükçü","düş","düşen","düşkünlük","düşkünlükler","düşkünlüklü","düşkünlüksüz","düşkünlükçü","düşler","düşlü","düşlük","düşman","düşmana","düşmancı","düşmanda","düşmandan","düşmanlar","düşmanlı","düşmanlık","düşmansal","düşmansız","düşmanı","düşmanım","düşmanın","düşmek","düşmekler","düşmekli","düşmeklik","düşmeksel","düşmeksiz","düşmekçi","düşsüz","düşçü","düşün","düşünce","düşünceci","düşünceler","düşünceli","düşüncelik","düşüncesel","düşüncesiz","düşünme","düşünmek","düşünmekler","düşünmekli","düşünmeklik","düşünmeksel","düşünmeksiz","düşünmekçi","düşünür","düşünürler","düşünürlü","düşünürlük","düşünürsüz","düşünüyor","düşünüş","dışlanma","dışlanmacı","dışlanmak","dışlanmaklar","dışlanmaklı","dışlanmaklık","dışlanmaksız","dışlanmakçı","dışlanmalar","dışlanmalı","dışlanmalık","dışlanmasal","dışlanmasız","edepler","edepli","edeplik","edepsel","edepsiz","edepsizlik","edepçi","edilgen","edilgenci","edilgenler","edilgenli","edilgenlik","edilgensiz","edimci","edimler","edimli","edimlik","edimsiz","efendi","efendici","efendiler","efendili","efendilik","efendisel","efendisiz","efsane","efsaneci","efsaneler","efsaneli","efsanelik","efsanesiz","egocu","egolar","egolu","egoluk","egosuz","ehlci","ehller","ehlli","ehllik","ehlsiz","ekinci","ekinler","ekinli","ekinlik","ekinsel","ekinsiz","ekipman","ekipmancı","ekipmanlar","ekipmanlı","ekipmanlık","ekipmansal","ekipmansız","eksen","eksenci","eksenler","eksenli","eksenlik","eksensiz","eksik","eksikler","eksikli","eksiklik","eksiklikler","eksiklikli","eksikliksiz","eksiklikçi","eksiksel","eksiksiz","eksiksizci","eksiksizler","eksiksizli","eksiksizlik","eksikçi","eksilmek","eksilmekler","eksilmekli","eksilmeklik","eksilmeksiz","eksilmekçi","el","elastik","elastikler","elastikli","elastiklik","elastiksiz","elastikçi","elde","elden","ele","elektrik","elektrikler","elektrikli","elektriklik","elektriksel","elektriksiz","elektrikçi","elemci","elemler","elemli","elemlik","elemsel","elemsiz","eleştiri","eleştirici","eleştiriler","eleştirili","eleştirilik","eleştirisel","eleştirisiz","eli","elim","elin","eller","ellik","elsiz","elverişsiz","em","emekler","emekli","emeklik","emeksel","emeksiz","emekçi","empati","empatici","empatiler","empatili","empatilik","empatisel","empatisiz","emperyalizm","emsal","emsalcı","emsallar","emsallı","emsallık","emsalsız","en","endişe","endişeci","endişeler","endişeli","endişelici","endişelik","endişeliler","endişelili","endişelilik","endişelisiz","endişesel","endişesiz","engel","engeller","engelli","engellik","engelsiz","engin","enginci","enginler","enginli","enginlik","enginsiz","enkaz","enkazlar","enkazlı","enkazlık","enkazsız","er","eracı","eralar","eralı","eralık","erasız","erdem","erdemci","erdemler","erdemli","erdemlik","erdemsel","erdemsiz","erguvani","erguvanici","erguvaniler","erguvanili","erguvanilik","erguvanisiz","erime","erimeci","erimeler","erimeli","erimelik","erimesiz","erozyon","erozyoncu","erozyonlar","erozyonlu","erozyonluk","erozyonsal","erozyonsuz","esaret","esareti","esaretici","esaretiler","esaretili","esaretilik","esaretisel","esaretisiz","esaretler","esaretli","esaretlik","esaretsiz","esaretçi","esen","eserci","eserler","eserli","eserlik","esersel","esersiz","eski","espiyonaj","estetik","estetikler","estetikli","estetiklik","estetiksiz","estetikçi","et","etikler","etikli","etiklik","etiksel","etiksiz","etikçi","etki","etkici","etkilenmek","etkiler","etkili","etkilik","etkisiz","etnik","etnikler","etnikli","etniklik","etniksel","etniksiz","etnikçi","ev","evde","evden","eve","evi","evim","evin","evren","evrenci","evrenler","evrenli","evrenlik","evrensel","evrensiz","evrim","evrimci","evrimler","evrimli","evrimlik","evrimsel","evrimsiz","ez","ezeli","ezelici","ezeliler","ezelili","ezelilik","ezelisel","ezelisiz","ezgici","ezgiler","ezgili","ezgilik","ezginlik","ezginlikler","ezginlikli","ezginliksiz","ezgisiz","ezili","ezilme","ezilmeci","ezilmeler","ezilmeli","ezilmelik","ezilmesiz","ezinmek","ezinmekler","ezinmekli","ezinmeklik","ezinmeksel","ezinmeksiz","ezinmekçi","eziyet","eziyetler","eziyetli","eziyetlici","eziyetlik","eziyetliler","eziyetlili","eziyetlilik","eziyetlisiz","eziyetsiz","eziyetçi","eziyetçici","eziyetçiler","eziyetçili","eziyetçilik","eziyetçisiz","ezmek","ezmekler","ezmekli","ezmeklik","ezmeksel","ezmeksiz","ezmekçi","eğilim","eğilimci","eğilimler","eğilimli","eğilimlik","eğilimsiz","eğitim","eğitimci","eğitimler","eğitimli","eğitimlik","eğitimsiz","eğreti","eğretici","eğretiler","eğretili","eğretilik","eğretisiz","eş","eşik","eşitlik","eşitlikler","eşitlikli","eşitliksel","eşitliksiz","eşitlikçi","eşitsizlik","eşlik","eşlikler","eşlikli","eşliksiz","eşzamanlı","fabrika","fabrikacı","fabrikalar","fabrikalı","fabrikalık","fabrikasal","fabrikasız","fakir","fal","fani","fanici","faniler","fanili","fanilik","fanisel","fanisiz","far","farklı","farklıcı","farklılar","farklılı","farklılık","farklısal","farklısız","farkındalık","fasıl","fasılcı","fasıllar","fasıllı","fasıllık","fasılsal","fasılsız","faycı","faylar","faylı","faylık","faysız","fazla","fazlacı","fazladan","fazladancı","fazladanlar","fazladanlı","fazladanlık","fazladansal","fazladansız","fazlalar","fazlalı","fazlalık","fazlasal","fazlasız","faş","faşizm","faşizmci","faşizmler","faşizmli","faşizmlik","faşizmsel","faşizmsiz","federasyon","felaket","felaketler","felaketli","felaketlik","felaketsel","felaketsiz","felaketçi","felek","felekler","felekli","feleklik","feleksel","feleksiz","felekçi","felsefe","felsefeci","felsefeler","felsefeli","felsefelik","felsefesiz","fenomen","fenomenci","fenomenler","fenomenli","fenomenlik","fenomensel","fenomensiz","feragat","feragatlar","feragatlı","feragatlık","feragatsal","feragatsız","feragatçı","fersizlik","feyiz","feyizci","feyizler","feyizli","feyizlik","feyizsel","feyizsiz","fikir","fikirci","fikirler","fikirli","fikirlik","fikirsel","fikirsiz","fil","fin","fit","fitne","fitneci","fitneler","fitneli","fitnelik","fitnesiz","flow","for","formcu","formlar","formlu","formluk","formsuz","fosil","fosilci","fosiller","fosilli","fosillik","fosilsel","fosilsiz","fotoğraf","fotoğraflar","fotoğraflı","fotoğraflık","fotoğrafsız","fotoğrafçı","freestyle","frekans","frekanslar","frekanslı","frekanslık","frekanssal","frekanssız","frekansçı","fundalık","fundalıklar","fundalıklı","fundalıksal","fundalıksız","fundalıkçı","füze","füzeci","füzeler","füzeli","füzelik","füzesel","füzesiz","fırlamak","fırlamaklar","fırlamaklı","fırlamaklık","fırlamaksal","fırlamaksız","fırlamakçı","fırlatma","fırlatmacı","fırlatmak","fırlatmaklar","fırlatmaklı","fırlatmaklık","fırlatmaksız","fırlatmakçı","fırlatmalar","fırlatmalı","fırlatmalık","fırlatmasız","fırsatçı","fırsatçıcı","fırsatçılar","fırsatçılı","fırsatçılık","fırsatçısız","fırtına","fırtınacı","fırtınalar","fırtınalı","fırtınalıcı","fırtınalık","fırtınalılar","fırtınalılı","fırtınalılık","fırtınalısız","fırtınasal","fırtınasız","fısıldamak","gaflar","gaflet","gafletler","gafletli","gafletlik","gafletsiz","gaflı","gaflık","gafsız","gafçı","gal","galp","gam","gamcı","gamlar","gamlı","gamlık","gamsız","gan","garip","garipler","garipli","gariplik","garipsel","garipsiz","garipçi","gayet","gayetler","gayetli","gayetlik","gayetsel","gayetsiz","gayetçi","gayret","gayretler","gayretli","gayretlik","gayretsel","gayretsiz","gayretçi","gaz","gece","gececi","gecede","geceden","gecekondu","geceler","geceli","gecelik","gecesel","gecesiz","gel","gelecek","gelecekler","gelecekli","geleceklik","geleceksel","geleceksiz","gelecekçi","gelen","gelenek","gelenekler","gelenekli","geleneklik","geleneksiz","geliyor","geliş","gelişim","gelişimci","gelişimler","gelişimli","gelişimlik","gelişimsiz","gelme","gelmek","gelmekler","gelmekli","gelmeklik","gelmeksel","gelmeksiz","gelmekçi","gem","gen","genişlik","gençlik","gençlikler","gençlikli","gençliksiz","gerilim","gerilimci","gerilimler","gerilimli","gerilimlik","gerilimsiz","gerilla","gerillacı","gerillalar","gerillalı","gerillalık","gerillasal","gerillasız","gerçek","gerçekler","gerçekli","gerçeklik","gerçeklikler","gerçeklikli","gerçekliksiz","gerçeklikçi","gerçeksel","gerçeksiz","gerçekçi","gevşeme","gevşemeci","gevşemeler","gevşemeli","gevşemelik","gevşemesiz","gez","geç","geçim","geçimler","geçimli","geçimlik","geçimsiz","geçiyor","geçiş","geçme","geçmek","geçmekler","geçmekli","geçmeklik","geçmeksel","geçmeksiz","geçmekçi","geçmiş","geçmişler","geçmişli","geçmişlik","geçmişsel","geçmişsiz","geçmişçi","geş","giden","gin","giren","git","gitiyor","gitiş","gitme","gitmek","gitmekler","gitmekli","gitmeklik","gitmeksel","gitmeksiz","gitmekçi","giz","gizem","gizli","gizlici","gizliler","gizlili","gizlilik","gizlisel","gizlisiz","gor","grafiti","grafitici","grafitiler","grafitili","grafitilik","grafitisel","grafitisiz","grevci","grevler","grevli","grevlik","grevsel","grevsiz","grici","griler","grili","grilik","grime","grimeci","grimeler","grimeli","grimelik","grimesel","grimesiz","grisiz","groove","gurur","gururcu","gururlar","gururlu","gururluk","gurursal","gurursuz","guz","gökyüzü","gökyüzüler","gökyüzülü","gökyüzülük","gökyüzüsüz","göl","gölcü","gölge","gölgeci","gölgeler","gölgeli","gölgelik","gölgesel","gölgesiz","göller","göllü","göllük","gölsüz","gör","gören","görkem","görkemci","görkemler","görkemli","görkemlik","görkemsiz","görme","görmek","görmekler","görmekli","görmeklik","görmeksel","görmeksiz","görmekçi","görüyor","görüş","göz","gözcü","gözde","gözden","göze","gözlem","gözlemci","gözlemler","gözlemli","gözlemlik","gözlemsel","gözlemsiz","gözler","gözlü","gözlük","gözsüz","gözü","gözüm","gözün","göç","göçler","göçlü","göçlük","göçsüz","göççü","göğüs","göğüsler","göğüslü","göğüslük","göğüssel","göğüssüz","göğüsçü","güdü","güdücü","güdük","güdükler","güdüklü","güdüklük","güdüksüz","güdükçü","güdüler","güdülü","güdülük","güdüm","güdümcü","güdümler","güdümlü","güdümlücü","güdümlük","güdümlüler","güdümlülü","güdümlülük","güdümlüsüz","güdümsüz","güdüsüz","gül","gülme","gülmek","gülmekler","gülmekli","gülmeklik","gülmeksel","gülmeksiz","gülmekçi","gülüm","gülüyor","gülüş","gülüşler","gülüşlü","gülüşlük","gülüşsüz","gülüşçü","gümüş","gümüşler","gümüşlü","gümüşlük","gümüşsel","gümüşsüz","gümüşçü","gün","günahsız","günahsızcı","günahsızlar","günahsızlı","günahsızlık","güncel","güncelci","günceller","güncelli","güncellik","güncelsel","güncelsiz","güncü","günde","günden","gündüz","gündüzler","gündüzlü","gündüzlük","gündüzsüz","güne","güneş","güneşler","güneşli","güneşlik","güneşsel","güneşsiz","güneşçi","günler","günlü","günlük","günsüz","günü","günüm","günün","gürültü","gürültücü","gürültücüler","gürültücülü","gürültücülük","gürültücüsüz","gürültüler","gürültülü","gürültülük","gürültüsüz","güt","güven","güvenci","güvenilirlik","güveniyor","güveniş","güvenler","güvenli","güvenlik","güvenme","güvenmek","güvenmekler","güvenmekli","güvenmeklik","güvenmeksel","güvenmeksiz","güvenmekçi","güvensel","güvensiz","güvensizlik","güz","güzel","güzellik","güzellikler","güzellikli","güzelliksel","güzelliksiz","güzellikçi","güç","güçde","güçden","güçe","güçleniyor","güçleniş","güçlenme","güçlenmek","güçler","güçlü","güçlük","güçlülük","güçsüz","güçsüzlük","güççü","güçü","güçüm","güçün","güş","gıda","gıdacı","gıdalar","gıdalı","gıdalık","gıdasız","haber","haberci","haberler","haberli","haberlik","habersel","habersiz","hadsizlik","hafiflik","hafiflikler","hafiflikli","hafifliksel","hafifliksiz","hafiflikçi","hafta","haftacı","haftalar","haftalı","haftalık","haftasal","haftasız","hafıza","hafızacı","hafızalar","hafızalı","hafızalık","hafızasal","hafızasız","hakikat","hakikatlar","hakikatlı","hakikatlık","hakikatsal","hakikatsız","hakikatçı","hakimlik","hakimlikler","hakimlikli","hakimliksel","hakimliksiz","hakimlikçi","haklar","haklı","haklık","haksız","haksızlık","hakçı","hal","halef","halefler","halefli","haleflik","halefsel","halefsiz","halefçi","halklar","halklı","halklık","halksal","halksız","halkçı","ham","hamallik","hamallikler","hamallikli","hamalliksiz","hamallikçi","han","hançer","hançerci","hançerler","hançerli","hançerlik","hançersel","hançersiz","hapis","hapishane","hapishaneci","hapishaneler","hapishaneli","hapishanelik","hapishanesiz","hapisler","hapisli","hapislik","hapissiz","hapisçi","har","harplar","harplı","harplık","harpsal","harpsız","harpçı","hasar","hasarcı","hasarlar","hasarlı","hasarlık","hasarsız","hasret","hasretler","hasretli","hasretlik","hasretsiz","hastane","hastaneci","hastaneler","hastaneli","hastanelik","hastanesel","hastanesiz","hat","hatalı","hatalıcı","hatalılar","hatalılı","hatalılık","hatalısız","hatırla","hatırlama","hatırlamak","hatırlıyor","havacı","havalar","havalı","havalık","havasal","havasız","hay","hayal","hayalcı","hayalet","hayaletler","hayaletli","hayaletlik","hayaletsiz","hayallar","hayaller","hayallerli","hayallerlik","hayallersiz","hayallı","hayallık","hayalsal","hayalsız","hayasızlık","hayat","haykırmak","haykırış","haykırışlar","haykırışlı","haykırışlık","haykırışsız","haz","hazin","hazinci","hazinler","hazinli","hazinlik","hazinsiz","hazırlık","hazırlıklar","hazırlıklı","hazırlıksız","hegemonya","hemhal","hemhalcı","hemhallar","hemhallı","hemhallık","hemhalsız","hep","hepsi","hepsici","hepsiler","hepsili","hepsilik","hepsisel","hepsisiz","her","hesaplaşmak","heyecan","heyecancı","heyecanlar","heyecanlı","heyecanlık","heyecansal","heyecansız","heyelan","heyelancı","heyelanlar","heyelanlı","heyelanlık","heyelansal","heyelansız","heş","hiciv","hicivci","hicivler","hicivli","hicivlik","hicivsiz","hicret","hicretler","hicretli","hicretlik","hicretsel","hicretsiz","hicretçi","hilebazlık","hileler","hileli","hilelik","hilesiz","hin","his","hisler","hisli","hislik","hissetiyor","hissetiş","hissetme","hissetmek","hissiz","hisçi","hiç","hiçler","hiçli","hiçlik","hiçsiz","hiççi","hook","hor","hoyratlık","hoyratlıklar","hoyratlıklı","hoyratlıksız","hoyratlıkçı","hoş","hudut","hudutlar","hudutlu","hudutluk","hudutsuz","husumet","husumetler","husumetli","husumetlik","husumetsiz","husumetçi","husus","hususlar","hususlu","hususluk","husussal","husussuz","hususçu","huzur","huzurcu","huzurlar","huzurlu","huzurluk","huzursal","huzursuz","huzursuzluk","hücre","hücreci","hücreler","hücreli","hücrelik","hücresel","hücresiz","hüküm","hükümcü","hükümler","hükümlü","hükümlük","hükümsel","hükümsüz","hürriyet","hürriyetler","hürriyetli","hürriyetlik","hürriyetsel","hürriyetsiz","hürriyetçi","hüzün","hüzüncü","hüzünde","hüzünden","hüzüne","hüzünler","hüzünlü","hüzünlük","hüzünsel","hüzünsüz","hüzünü","hüzünüm","hüzünün","hırs","hırslar","hırslı","hırslık","hırssal","hırssız","hırsçı","hız","hıza","hızcı","hızda","hızdan","hızlar","hızlı","hızlık","hızlılık","hızsız","hızı","hızım","hızın","ibret","ibretler","ibretli","ibretlik","ibretsel","ibretsiz","ibretçi","icatlar","icatlı","icatlık","icatsal","icatsız","icatçı","idrak","idraklar","idraklı","idraklık","idraksal","idraksız","idrakçı","ihanet","ihanetler","ihanetli","ihanetlik","ihanetsel","ihanetsiz","ihanetçi","ihmal","ihmalcı","ihmallar","ihmallı","ihmallık","ihmalsal","ihmalsız","ihtimal","ihtimalcı","ihtimallar","ihtimallı","ihtimallık","ihtimalsal","ihtimalsız","ikbal","ikbalcı","ikballar","ikballı","ikballık","ikbalsal","ikbalsız","ikici","ikiler","ikili","ikilik","ikilikler","ikilikli","ikiliksiz","ikilikçi","ikisiz","ikiyüzlü","ikiyüzlücü","ikiyüzlüler","ikiyüzlülü","ikiyüzlülük","ikiyüzlüsüz","iklim","iklimci","iklimler","iklimli","iklimlik","iklimsel","iklimsiz","iktidar","iktidarcı","iktidarlar","iktidarlı","iktidarlık","iktidarsal","iktidarsız","il","ilerleme","ilerlemeci","ilerlemeler","ilerlemeli","ilerlemelik","ilerlemesiz","ilgacı","ilgalar","ilgalı","ilgalık","ilgasal","ilgasız","ilgisizlik","ilham","ilhamcı","ilhamlar","ilhamlı","ilhamlık","ilhamsal","ilhamsız","illüzyon","illüzyoncu","illüzyonlar","illüzyonlu","illüzyonluk","illüzyonsal","illüzyonsuz","imacı","imalar","imalı","imalık","imasız","imgelem","imgelemci","imgelemler","imgelemli","imgelemlik","imgelemsel","imgelemsiz","imkansız","imkansızcı","imkansızlar","imkansızlı","imkansızlık","imrenmek","imrenmekler","imrenmekli","imrenmeklik","imrenmeksel","imrenmeksiz","imrenmekçi","in","inanç","inançlar","inançlı","inançlık","inançsal","inançsız","inançsızlık","inanççı","infaz","infazlar","infazlı","infazlık","infazsız","insan","insanlar","insanlı","insanlık","insansız","intro","introcu","introlar","introlu","introluk","introsal","introsuz","inziva","inzivacı","inzivalar","inzivalı","inzivalık","inzivasal","inzivasız","inşama","inşamak","inşıyor","ip","irade","iradeci","iradeler","iradeli","iradelik","iradesel","iradesiz","iradesizlik","isiyor","isiş","ismek","istek","istekler","istekli","isteklik","isteksel","isteksiz","istekçi","isteme","istemek","istemekler","istemekli","istemeklik","istemeksel","istemeksiz","istemekçi","istihbarat","isyan","isyancı","isyanlar","isyanlı","isyanlık","isyansal","isyansız","itici","iticiler","iticili","iticilik","iticisel","iticisiz","itikat","itikatlar","itikatlı","itikatlık","itikatsal","itikatsız","itikatçı","itiraz","itirazcı","itirazlar","itirazlı","itirazlık","itirazsız","itmek","itmekler","itmekli","itmeklik","itmeksel","itmeksiz","itmekçi","iyi","iyileşme","iyileşmeci","iyileşmeler","iyileşmeli","iyileşmelik","iyileşmesiz","iyilik","iyilikler","iyilikli","iyiliksel","iyiliksiz","iyilikçi","iyimserlik","iz","izbeci","izbeler","izbeli","izbelik","izbesel","izbesiz","izler","izli","izlik","izolasyon","izolasyoncu","izolasyonlar","izolasyonlu","izolasyonluk","izolasyonsuz","izsiz","izzet","izzetler","izzetli","izzetlik","izzetsel","izzetsiz","izzetçi","iç","içen","içgüdü","içgüdücü","içgüdüler","içgüdülü","içgüdülük","içgüdüsel","içgüdüsüz","içiyor","içiş","içme","içmek","içmekler","içmekli","içmeklik","içmeksel","içmeksiz","içmekçi","iğ","iğneleyici","iş","işte","işteci","işteler","işteli","iştelik","işten","iştesel","iştesiz","jandarmak","jor","kabacı","kabadayı","kabadayıcı","kabadayılar","kabadayılı","kabadayılık","kabadayısız","kabalar","kabalı","kabalık","kabasız","kader","kaderler","kaderli","kaderlik","kadersiz","kadim","kadimci","kadimler","kadimli","kadimlik","kadimsel","kadimsiz","kadın","kadınlar","kadınlı","kadınlık","kadınsız","kafes","kafesler","kafesli","kafeslik","kafessel","kafessiz","kafesçi","kafeterya","kafici","kafiler","kafili","kafilik","kafisel","kafisiz","kafiye","kafiyeci","kafiyeler","kafiyeli","kafiyelik","kafiyesel","kafiyesiz","kahraman","kahramanlar","kahramanlı","kahramanlık","kahramansız","kahverengi","kal","kalabalık","kalabalıklar","kalabalıklı","kalabalıksız","kalan","kaldırım","kaldırımcı","kaldırımlar","kaldırımlı","kaldırımlık","kaldırımsal","kaldırımsız","kaleci","kaleler","kaleli","kalelik","kalesel","kalesiz","kalip","kalkan","kalkancı","kalkanlar","kalkanlı","kalkanlık","kalkansal","kalkansız","kalkma","kalkmak","kalkmaklar","kalkmaklı","kalkmaklık","kalkmaksal","kalkmaksız","kalkmakçı","kalkıyor","kalkış","kalma","kalmak","kalmaklar","kalmaklı","kalmaklık","kalmaksal","kalmaksız","kalmakçı","kalp","kalpa","kalpda","kalpdan","kalplar","kalplı","kalplık","kalpsal","kalpsız","kalpçı","kalpı","kalpım","kalpın","kalıp","kalıyor","kalış","kam","kamera","kameracı","kameralar","kameralı","kameralık","kamerasal","kamerasız","kamuflaj","kamuflajcı","kamuflajlar","kamuflajlı","kamuflajlık","kamuflajsal","kamuflajsız","kan","kana","kanalizasyon","kancı","kanda","kandan","kandırmak","kandırmaklar","kandırmaklı","kandırmaklık","kandırmaksız","kandırmakçı","kangren","kangrenci","kangrenler","kangrenli","kangrenlik","kangrensel","kangrensiz","kanlar","kanlı","kanlık","kansız","kanı","kanım","kanın","kapalılık","kapan","kapanlar","kapanlı","kapanlık","kapansız","kapitalizm","kapı","kapıcı","kapılar","kapılı","kapılık","kapısal","kapısız","kar","kara","karaciğer","karakter","karakterler","karakterli","karakterlik","karaktersiz","karanlık","karanlıklar","karanlıklı","karanlıksal","karanlıksız","karanlıkçı","karar","kararcı","kararlar","kararlı","kararlık","kararsal","kararsız","karcı","kardeş","kardeşde","kardeşden","kardeşe","kardeşi","kardeşim","kardeşin","kardeşler","kardeşli","kardeşlik","kardeşsiz","kargaşa","kargaşacı","kargaşalar","kargaşalı","kargaşalık","kargaşasal","kargaşasız","karizma","karizmacı","karizmalar","karizmalı","karizmalık","karizmasız","karlar","karlı","karlık","karsız","karışım","karışımcı","karışımlar","karışımlı","karışımlık","karışımsal","karışımsız","karşıtlık","karşıtlıklar","karşıtlıklı","karşıtlıksız","kas","kasaba","kasabacı","kasabalar","kasabalı","kasabalık","kasabasal","kasabasız","kasap","kasaplar","kasaplı","kasaplık","kasapsal","kasapsız","kasapçı","kasık","kasıklar","kasıklı","kasıklık","kasıksal","kasıksız","kasıkçı","kasırga","kasırgacı","kasırgalar","kasırgalı","kasırgalık","kasırgasal","kasırgasız","kasıt","kasıtlar","kasıtlı","kasıtlık","kasıtsal","kasıtsız","kasıtçı","kat","katılık","katılıklar","katılıklı","katılıksal","katılıksız","katılıkçı","kavga","kavgacı","kavgacılar","kavgacılı","kavgacılık","kavgacısız","kavgalar","kavgalı","kavgalık","kavgasız","kavici","kaviler","kavili","kavilik","kavisel","kavisiz","kavra","kavram","kavramcı","kavramlar","kavramlı","kavramlık","kavramsal","kavramsız","kavuşmak","kavşak","kavşaklar","kavşaklı","kavşaklık","kavşaksal","kavşaksız","kavşakçı","kay","kayacı","kayalar","kayalı","kayalık","kayasal","kayasız","kaybetiyor","kaybetiş","kaybetme","kaybetmek","kayıp","kayıplar","kayıplı","kayıplık","kayıpsal","kayıpsız","kayıpçı","kayıt","kayıtlar","kayıtlı","kayıtlık","kayıtsal","kayıtsız","kayıtçı","kaz","kaç","kaçma","kaçmak","kaçmaklar","kaçmaklı","kaçmaklık","kaçmaksal","kaçmaksız","kaçmakçı","kaçınılmazlık","kaçış","kaçışlar","kaçışlı","kaçışlık","kaçışsız","kaçışçı","kağıt","kaş","kaşlar","kaşlı","kaşlık","kaşsız","kaşçı","keder","kederci","kederler","kederli","kederlik","kedersel","kedersiz","kek","kel","kem","kemik","kemikler","kemikli","kemiklik","kemiksel","kemiksiz","kemikçi","ken","kesen","kesin","kesinci","kesinler","kesinli","kesinlik","kesinsel","kesinsiz","kesmek","kesmekler","kesmekli","kesmeklik","kesmeksel","kesmeksiz","kesmekçi","kez","keş","keşif","keşifler","keşifli","keşiflik","keşifsel","keşifsiz","keşifçi","kibir","kibirci","kibirler","kibirli","kibirlik","kibirlilik","kibirsel","kibirsiz","kil","kilit","kilitler","kilitli","kilitlik","kilitsel","kilitsiz","kilitçi","kimlik","kimlikler","kimlikli","kimliksel","kimliksiz","kimlikçi","kimsesiz","kimsesizci","kimsesizler","kimsesizli","kimsesizlik","kin","kinci","kinler","kinli","kinlik","kinsiz","kir","kirici","kiriler","kirili","kirilik","kirisel","kirisiz","klancı","klanlar","klanlı","klanlık","klansal","klansız","kocaman","kol","kola","kolda","koldan","kolu","kolum","kolun","kompleks","kompleksler","kompleksli","komplekslik","komplekssel","komplekssiz","kompleksçi","komünizm","komünizmci","komünizmler","komünizmli","komünizmlik","komünizmsel","komünizmsiz","kon","konan","konser","konserci","konserler","konserli","konserlik","konsersel","konsersiz","konuş","konuşma","konuşmak","konuşuyor","konuşuş","konçerto","konçertocu","konçertolar","konçertolu","konçertoluk","konçertosal","konçertosuz","kop","kopmak","kopmaklar","kopmaklı","kopmaklık","kopmaksız","kopuş","kopuşlar","kopuşlu","kopuşluk","kopuşsuz","kopuşçu","kor","korkaklik","korkaklık","korkaklıklar","korkaklıklı","korkaklıksız","korkaklıkçı","korkma","korkmak","korkmaklar","korkmaklı","korkmaklık","korkmaksal","korkmaksız","korkmakçı","korku","korkucu","korkuda","korkudan","korkular","korkulu","korkuluk","korkusal","korkusuz","korkuyor","korkuş","korocu","korolar","korolu","koroluk","korosal","korosuz","kovmak","kovmaklar","kovmaklı","kovmaklık","kovmaksal","kovmaksız","kovmakçı","koyacı","koyalar","koyalı","koyalık","koyasal","koyasız","koyma","koymak","koymaklar","koymaklı","koymaklık","koymaksal","koymaksız","koymakçı","koyu","koyucu","koyular","koyulu","koyuluk","koyusal","koyusuz","koyuyor","koyuş","koş","koşan","koşma","koşmak","koşmaklar","koşmaklı","koşmaklık","koşmaksal","koşmaksız","koşmakçı","koşul","koşulcu","koşullar","koşullu","koşulluk","koşulsal","koşulsuz","koşuyor","koşuş","kronoloji","kudret","kudretler","kudretli","kudretlik","kudretsiz","kul","kulak","kulaklar","kulaklı","kulaklık","kulaksal","kulaksız","kulakçı","kuleci","kuleler","kuleli","kulelik","kulesel","kulesiz","kullanma","kullanmak","kullanılmak","kullanıyor","kullanış","kum","kumpas","kumpaslar","kumpaslı","kumpaslık","kumpassal","kumpassız","kumpasçı","kumsal","kumsalcı","kumsallar","kumsallı","kumsallık","kumsalsız","kur","kurak","kuraklar","kuraklı","kuraklık","kuraklıklar","kuraklıklı","kuraklıksal","kuraklıksız","kuraklıkçı","kuraksal","kuraksız","kurakçı","kurallar","kurallarlı","kurallarlık","kurallarsız","kuram","kuramcı","kuramlar","kuramlı","kuramlık","kuramsal","kuramsız","kurtarma","kurtarmak","kurtarmalar","kurtarmalı","kurtarmalık","kurtarmasız","kurtuluş","kurtuluşlar","kurtuluşlu","kurtuluşluk","kurtuluşsuz","kurtuluşçu","kurumsal","kurumsalcı","kurumsallar","kurumsallı","kurumsallık","kurumsalsız","kurşun","kurşuncu","kurşunlar","kurşunlu","kurşunluk","kurşunsal","kurşunsuz","kut","kuvvet","kuvvetler","kuvvetli","kuvvetlik","kuvvetsiz","kuyucu","kuyular","kuyulu","kuyuluk","kuyusal","kuyusuz","kuzey","kuzeyci","kuzeyler","kuzeyli","kuzeylik","kuzeysel","kuzeysiz","kuşatmak","kuşatmaklar","kuşatmaklı","kuşatmaklık","kuşatmaksal","kuşatmaksız","kuşatmakçı","kuşku","kuşkucu","kuşkular","kuşkulu","kuşkuluk","kuşkusal","kuşkusuz","köhne","köhneci","köhneler","köhneli","köhnelik","köhnesiz","kök","köken","kökenler","kökenli","kökenlik","kökensiz","kökler","köklü","köklük","köksüz","köl","köle","köleci","köleler","köleli","kölelik","kölelikler","kölelikli","köleliksel","köleliksiz","kölelikçi","kölesel","kölesiz","kön","köprü","köprücü","köprüler","köprülü","köprülük","köprüsel","köprüsüz","kör","körler","körlü","körlük","körsüz","kötü","kötülük","kötülükler","kötülüklü","kötülüksel","kötülüksüz","kötülükçü","köy","köycü","köyde","köyden","köye","köyler","köylü","köylük","köysüz","köyü","köyüm","köyün","küf","kül","küller","küllü","küllük","külsüz","kültür","kültürler","kültürlü","kültürlük","kültürsüz","küp","kür","küs","küt","küçük","küçüklük","küçüklükler","küçüklüklü","küçüklüksel","küçüklüksüz","küçüklükçü","küçülme","küçülmek","küçülmekler","küçülmekli","küçülmeklik","küçülmeksel","küçülmeksiz","küçülmekçi","küçülüyor","küçülüş","küçümsemek","küş","kıkırdak","kıkırdaklar","kıkırdaklı","kıkırdaklık","kıkırdaksal","kıkırdaksız","kıkırdakçı","kıl","kılıç","kılıçlar","kılıçlı","kılıçlık","kılıçsal","kılıçsız","kılıççı","kım","kın","kıp","kır","kırgın","kırgınlık","kırma","kırmak","kırmaklar","kırmaklı","kırmaklık","kırmaksal","kırmaksız","kırmakçı","kırmızı","kırmızıcı","kırmızılar","kırmızılı","kırmızılık","kırmızısal","kırmızısız","kırık","kırıklar","kırıklı","kırıklık","kırıksal","kırıksız","kırıkçı","kırılgan","kırılgancı","kırılganlar","kırılganlı","kırılganlık","kırılgansız","kırılma","kırılmak","kırılmaklar","kırılmaklı","kırılmaklık","kırılmaksal","kırılmaksız","kırılmakçı","kırılmalar","kırılmalı","kırılmalık","kırılmasız","kırıyor","kırış","kıs","kısalık","kısalıklar","kısalıklı","kısalıksal","kısalıksız","kısalıkçı","kıskanma","kıskançlık","kıskançlıklar","kıskançlıklı","kıskançlıksız","kısmet","kısmetler","kısmetli","kısmetlik","kısmetsel","kısmetsiz","kısmetçi","kısık","kısır","kısırcı","kısırlar","kısırlı","kısırlık","kısırsız","kıt","kıta","kıtacı","kıtalar","kıtalı","kıtalık","kıtasal","kıtasız","kıvrım","kıvrımcı","kıvrımlar","kıvrımlı","kıvrımlık","kıvrımsal","kıvrımsız","kıvılcım","kıvılcımcı","kıvılcımlar","kıvılcımlı","kıvılcımlık","kıvılcımsız","kıyamet","kıyametler","kıyametli","kıyametlik","kıyametsiz","kıyametçi","kıymet","kıymetler","kıymetli","kıymetlik","kıymetsel","kıymetsiz","kıymetçi","kıyı","kıyıcı","kıyılar","kıyılı","kıyılık","kıyım","kıyımcı","kıyımlar","kıyımlı","kıyımlık","kıyımsal","kıyımsız","kıyısal","kıyısız","kız","kızgınlanmak","kızgınlık","kızma","kızmak","kızıyor","kızış","label","labelci","labeller","labelli","labellik","labelsel","labelsiz","lacivert","lacivertler","lacivertli","lacivertlik","lacivertsel","lacivertsiz","lacivertçi","lal","lamba","lambacı","lambalar","lambalı","lambalık","lambasal","lambasız","lanet","lanetler","lanetli","lanetlik","lanetsiz","lavabo","lavabocu","lavabolar","lavabolu","lavaboluk","lavabosal","lavabosuz","lavlar","lavlarcı","lavlarlı","lavlarlık","lavlarsal","lavlarsız","layık","layıklar","layıklı","layıklık","layıksal","layıksız","layıkçı","lazım","lazımcı","lazımlar","lazımlı","lazımlık","lazımsal","lazımsız","laş","leke","lekeci","lekeler","lekeli","lekelik","lekesiz","lenfler","lenfli","lenflik","lenfsel","lenfsiz","lenfçi","levha","levhacı","levhalar","levhalı","levhalık","levhasal","levhasız","leş","liberalizm","lider","liderci","liderler","liderli","liderlik","liderlikler","liderlikli","liderliksiz","lidersiz","lin","lo-fi","loop","lor","luz","lüks","lüksler","lükslü","lükslük","lükssel","lükssüz","lüksçü","lütuf","lütuflar","lütuflu","lütufluk","lütufsal","lütufsuz","lütufçu","macera","maceralar","maceralı","maceralık","macerasız","madde","maddeci","maddeler","maddeli","maddelik","maddesel","maddesiz","maden","madenci","madenler","madenli","madenlik","madensel","madensiz","mahalle","mahalleci","mahalleler","mahalleli","mahallelik","mahallesel","mahallesiz","mahcup","mahcuplar","mahcuplu","mahcupluk","mahcupsal","mahcupsuz","mahcupçu","mahkum","mahkumcu","mahkumiyet","mahkumiyetler","mahkumiyetli","mahkumiyetlik","mahkumiyetsiz","mahkumlar","mahkumlu","mahkumluk","mahkumsal","mahkumsuz","mahvolmak","mahvolmaklar","mahvolmaklı","mahvolmaklık","mahvolmaksız","mahvolmakçı","mahzun","mahzuncu","mahzunlar","mahzunlu","mahzunluk","mahzunsuz","mak","maksad","maksadcı","maksadlar","maksadlı","maksadlık","maksadsal","maksadsız","mal","man","mantar","mantarcı","mantarlar","mantarlı","mantarlık","mantarsal","mantarsız","mantık","mantıklar","mantıklı","mantıklık","mantıksal","mantıksız","mantıkçı","mar","marjinalleşme","market","marketler","marketli","marketlik","marketsel","marketsiz","marketçi","maske","maskeler","maskeli","maskelici","maskelik","maskeliler","maskelili","maskelilik","maskelisiz","maskesiz","masum","mat","matlar","matlı","matlık","matsız","matçı","mavici","maviler","mavili","mavilik","mavisel","mavisiz","maz","mazlum","mazlumcu","mazlumlar","mazlumlu","mazlumluk","mazlumsal","mazlumsuz","mağara","mağaracı","mağaralar","mağaralı","mağaralık","mağarasal","mağarasız","mağaza","mağazacı","mağazalar","mağazalı","mağazalık","mağazasal","mağazasız","mağdur","mağdurcu","mağdurlar","mağdurlu","mağdurluk","mağdursal","mağdursuz","mc","meclis","meclisler","meclisli","meclislik","meclissel","meclissiz","meclisçi","mek","melankoli","melankolici","melankoliler","melankolili","melankolilik","melankolisiz","melodi","melodici","melodiler","melodili","melodilik","melodisel","melodisiz","mem","memnuniyet","men","menba","menbacı","menbalar","menbalı","menbalık","menbasal","menbasız","mer","meracı","merak","meraklar","meraklı","meraklık","meraksal","meraksız","merakçı","meralar","meralı","meralık","merasal","merasız","merhamet","merhametler","merhametli","merhametlik","merhametsel","merhametsiz","merhametçi","mesaj","mesajcı","mesajlar","mesajlı","mesajlık","mesajsal","mesajsız","met","metafizik","metalik","metalikler","metalikli","metaliksel","metaliksiz","metalikçi","metro","metrocu","metrolar","metrolu","metroluk","metropol","metropolcu","metropollar","metropollu","metropolluk","metropolsal","metropolsuz","metrosal","metrosuz","meydan","meydancı","meydanlar","meydanlı","meydanlık","meydansal","meydansız","meyil","meyilci","meyiller","meyilli","meyillik","meyilsiz","mez","mezarlık","mezarlıklar","mezarlıklı","mezarlıksal","mezarlıksız","mezarlıkçı","meş","meşhur","meşhurcu","meşhurlar","meşhurlu","meşhurluk","meşhursal","meşhursuz","meşkuk","meşkuklar","meşkuklu","meşkukluk","meşkuksal","meşkuksuz","meşkukçu","mideci","mideler","mideli","midelik","midesel","midesiz","mikrofon","mikrofoncu","mikrofonlar","mikrofonlu","mikrofonluk","mikrofonsal","mikrofonsuz","miksaj","miksajcı","miksajlar","miksajlı","miksajlık","miksajsal","miksajsız","mil","milenyum","milenyumcu","milenyumlar","milenyumlu","milenyumluk","milenyumsal","milenyumsuz","milis","milisler","milisli","milislik","milissel","milissiz","milisçi","milliyetçilik","milyar","milyarcı","milyarlar","milyarlı","milyarlık","milyarsal","milyarsız","milyon","milyoncu","milyonlar","milyonlu","milyonluk","milyonsal","milyonsuz","min","mineral","mineralcı","minerallar","minerallı","minerallık","mineralsal","mineralsız","minnettarlık","miras","miraslar","miraslı","miraslık","mirassal","mirassız","mirasçı","mis","mitler","mitli","mitlik","mitsiz","mitçi","mix","miz","modern","modernci","modernler","modernli","modernlik","modernsel","modernsiz","mol","monad","monadcı","monadlar","monadlı","monadlık","monadsal","monadsız","mor","morcu","morlar","morlu","morluk","morsuz","muhakeme","muhakemeci","muhakemeler","muhakemeli","muhakemelik","muhakemesel","muhakemesiz","muhalefet","muhalif","muhalifler","muhalifli","muhaliflik","muhalifsel","muhalifsiz","muhalifçi","muharebe","muharebeci","muharebeler","muharebeli","muharebelik","muharebesel","muharebesiz","muhtaç","muhtaçlar","muhtaçlı","muhtaçlık","muhtaçsal","muhtaçsız","muhtaççı","muktedir","muktedirci","muktedirler","muktedirli","muktedirlik","muktedirsel","muktedirsiz","mut","mutlu","mutluluk","mutsuz","mutsuzluk","muz","mücadele","mücadeleci","mücadeleler","mücadeleli","mücadelelik","mücadelesiz","mülteci","mülteciler","mültecili","mültecilik","mültecisel","mültecisiz","münzevi","münzevici","münzeviler","münzevili","münzevilik","münzevisel","münzevisiz","mütevazı","müteşekkir","müttefik","müttefikler","müttefikli","müttefiklik","müttefiksel","müttefiksiz","müttefikçi","müzisyen","müzisyenci","müzisyenler","müzisyenli","müzisyenlik","müzisyensel","müzisyensiz","müzmin","müzminci","müzminler","müzminli","müzminlik","müzminsiz","mıh","nabız","nabızcı","nabızlar","nabızlı","nabızlık","nabızsal","nabızsız","nadan","nadancı","nadanlar","nadanlı","nadanlık","nadansız","nakarat","nakaratlar","nakaratlı","nakaratlık","nakaratsal","nakaratsız","nakaratçı","nal","nam","namus","namuslar","namuslu","namusluk","namussal","namussuz","namusçu","nankör","nankörcü","nankörler","nankörlü","nankörlük","nankörsüz","nar","nas","nasip","nasipler","nasipli","nasiplik","nasipsel","nasipsiz","nasipçi","nat","naz","nazik","nazikler","nazikli","naziklik","naziksel","naziksiz","nazikçi","naş","nebula","nebulacı","nebulalar","nebulalı","nebulalık","nebulasal","nebulasız","neden","nedenci","nedenler","nedenli","nedenlik","nedensel","nedensiz","nefes","nefesde","nefesden","nefese","nefesi","nefesim","nefesin","nefesler","nefesli","nefeslik","nefessel","nefessiz","nefesçi","nefret","nefretler","nefretli","nefretlik","nefretsel","nefretsiz","nefretçi","nehir","nehirci","nehirde","nehirden","nehire","nehiri","nehirim","nehirin","nehirler","nehirli","nehirlik","nehirsel","nehirsiz","nem","nesil","nesilci","nesiller","nesilli","nesillik","nesilsel","nesilsiz","nesne","nesneci","nesneler","nesneli","nesnelik","nesnesiz","net","nev","nez","neş","neşe","neşeci","neşeler","neşeli","neşelik","neşesel","neşesiz","nihayet","nihayetler","nihayetli","nihayetlik","nihayetsel","nihayetsiz","nihayetçi","nihilizm","nihilizmci","nihilizmler","nihilizmli","nihilizmlik","nihilizmsel","nihilizmsiz","nil","nin","nitelik","nitelikler","nitelikli","niteliksel","niteliksiz","nitelikçi","niyet","niyetler","niyetli","niyetlik","niyetsel","niyetsiz","niyetçi","nizam","nizamcı","nizamlar","nizamlı","nizamlık","nizamsal","nizamsız","niçin","niçinci","niçinler","niçinli","niçinlik","niçinsel","niçinsiz","nişancı","nişancılar","nişancılı","nişancılık","nişancısal","nişancısız","nor","nostaljik","notacı","notalar","notalı","notalık","notasal","notasız","nuz","nöbet","nöbetler","nöbetli","nöbetlik","nöbetsel","nöbetsiz","nöbetçi","nüfus","nüfuslar","nüfuslu","nüfusluk","nüfussal","nüfussuz","nüfusçu","ok","oktav","oktavcı","oktavlar","oktavlı","oktavlık","oktavsal","oktavsız","oku","okuma","okumak","okumaklar","okumaklı","okumaklık","okumaksal","okumaksız","okumakçı","okuyor","okyanus","okyanuslar","okyanuslu","okyanusluk","okyanussal","okyanussuz","okyanusçu","ol","olan","olaylar","olaylı","olaylık","olaysız","olgucu","olgular","olgulu","olguluk","olgusuz","oligarşi","oligarşici","oligarşiler","oligarşili","oligarşilik","oligarşisel","oligarşisiz","olmak","olmaklar","olmaklı","olmaklık","olmaksal","olmaksız","olmakçı","oluyor","oluş","omurcu","omurga","omurgacı","omurgalar","omurgalı","omurgalık","omurgasal","omurgasız","omurlar","omurlu","omurluk","omursal","omursuz","omuz","omuzcu","omuzlar","omuzlu","omuzluk","omuzsal","omuzsuz","on","onarma","onarmak","onarmaklar","onarmaklı","onarmaklık","onarmaksal","onarmaksız","onarmakçı","onarıyor","onarış","onaycı","onaylar","onaylı","onaylık","onaysız","ontoloji","ontolojici","ontolojiler","ontolojili","ontolojilik","ontolojisel","ontolojisiz","onur","onurcu","onurlar","onurlu","onurluk","onursal","onursuz","op","opaklar","opaklı","opaklık","opaksal","opaksız","opakçı","operasyon","or","orducu","ordular","ordulu","orduluk","ordusal","ordusuz","orkucu","orkular","orkulu","orkuluk","orkusal","orkusuz","orman","ormancı","ormanlar","ormanlı","ormanlık","ormanlıklar","ormanlıklı","ormanlıksal","ormanlıksız","ormanlıkçı","ormansal","ormansız","ot","otoyol","otoyolcu","otoyollar","otoyollu","otoyolluk","otoyolsal","otoyolsuz","oturma","oturmak","oturmaklar","oturmaklı","oturmaklık","oturmaksal","oturmaksız","oturmakçı","oturuyor","oturuş","ovacı","ovalar","ovalı","ovalık","ovasız","oğ","padişah","padişahlar","padişahlı","padişahlık","padişahsal","padişahsız","padişahçı","pak","pal","pam","pan","panik","panikler","panikli","paniklik","paniksiz","panikçi","par","paradigma","paradoks","paradokslar","paradokslu","paradoksluk","paradokssal","paradokssuz","paradoksçu","paralar","paralı","paralık","parasız","parklar","parklı","parklık","parksal","parksız","parkçı","parlak","parlaklar","parlaklı","parlaklık","parlaksal","parlaksız","parlakçı","parmak","parmaklar","parmaklı","parmaklık","parmaksal","parmaksız","parmakçı","parça","parçacı","parçalanmak","parçalar","parçalı","parçalık","parçasal","parçasız","pas","paslı","paslıcı","paslılar","paslılı","paslılık","paslısal","paslısız","pastel","pastelci","pasteller","pastelli","pastellik","pastelsel","pastelsiz","pat","patlak","patlaklar","patlaklı","patlaklık","patlaksız","patlama","patlamacı","patlamak","patlamaklar","patlamaklı","patlamaklık","patlamaksal","patlamaksız","patlamakçı","patlamalar","patlamalı","patlamalık","patlamasız","patlayıcı","pay","paz","pazar","pazarcı","pazarlar","pazarlı","pazarlık","pazarsal","pazarsız","paş","pek","pel","pembe","pembeci","pembeler","pembeli","pembelik","pembesel","pembesiz","pencere","pencereci","pencereler","pencereli","pencerelik","penceresel","penceresiz","perde","perdeler","perdeli","perdelik","perdesiz","perişan","perişancı","perişanlar","perişanlı","perişanlık","perişansal","perişansız","perspektif","pet","pey","peş","pil","pin","pir","pis","pislik","pislikler","pislikli","pisliksiz","pislikçi","pit","pişman","pişmancı","pişmanlar","pişmanlı","pişmanlık","pişmanlıklar","pişmanlıklı","pişmanlıksız","pişmanlıkçı","pişmansal","pişmansız","planlama","planlamak","planlıyor","plato","platocu","platolar","platolu","platoluk","platosal","platosuz","playback","playbacklar","playbacklı","playbacklık","playbacksal","playbacksız","playbackçı","playlist","playlistler","playlistli","playlistlik","playlistsel","playlistsiz","playlistçi","polis","polisler","polisli","polislik","polissel","polissiz","polisçi","por","postane","postaneci","postaneler","postaneli","postanelik","postanesel","postanesiz","prodüksiyon","propaganda","protesto","protestolar","protestolu","protestoluk","protestosuz","psişe","psişeci","psişeler","psişeli","psişelik","psişesel","psişesiz","pul","punch","punchlar","punchlu","punchluk","punchsal","punchsuz","punchçu","pusucu","pusular","pusulu","pusuluk","pususal","pususuz","puz","pınar","pınarcı","pınarlar","pınarlı","pınarlık","pınarsal","pınarsız","rahatsızlık","rak","ram","ran","rap","ras","rasyonellik","rat","rav","raş","reddedilmek","redif","redifler","redifli","rediflik","redifsel","redifsiz","redifçi","reform","reformcu","reformlar","reformlu","reformluk","reformsal","reformsuz","reklam","reklamcı","reklamlar","reklamlı","reklamlık","reklamsal","reklamsız","rekor","rekorcu","rekorlar","rekorlu","rekorluk","rekorsal","rekorsuz","remix","renkli","renklici","renkliler","renklili","renklilik","renklisel","renklisiz","rezalet","rezaletler","rezaletli","rezaletlik","rezaletsel","rezaletsiz","rezaletçi","reçine","reçineci","reçineler","reçineli","reçinelik","reçinesel","reçinesiz","reş","ritim","ritimci","ritimler","ritimli","ritimlik","ritimsel","ritimsiz","ror","ruh","ruha","ruhda","ruhdan","ruhlar","ruhlu","ruhluk","ruhsuz","ruhu","ruhum","ruhun","ruhçu","ruz","rönasans","rönasanslar","rönasanslı","rönasanslık","rönasanssal","rönasanssız","rönasansçı","rüm","rüzgar","rüzgarcı","rüzgarlar","rüzgarlı","rüzgarlık","rüzgarsal","rüzgarsız","sabah","sabaha","sabahda","sabahdan","sabahlar","sabahlı","sabahlık","sabahsal","sabahsız","sabahçı","sabahı","sabahım","sabahın","sabit","sabitler","sabitli","sabitlik","sabitsel","sabitsiz","sabitçi","sabık","sabıklar","sabıklı","sabıklık","sabıksal","sabıksız","sabıkçı","sabır","sabırcı","sabırlar","sabırlı","sabırlık","sabırsal","sabırsız","sabırsızlık","sac","sadakat","sadakatlar","sadakatlı","sadakatlık","sadakatsal","sadakatsizlik","sadakatsız","sadakatçı","sadık","sadıklar","sadıklı","sadıklık","sadıksal","sadıksız","sadıkçı","saf","safir","safirci","safirler","safirli","safirlik","safirsel","safirsiz","sahih","sahihler","sahihli","sahihlik","sahihsel","sahihsiz","sahihçi","sahne","sahneci","sahneler","sahneli","sahnelik","sahnesel","sahnesiz","sahte","sahteci","sahteler","sahteli","sahtelik","sahtesiz","sak","sakin","sakiniyor","sakiniş","sakinleşmek","sakinme","sakinmek","sal","salan","saldırı","saldırıcı","saldırılar","saldırılı","saldırılık","saldırısız","salp","sam","samimiyet","sample","sampleci","sampleler","sampleli","samplelik","samplesel","samplesiz","san","sancı","sancılar","sancılı","sancılık","sancısız","saniye","saniyeci","saniyeler","saniyeli","saniyelik","saniyesel","saniyesiz","sansür","sansürcü","sansürler","sansürlü","sansürlük","sansürsel","sansürsüz","sar","sarı","sarıcı","sarılar","sarılı","sarılık","sarısal","sarısız","sat","sav","savaş","savaşa","savaşda","savaşdan","savaşlar","savaşlı","savaşlık","savaşma","savaşmak","savaşmaklar","savaşmaklı","savaşmaklık","savaşmaksal","savaşmaksız","savaşmakçı","savaşsal","savaşsız","savaşçı","savaşçıcı","savaşçılar","savaşçılı","savaşçılık","savaşçısal","savaşçısız","savaşı","savaşım","savaşın","savaşıyor","savaşış","savunma","savunmalar","savunmalı","savunmalık","savunmasız","say","saz","sazlık","sazlıklar","sazlıklı","sazlıksal","sazlıksız","sazlıkçı","saç","saçlar","saçlı","saçlık","saçsız","saççı","sağır","sağırlar","sağırlı","sağırlık","sağırsız","scratch","scratchlar","scratchlı","scratchlık","scratchsal","scratchsız","scratchçı","sediman","sedimancı","sedimanlar","sedimanlı","sedimanlık","sedimansal","sedimansız","sefalet","sefaletler","sefaletli","sefaletlik","sefaletsiz","seher","seherci","seherler","seherli","seherlik","sehersel","sehersiz","sekiz","sekizci","sekizler","sekizli","sekizlik","sekizsel","sekizsiz","sel","selci","seller","selli","sellik","selsiz","sem","sembol","sembolcu","sembollar","sembollu","sembolluk","sembolsal","sembolsuz","semtler","semtli","semtlik","semtsel","semtsiz","semtçi","sen","sendika","sendikacı","sendikalar","sendikalı","sendikalık","sendikasal","sendikasız","senkop","senkoplar","senkoplu","senkopluk","senkopsal","senkopsuz","senkopçu","ser","sert","sertlik","sertlikler","sertlikli","sertliksel","sertliksiz","sertlikçi","servet","servetler","servetli","servetlik","servetsiz","ses","sesde","sesden","sese","sesi","sesim","sesin","sesler","sesli","seslik","sessiz","sessizlik","sesçi","sev","sevgi","sevgici","sevgiler","sevgili","sevgilik","sevgisel","sevgisiz","seviniyor","seviniş","sevinme","sevinmek","sevinmekler","sevinmekli","sevinmeklik","sevinmeksel","sevinmeksiz","sevinmekçi","sevinç","sevinçde","sevinçden","sevinçe","sevinçi","sevinçim","sevinçin","sevinçler","sevinçli","sevinçlik","sevinçsel","sevinçsiz","sevinççi","seviyor","seviş","sevme","sevmek","sevmekler","sevmekli","sevmeklik","sevmeksel","sevmeksiz","sevmekçi","seyreklik","seyyar","seyyarcı","seyyarlar","seyyarlı","seyyarlık","seyyarsal","seyyarsız","sez","sezgi","sezgici","sezgiler","sezgili","sezgilik","sezgisel","sezgisiz","seçim","seçimler","seçimli","seçimlik","seçimsiz","seş","sil","silah","silahlar","silahlı","silahlık","silahsal","silahsız","silahçı","silinmek","silinmekler","silinmekli","silinmeklik","silinmeksiz","silinmekçi","sin","single","singleci","singleler","singleli","singlelik","singlesel","singlesiz","sinir","sinirci","sinirler","sinirli","sinirlik","sinirsel","sinirsiz","sir","siren","sirenci","sirenler","sirenli","sirenlik","sirensel","sirensiz","sis","sisli","sislici","sisliler","sislili","sislilik","sislisel","sislisiz","sit","sitem","sitemci","sitemler","sitemli","sitemlik","sitemsiz","siyah","siyahlar","siyahlı","siyahlık","siyahsal","siyahsız","siyahçı","siz","skretch","skretchler","skretchli","skretchlik","skretchsel","skretchsiz","skretchçi","sokak","sokaka","sokakda","sokakdan","sokaklar","sokaklarda","sokaklı","sokaklık","sokaksal","sokaksız","sokakçı","sokakı","sokakım","sokakın","sol","solgun","solguncu","solgunlar","solgunlu","solgunluk","solgunsal","solgunsuz","soluk","soluklar","soluklu","soluksal","soluksuz","solukçu","somurtkan","somurtkancı","somurtkanlar","somurtkanlı","somurtkanlık","somurtkansız","son","sonra","sonracı","sonralar","sonralı","sonralık","sonrasal","sonrasız","sonsuz","sonsuzlar","sonsuzlu","sonsuzluk","sor","sorgulama","sorma","sormak","sormaklar","sormaklı","sormaklık","sormaksal","sormaksız","sormakçı","sorumluluk","sorumsuzluk","sorun","soruncu","sorunlar","sorunlu","sorunlucu","sorunluk","sorunlular","sorunlulu","sorunluluk","sorunlusuz","sorunsuz","soruyor","soruş","sosyalizm","soy","stepler","stepli","steplik","stepsel","stepsiz","stepçi","strateji","stratejici","stratejiler","stratejili","stratejilik","stratejisel","stratejisiz","stüdyo","stüdyocu","stüdyolar","stüdyolu","stüdyoluk","stüdyosal","stüdyosuz","su","sul","sular","suluk","sum","sun","sur","sus","susuz","sut","suz","söm","sömürü","sömürücü","sömürüler","sömürülü","sömürülük","sömürüsel","sömürüsüz","sön","sönük","söy","söyle","söyleme","söylemek","söylemekler","söylemekli","söylemeklik","söylemeksel","söylemeksiz","söylemekçi","söyliyor","söz","sözde","sözden","söze","sözü","sözüm","sözün","sül","süm","sün","süngü","süngücü","süngüler","süngülü","süngülük","süngüsel","süngüsüz","süp","sür","sürekli","süren","süreç","süreçler","süreçli","süreçlik","süreçsel","süreçsiz","süreççi","sürgün","sürgüncü","sürgünler","sürgünlü","sürgünlük","sürgünsel","sürgünsüz","süs","süt","süş","sıfır","sıfırcı","sıfırlar","sıfırlı","sıfırlık","sıfırsal","sıfırsız","sık","sıklık","sıklıklar","sıklıklı","sıklıksal","sıklıksız","sıklıkçı","sıkı","sıkıntı","sıkıntıcı","sıkıntılar","sıkıntılı","sıkıntılık","sıkıntısal","sıkıntısız","sıkışmak","sıkıştırmak","sıkışık","sıl","sım","sın","sınıf","sınıflar","sınıflı","sınıflık","sınıfsal","sınıfsız","sınıfçı","sınır","sınırcı","sınırlar","sınırlı","sınırlık","sınırsal","sınırsız","sıp","sır","sıradağ","sıradağcı","sıradağlar","sıradağlı","sıradağlık","sıradağsal","sıradağsız","sırlar","sırlı","sırlık","sırsız","sıv","sız","sıç","sıçramak","sıçramaklar","sıçramaklı","sıçramaklık","sıçramaksal","sıçramaksız","sıçramakçı","sığlık","sığlıklar","sığlıklı","sığlıksal","sığlıksız","sığlıkçı","tabela","tabelacı","tabelalar","tabelalı","tabelalık","tabelasal","tabelasız","tahakküm","tahakkümcü","tahakkümler","tahakkümlü","tahakkümlük","tahakkümsel","tahakkümsüz","tahkim","tahkimci","tahkimler","tahkimli","tahkimlik","tahkimsel","tahkimsiz","tahkir","tahkirci","tahkirler","tahkirli","tahkirlik","tahkirsel","tahkirsiz","tak","taktik","taktikler","taktikli","taktiklik","taktiksel","taktiksiz","taktikçi","tal","talp","tam","tamam","tamamcı","tamamlar","tamamlı","tamamlık","tamamsal","tamamsız","tan","tankitap","tankitaplar","tankitaplı","tankitaplık","tankitapsal","tankitapsız","tankitapçı","tanklar","tanklı","tanklık","tanksal","tanksız","tankçı","tap","tar","tarih","tarihler","tarihli","tarihlik","tarihsel","tarihselci","tarihseller","tarihselli","tarihsellik","tarihselsiz","tarihsiz","tarihçi","tartışma","tartışmak","tartışıyor","tartışış","tasarlama","tasarlamak","tasarlıyor","tav","tay","tayın","tayıncı","tayınlar","tayınlı","tayınlık","tayınsal","tayınsız","taş","taşan","taşlar","taşlı","taşlık","taşsız","taşçı","tecrit","tecritler","tecritli","tecritlik","tecritsiz","tecritçi","tehdit","tehditler","tehditli","tehditlik","tehditsel","tehditsiz","tehditçi","tek","tekrar","tekrarcı","tekrarlar","tekrarlı","tekrarlık","tekrarsal","tekrarsız","tel","telaş","telaşlar","telaşlı","telaşlık","telaşsal","telaşsız","telaşçı","tembellik","temiz","temizci","temizler","temizli","temizlik","temizsel","temizsiz","tempo","tempocu","tempolar","tempolu","tempoluk","temposal","temposuz","ten","tenci","tenler","tenli","tenlik","tensiz","tepeci","tepeler","tepeli","tepelik","tepesel","tepesiz","ter","terk","terkler","terkli","terklik","terksiz","terkçi","tes","teselli","teslim","teslimci","teslimiyet","teslimiyetler","teslimiyetli","teslimiyetlik","teslimiyetsiz","teslimler","teslimli","teslimlik","teslimsel","teslimsiz","tetikçi","tetikçici","tetikçiler","tetikçili","tetikçilik","tetikçisel","tetikçisiz","tev","tez","teş","til","tim","tin","tinci","tinler","tinli","tinlik","tinsiz","tip","tir","titiz","titremek","titremekler","titremekli","titremeklik","titremeksiz","titreşim","titreşimci","titreşimler","titreşimli","titreşimlik","titreşimsel","titreşimsiz","tok","ton","top","toparlanmak","topluluk","toplum","toplumcu","toplumlar","toplumlu","toplumluk","toplumsal","toplumsuz","toprak","topraklar","topraklı","topraklık","topraksal","topraksız","toprakçı","tor","totalitarizm","toy","trafik","trafikler","trafikli","trafiklik","trafiksel","trafiksiz","trafikçi","transandans","trap","tsunami","tsunamici","tsunamiler","tsunamili","tsunamilik","tsunamisel","tsunamisiz","tuhaf","tul","tum","tun","tur","turan","turntablist","turuncu","turuncular","turunculu","turunculuk","turuncusal","turuncusuz","tus","tut","tutarsızlık","tutku","tutkucu","tutkular","tutkulu","tutkuluk","tutkusal","tutkusuz","tutma","tutmak","tutmaklar","tutmaklı","tutmaklık","tutmaksal","tutmaksız","tutmakçı","tutsak","tutuyor","tutuş","tuz","tuzak","tuzaklar","tuzaklı","tuzaklık","tuzaksız","töz","tözcü","tözler","tözlü","tözlük","tözsüz","tükenmek","tükenmekler","tükenmekli","tükenmeklik","tükenmeksiz","tükenmişlik","tül","tüm","tünel","tünelci","tüneller","tünelli","tünellik","tünelsel","tünelsiz","tür","tüs","tüt","tüş","tık","tını","tınıcı","tınılar","tınılı","tınılık","tınısal","tınısız","tırnak","tırnaklar","tırnaklı","tırnaklık","tırnaksal","tırnaksız","tırnakçı","ufalmak","ufalmaklar","ufalmaklı","ufalmaklık","ufalmaksız","ufalmakçı","ufuklar","ufuklu","ufukluk","ufuksal","ufuksuz","ufukçu","uk","ul","uluslar","uluslu","ulusluk","ulussal","ulussuz","ulusçu","um","umut","umuta","umutda","umutdan","umutlar","umutlu","umutluk","umutsal","umutsuz","umutsuzca","umutsuzcacı","umutsuzcalar","umutsuzcalı","umutsuzcalık","umutsuzcasız","umutsuzluk","umutu","umutum","umutun","umutçu","un","unut","unutma","unutmak","unutmaklar","unutmaklı","unutmaklık","unutmaksal","unutmaksız","unutmakçı","unutulmak","unutulmaklar","unutulmaklı","unutulmaklık","unutulmaksız","unutulmakçı","unutuyor","unutuş","ur","us","ut","utanç","utançlar","utançlı","utançlık","utançsal","utançsız","utanççı","uv","uyaklar","uyaklı","uyaklık","uyaksal","uyaksız","uyakçı","uyanmak","uyanmaklar","uyanmaklı","uyanmaklık","uyanmaksız","uygulama","uygulamak","uygulıyor","uykan","uyu","uyuma","uyumak","uyumaklar","uyumaklı","uyumaklık","uyumaksal","uyumaksız","uyumakçı","uyuyor","uz","uzak","uzlaşma","uzlaşmak","uzlaşmaklar","uzlaşmaklı","uzlaşmaklık","uzlaşmaksal","uzlaşmaksız","uzlaşmakçı","uzlaşıyor","uzlaşış","uzman","uzmancı","uzmanlar","uzmanlı","uzmanlık","uzmansal","uzmansız","uzunluk","uzunluklar","uzunluklu","uzunluksal","uzunluksuz","uzunlukçu","uç","uçan","uçmak","uçmaklar","uçmaklı","uçmaklık","uçmaksal","uçmaksız","uçmakçı","uçsuz","uçurum","uçurumcu","uçurumlar","uçurumlu","uçurumluk","uçurumsal","uçurumsuz","uğraş","uğraşlar","uğraşlı","uğraşlık","uğraşsal","uğraşsız","uğraşçı","uğursuz","uğursuzcu","uğursuzlar","uğursuzlu","uğursuzluk","uğursuzsal","uş","vadici","vadiler","vadili","vadilik","vadisel","vadisiz","val","var","varlık","varlıklar","varlıklı","varlıksal","varlıksız","varlıkçı","varoluş","varoluşlar","varoluşlu","varoluşluk","varoluşsal","varoluşsuz","varoluşçu","varoş","varoşlar","varoşlu","varoşluk","varoşsal","varoşsuz","varoşçu","vat","vatan","vatana","vatancı","vatanda","vatandan","vatanlar","vatanlı","vatanlık","vatansal","vatansız","vatanı","vatanım","vatanın","vay","vazgeçmek","vazgeçmekler","vazgeçmekli","vazgeçmeklik","vazgeçmeksiz","vazgeçmekçi","vaş","vecibe","vecibeci","vecibeler","vecibeli","vecibelik","vecibesel","vecibesiz","vefacı","vefalar","vefalı","vefalık","vefasal","vefasız","vefasızlık","vel","ven","ver","vergi","vergiler","vergili","vergilik","vergisiz","verilen","veriyor","veriş","verme","vermek","vermekler","vermekli","vermeklik","vermeksel","vermeksiz","vermekçi","verse","verseci","verseler","verseli","verselik","versesel","versesiz","versler","versli","verslik","verssel","verssiz","versçi","vet","vez","vicdan","vicdancı","vicdanlar","vicdanlı","vicdanlık","vicdansal","vicdansız","vil","vilayet","vilayetler","vilayetli","vilayetlik","vilayetsel","vilayetsiz","vilayetçi","vin","volkan","volkancı","volkanlar","volkanlı","volkanlık","volkansal","volkansız","vor","vur","vurmak","vurmaklar","vurmaklı","vurmaklık","vurmaksal","vurmaksız","vurmakçı","vuz","vız","yabancı","yabancılar","yabancılı","yabancılık","yabancısal","yabancısız","yad","yadsımak","yadsımaklar","yadsımaklı","yadsımaklık","yadsımaksız","yadsımakçı","yak","yakut","yakutlar","yakutlu","yakutluk","yakutsal","yakutsuz","yakutçu","yal","yalancilik","yalnız","yalnızlık","yalnızlıklar","yalnızlıklı","yalnızlıksız","yalnızlıkçı","yam","yan","yanardağ","yanardağcı","yanardağlar","yanardağlı","yanardağlık","yanardağsal","yanardağsız","yankı","yankıcı","yankılar","yankılı","yankılık","yankısal","yankısız","yanlış","yansıma","yansımalar","yansımalı","yansımalık","yansımasız","yanılsama","yanılsamacı","yanılsamalar","yanılsamalı","yanılsamalık","yanılsamasız","yap","yapma","yapmak","yapmaklar","yapmaklı","yapmaklık","yapmaksal","yapmaksız","yapmakçı","yapıyor","yapış","yar","yara","yaracı","yaralar","yaralı","yaralık","yarasal","yarasız","yaratma","yaratmak","yaratmaklar","yaratmaklı","yaratmaklık","yaratmaksal","yaratmaksız","yaratmakçı","yaratıyor","yaratış","yargı","yargıcı","yargılar","yargılı","yargılık","yargısal","yargısız","yarım","yarımcı","yarımlar","yarımlı","yarımlık","yarımsal","yarımsız","yarın","yarıncı","yarınlar","yarınlı","yarınlık","yarınsal","yarınsız","yas","yat","yatan","yav","yavaşlamak","yavaşlık","yavaşlıklar","yavaşlıklı","yavaşlıksal","yavaşlıksız","yavaşlıkçı","yay","yayla","yaylacı","yaylalar","yaylalı","yaylalık","yaylasal","yaylasız","yayın","yayıncı","yayınlar","yayınlı","yayınlık","yayınsal","yayınsız","yaz","yazma","yazmak","yazmaklar","yazmaklı","yazmaklık","yazmaksal","yazmaksız","yazmakçı","yazıyor","yazış","yağmur","yağmurcu","yağmurlar","yağmurlu","yağmurluk","yağmursal","yağmursuz","yaş","yaşa","yedici","yediler","yedili","yedilik","yedisel","yedisiz","yel","yemek","yemekler","yemekli","yemeklik","yemeksel","yemeksiz","yemekçi","yen","yenilgi","yenilgici","yenilgide","yenilgiden","yenilgiler","yenilgili","yenilgilik","yenilgisel","yenilgisiz","yenilik","yenilikler","yenilikli","yeniliksel","yeniliksiz","yenilikçi","yenmek","yenmekler","yenmekli","yenmeklik","yenmeksel","yenmeksiz","yenmekçi","yep","yer","yeten","yeterli","yeterlici","yeterliler","yeterlili","yeterlilik","yeterlisel","yeterlisiz","yetersiz","yetersizci","yetersizler","yetersizli","yetersizlik","yetersizsel","yeş","yeşil","yeşilci","yeşiller","yeşilli","yeşillik","yeşilsel","yeşilsiz","yil","yim","yin","yip","yir","yit","yiyen","yiyor","yiğit","yiğitler","yiğitli","yiğitlik","yiğitlikler","yiğitlikli","yiğitliksiz","yiğitlikçi","yiğitsel","yiğitsiz","yiğitçi","yok","yoksulluk","yoksulluklar","yoksulluklu","yoksulluksuz","yoksunluk","yol","yola","yolcu","yolculuk","yolda","yoldan","yollar","yollu","yolluk","yolsuz","yolu","yolum","yolun","yon","yor","yorgun","yorguncu","yorgunlar","yorgunlu","yorgunluk","yorgunsuz","yorum","yorumcu","yorumlar","yorumlu","yorumluk","yorumsal","yorumsuz","yov","yoğunluk","yoğunluklar","yoğunluklu","yoğunluksal","yoğunluksuz","yoğunlukçu","yul","yum","yumuşaklık","yurt","yurta","yurtda","yurtdan","yurtlar","yurtlu","yurtluk","yurtsal","yurtsuz","yurtu","yurtum","yurtun","yurtçu","yut","yuz","yöm","yön","yönetim","yönetimci","yönetimler","yönetimli","yönetimlik","yönetimsel","yönetimsiz","yör","yöt","yüce","yüceci","yüceler","yüceli","yücelik","yücesel","yücesiz","yük","yükler","yüklü","yüklük","yüksek","yükselmek","yüksüz","yükçü","yün","yür","yürek","yürekler","yürekli","yüreklik","yüreksiz","yürü","yürüme","yürümek","yürümekler","yürümekli","yürümeklik","yürümeksel","yürümeksiz","yürümekçi","yürüyor","yüz","yüzcü","yüzde","yüzden","yüze","yüzler","yüzleşme","yüzleşmeler","yüzleşmeli","yüzleşmelik","yüzleşmesiz","yüzlü","yüzlük","yüzsüz","yüzyıl","yüzyılcı","yüzyıllar","yüzyıllı","yüzyıllık","yüzyılsal","yüzyılsız","yüzü","yüzüm","yüzün","yüş","yık","yıkan","yıkma","yıkmak","yıkmaklar","yıkmaklı","yıkmaklık","yıkmaksal","yıkmaksız","yıkmakçı","yıkık","yıkıklar","yıkıklı","yıkıklık","yıkıksal","yıkıksız","yıkıkçı","yıkılmak","yıkılmaklar","yıkılmaklı","yıkılmaklık","yıkılmaksız","yıkılmakçı","yıkım","yıkımcı","yıkımlar","yıkımlı","yıkımlık","yıkımsız","yıkıyor","yıkış","yıl","yıla","yılcı","yılda","yıldan","yıldırım","yıldırımcı","yıldırımlar","yıldırımlı","yıldırımlık","yıldırımsal","yıldırımsız","yıldız","yıldızcı","yıldızlar","yıldızlı","yıldızlık","yıldızsal","yıldızsız","yıllar","yıllı","yıllık","yılsız","yılı","yılım","yılın","yım","yın","yıp","yır","yıt","yıv","yız","yığ","zafer","zaferci","zaferde","zaferden","zafere","zaferi","zaferim","zaferin","zaferler","zaferli","zaferlik","zafersel","zafersiz","zahmet","zahmetler","zahmetli","zahmetlik","zahmetsel","zahmetsiz","zahmetçi","zak","zal","zalim","zalimci","zalimler","zalimli","zalimlik","zalimsiz","zam","zaman","zamanlar","zamanlı","zamanlık","zamansız","zan","zap","zaptedmek","zaptlar","zaptlı","zaptlık","zaptsal","zaptsız","zaptçı","zar","zararlılık","zat","zav","zavallı","zavallıcı","zavallılar","zavallılı","zavallılık","zavallısal","zavallısız","zay","zayıf","zayıflamak","zayıflık","zayıflıklar","zayıflıklı","zayıflıksal","zayıflıksız","zayıflıkçı","zayıfma","zayıfmak","zayıfıyor","zayıfış","zaz","zekacı","zekalar","zekalı","zekalık","zekasal","zekasız","zel","zem","zemin","zeminci","zeminler","zeminli","zeminlik","zeminsel","zeminsiz","zen","zer","zes","zevkler","zevkli","zevklik","zevksel","zevksiz","zevkçi","zeytinlik","zihin","zihinci","zihinler","zihinli","zihinlik","zihinsel","zihinsiz","zil","zillet","zilletler","zilletli","zilletlik","zilletsel","zilletsiz","zilletçi","zim","zin","zincir","zincirci","zincirleme","zincirler","zincirli","zincirlik","zincirsiz","zindan","zindancı","zindanlar","zindanlı","zindanlık","zindansal","zindansız","zip","zir","zit","zol","zon","zor","zorba","zorbacı","zorbalar","zorbalı","zorbalık","zorbalıklar","zorbalıklı","zorbalıksız","zorbalıkçı","zorbasız","zorlamak","zorlamaklar","zorlamaklı","zorlamaklık","zorlamaksal","zorlamaksız","zorlamakçı","zulüm","zulümcü","zulümler","zulümlü","zulümlük","zulümsel","zulümsüz","zum","zun","zur","zut","zuz","zümrüt","zümrütler","zümrütlü","zümrütlük","zümrütsel","zümrütsüz","zümrütçü","zırh","zırhlar","zırhlı","zırhlık","zırhsal","zırhsız","zırhçı","çaba","çabacı","çabalamak","çabalamaklar","çabalamaklı","çabalamaklık","çabalamaksız","çabalamakçı","çabalar","çabalı","çabalık","çabasız","çabuklaşmak","çak","çakmak","çakmaklar","çakmaklı","çakmaklık","çakmaksız","çakmakçı","çakıl","çakılcı","çakıllar","çakıllı","çakıllık","çakılsal","çakılsız","çal","çalan","çalmak","çalmaklar","çalmaklı","çalmaklık","çalmaksız","çalmakçı","çalı","çalıcı","çalılar","çalılı","çalılık","çalısal","çalısız","çalış","çalışma","çalışmak","çalışıyor","çalışış","çam","çamcı","çamlar","çamlı","çamlık","çamsız","çan","çar","çaresiz","çaresizci","çaresizler","çaresizli","çaresizlik","çarpmak","çarpmaklar","çarpmaklı","çarpmaklık","çarpmaksal","çarpmaksız","çarpmakçı","çarpışma","çarşı","çarşıcı","çarşılar","çarşılı","çarşılık","çarşısal","çarşısız","çat","çatı","çatıcı","çatılar","çatılı","çatılık","çatısal","çatısız","çatışma","çay","çayır","çayırcı","çayırlar","çayırlı","çayırlık","çayırsal","çayırsız","çağ","çağcı","çağdaş","çağdaşlar","çağdaşlı","çağdaşlık","çağdaşsal","çağdaşsız","çağdaşçı","çağlar","çağlı","çağlık","çağsız","çek","çekici","çekiciler","çekicili","çekicilik","çekicisiz","çekim","çekimci","çekimler","çekimli","çekimlik","çekimsiz","çekinme","çekinmeci","çekinmek","çekinmekler","çekinmekli","çekinmeklik","çekinmeksiz","çekinmekçi","çekinmeler","çekinmeli","çekinmelik","çekinmesiz","çekiç","çekiçler","çekiçli","çekiçlik","çekiçsel","çekiçsiz","çekiççi","çekmek","çekmekler","çekmekli","çekmeklik","çekmeksel","çekmeksiz","çekmekçi","çelik","çelikler","çelikli","çeliksiz","çelişki","çelişkici","çelişkiler","çelişkili","çelişkilik","çelişkisel","çelişkisiz","çene","çeneci","çeneler","çeneli","çenelik","çenesel","çenesiz","çer","çetin","çetinci","çetinler","çetinli","çetinlik","çetinsiz","çevre","çevreci","çevreler","çevreli","çevrelik","çevresel","çevresiz","çevrim","çevrimci","çevrimler","çevrimli","çevrimlik","çevrimsiz","çeyrek","çeyrekler","çeyrekli","çeyreklik","çeyreksel","çeyreksiz","çeyrekçi","çeş","çil","çile","çileci","çileler","çileli","çilelik","çilesiz","çim","çimen","çimenci","çimenler","çimenli","çimenlik","çimensel","çimensiz","çin","çirkin","çirkinci","çirkinler","çirkinli","çirkinlik","çirkinsiz","çiz","çizen","çiçek","çiçekler","çiçekli","çiçeklik","çiçeksel","çiçeksiz","çiçekçi","çiş","çok","çoklar","çoklu","çokluk","çoksuz","çokçu","çoğulculuk","çukur","çukurcu","çukurlar","çukurlu","çukurluk","çukursal","çukursuz","çöküş","çöküşler","çöküşlü","çöküşlük","çöküşmek","çöküşsel","çöküşsüz","çöküşçü","çöl","çölcü","çöller","çöllü","çöllük","çölsüz","çöp","çöpler","çöplü","çöplük","çöpsüz","çöpçü","çözmek","çözmekler","çözmekli","çözmeklik","çözmeksel","çözmeksiz","çözmekçi","çözüm","çözümcü","çözümler","çözümlü","çözümlük","çözümsüz","çözümsüzcü","çözümsüzler","çözümsüzlü","çözümsüzlük","çık","çıkan","çıkarım","çıkarımcı","çıkarımlar","çıkarımlı","çıkarımlık","çıkarımsal","çıkarımsız","çıkma","çıkmak","çıkmaklar","çıkmaklı","çıkmaklık","çıkmaksal","çıkmaksız","çıkmakçı","çıkmazda","çıkmazdacı","çıkmazdalar","çıkmazdalı","çıkmazdalık","çıkmazdasız","çıkıyor","çıkış","çığ","çığcı","çığlar","çığlı","çığlık","çığlıklar","çığlıklı","çığlıksız","çığlıkçı","çığsız","öf","öfke","öfkeci","öfkede","öfkeden","öfkeler","öfkeli","öfkelik","öfkesel","öfkesiz","öl","öncesi","öncesici","öncesiler","öncesili","öncesilik","öncesisel","öncesisiz","önde","önsezi","önsezici","önseziler","önsezili","önsezilik","önsezisel","önsezisiz","öp","ör","ört","öt","öv","öz","özgür","özgürlük","özgürlükler","özgürlüklü","özgürlüksel","özgürlüksüz","özgürlükçü","özgüven","özgüvenler","özgüvenli","özgüvenlik","özgüvensiz","özlem","özlemci","özlemler","özlemli","özlemlik","özlemsel","özlemsiz","özler","özlü","özlük","özsüz","öç","öğreniyor","öğreniş","öğrenme","öğrenmeci","öğrenmek","öğrenmekler","öğrenmekli","öğrenmeklik","öğrenmeksel","öğrenmeksiz","öğrenmekçi","öğrenmeler","öğrenmeli","öğrenmelik","öğrenmesel","öğrenmesiz","öğretmek","öğretmekler","öğretmekli","öğretmeklik","öğretmeksel","öğretmeksiz","öğretmekçi","ülkü","ülküler","ülkülü","ülkülük","ülküsüz","üretim","üretimci","üretimler","üretimli","üretimlik","üretimsel","üretimsiz","ürkütü","ürkütücü","ürkütüler","ürkütülü","ürkütülük","ürkütüsel","ürkütüsüz","ütopya","ütopyacı","ütopyalar","ütopyalı","ütopyalık","ütopyasal","ütopyasız","üzülme","üzülmek","üzülmekler","üzülmekli","üzülmeklik","üzülmeksel","üzülmeksiz","üzülmekçi","üzülüyor","üzülüş","üzüntü","üzüntücü","üzüntüler","üzüntülü","üzüntülük","üzüntüsel","üzüntüsüz","üç","üçte","üçteci","üçteler","üçteli","üçtelik","üçtesel","üçtesiz","ılık","ırak","ırk","ırmak","ırmaklar","ırmaklı","ırmaklık","ırmaksal","ırmaksız","ırmakçı","ıs","ıssız","ıssızcı","ıssızlar","ıssızlı","ıssızlık","ıssızsal","ıstırap","ıstıraplar","ıstıraplı","ıstıraplık","ıstırapsal","ıstırapsız","ıstırapçı","ışık","ışıklar","ışıklı","ışıklık","ışıksal","ışıksız","ışıkçı","şak","şakak","şakaklar","şakaklı","şakaklık","şakaksal","şakaksız","şakakçı","şal","şam","şan","şancı","şanlar","şanlı","şanlık","şansız","şar","şarkı","şarkıcı","şarkılar","şarkılı","şarkılık","şarkısal","şarkısız","şat","şav","şay","şaz","şaşkın","şaşkınlık","şaşırmak","şaşırmaklar","şaşırmaklı","şaşırmaklık","şaşırmaksız","şaşırmakçı","şeffaf","şeffaflar","şeffaflı","şeffaflık","şeffafsal","şeffafsız","şeffafçı","şefkat","şefkatlar","şefkatlı","şefkatlık","şefkatsal","şefkatsız","şefkatçı","şehir","şehirci","şehirde","şehirden","şehire","şehiri","şehirim","şehirin","şehirler","şehirli","şehirlik","şehirsel","şehirsiz","şen","şer","şerif","şerifler","şerifli","şeriflik","şerifsel","şerifsiz","şerifçi","şevk","şevkler","şevkli","şevklik","şevksel","şevksiz","şevkçi","şey","şiddet","şiddetler","şiddetli","şiddetlik","şiddetsel","şiddetsiz","şiddetçi","şil","şim","şimdi","şimdici","şimdiler","şimdili","şimdilik","şimdisel","şimdisiz","şovenizm","şovenizmci","şovenizmler","şovenizmli","şovenizmlik","şovenizmsel","şovenizmsiz","şüphe","şüpheci","şüpheler","şüpheli","şüphelik","şüphesel","şüphesiz","şık"];
+
+const _VOW=new Set('aeıioöuü');
+const _VG=[['a','ı'],['e','i'],['o','u'],['ö','ü']];
+const _CP=[['p','b'],['ç','c'],['t','d'],['k','g'],['k','ğ'],['f','v'],['s','z'],['ş','j']];
+const _SUFS=[
+  'acaklar','ecekler','ıyordu','iyordu','maktan','mekten','ından','inden','undan','ünden',
+  'lardaki','lerdeki','larında','lerinde','larına','lerine','larını','lerini',
+  'acak','ecek','ıyor','iyor','uyor','üyor','mış','miş','muş','müş',
+  'tık','tik','tuk','tük','dık','dik','duk','dük','malı','meli',
+  'lık','lik','luk','lük','sız','siz','suz','süz',
+  'lı','li','lu','lü','cı','ci','cu','cü','çı','çi','çu','çü',
+  'lar','ler','dan','den','tan','ten','da','de','ta','te',
+  'nın','nin','nun','nün','ın','in','un','ün',
+  'mak','mek','ma','me','ış','iş','uş','üş',
+  'an','en','ar','er','ır','ir','ur','ür',
+  'sal','sel','ça','ce','daş','deş',
+];
+
+function _vp(w){const p=[];for(let i=0;i<w.length;i++)if(_VOW.has(w[i]))p.push(i);return p;}
+function _tail(w,n){const p=_vp(w);if(!p.length)return w;return w.slice(p.length>=n?p[p.length-n]:p[0]);}
+function _norm(s){
+  s=s.replace(/ğ/g,'');
+  const m={b:'p',c:'ç',d:'t',g:'k'};
+  if(s.length&&m[s[s.length-1]])s=s.slice(0,-1)+m[s[s.length-1]];
+  return s;
+}
+function _vs(v1,v2){if(v1===v2)return true;for(const g of _VG)if(g.includes(v1)&&g.includes(v2))return true;return false;}
+function _cs(c1,c2){if(c1===c2)return true;for(const p of _CP)if(p.includes(c1)&&p.includes(c2))return true;return false;}
+function _tsim(t1,t2){
+  const n1=_norm(t1),n2=_norm(t2);
+  if(n1===n2)return 1;
+  if(Math.abs(n1.length-n2.length)>2)return 0;
+  const mn=Math.min(n1.length,n2.length);
+  if(!mn)return 0;
+  const a=n1.slice(-mn),b=n2.slice(-mn);
+  let sc=0;
+  for(let i=0;i<mn;i++){
+    const ca=a[i],cb=b[i],va=_VOW.has(ca),vb=_VOW.has(cb);
+    if(va&&vb)sc+=_vs(ca,cb)?1:.2;
+    else if(!va&&!vb)sc+=_cs(ca,cb)?1:.1;
+  }
+  return sc/mn;
+}
+function _score(w1,w2){
+  if(w1===w2)return -1;
+  const l1=w1.length,l2=w2.length;
+  // Son 3 ünlü — tam eşleşme
+  const t3a=_tail(w1,3),t3b=_tail(w2,3);
+  if(t3a===t3b&&t3a.length>=4)return 100;
+  // Son 2 ünlü — tam eşleşme
+  const t2a=_tail(w1,2),t2b=_tail(w2,2);
+  if(t2a===t2b&&t2a.length>=2)return 88;
+  // Son 1 ünlü — tam eşleşme (3+ harf)
+  const t1a=_tail(w1,1),t1b=_tail(w2,1);
+  if(t1a===t1b&&t1a.length>=2&&l1>=3&&l2>=3)return 70;
+  // Fonetik son 2 ünlü (4+ char)
+  if(l1>=4&&l2>=4){
+    const s2=_tsim(t2a,t2b);
+    if(s2>=0.9)return 78;
+    if(s2>=0.8)return 62;
+    // Son ses consonant benzerliği — Türkçe sessiz yumuşaması
+    // Örn: "ateş/kardeş" -> son ünlü grubu aynı (e), son consonant yumuşama çifti
+    const s1=_tsim(t1a,t1b);
+    if(s1>=0.9)return 55;
+    if(s1>=0.75)return 42;
+  }
+  // Eğik: son ünlü grubu benzer (4+ char)
+  if(l1>=4&&l2>=4){
+    const p1=_vp(w1),p2=_vp(w2);
+    if(p1.length&&p2.length&&_vs(w1[p1[p1.length-1]],w2[p2[p2.length-1]]))return 22;
+  }
+  return 0;
+}
+function _findSuf(word){
+  for(const s of _SUFS)if(word.endsWith(s)&&word.length-s.length>=2)return s;
+  return null;
+}
+function _qfilt(arr,max=40){
+  // Doğallık puanı: kısa + türetme yoğunluğu düşük olanlar önce
+  const _agentSuf=/(?:cı|ci|cu|cü|çı|çi|çu|çü)$/;
+  const _adjSuf=/(?:lı|li|lu|lü|sal|sel|sız|siz|suz|süz)$/;
+  const nat=arr.filter(w=>w.length<=6&&!_agentSuf.test(w));
+  const med=arr.filter(w=>w.length>6&&w.length<=10&&!_agentSuf.test(w));
+  const agnt=arr.filter(w=>_agentSuf.test(w)&&w.length<=10);
+  const long=arr.filter(w=>w.length>10&&w.length<=14);
+  const vlong=arr.filter(w=>w.length>14);
+  return [...nat,...med,...agnt,...long,...vlong].slice(0,max);
+}
+
+function trFind(word){
+  word=word.toLowerCase().trim();
+  if(!word)return null;
+  const t=performance.now();
+  const bins={p100:[],p88:[],p70:[],p78:[],p62:[],p55:[],p42:[],p22:[]};
+  for(let i=0;i<TR_DICT.length;i++){
+    const w=TR_DICT[i];if(w===word)continue;
+    const sc=_score(word,w);
+    if(sc===100)bins.p100.push(w);
+    else if(sc===88)bins.p88.push(w);
+    else if(sc===70)bins.p70.push(w);
+    else if(sc===78)bins.p78.push(w);
+    else if(sc===62)bins.p62.push(w);
+    else if(sc===55)bins.p55.push(w);
+    else if(sc===42)bins.p42.push(w);
+    else if(sc===22)bins.p22.push(w);
+  }
+  const perfect=[...bins.p100,...bins.p88];
+  const tam=[...bins.p70,...bins.p78];
+  const near=[...bins.p62,...bins.p55];
+  const slant=[...bins.p42,...bins.p22];
+  const wordSuf=_findSuf(word);
+  const sufWords=wordSuf?TR_DICT.filter(w=>w!==word&&w.endsWith(wordSuf)&&!perfect.includes(w)&&!tam.includes(w)):[];
+  const compound=[
+    word+' gibi',word+' değil','sanki '+word,'bir '+word,
+    'tam '+word,'eski '+word,'asıl '+word,'gerçek '+word,
+    word+' olmak',word+' kalmak',word+' etmek',word+' için',
+  ];
+  // Uzunluğa göre sırala (kısa kelimeler önce — daha doğal görünüm)
+  const byLen=(a,b)=>a.length-b.length||a.localeCompare(b,'tr');
+  return{
+    perfect:_qfilt(perfect.sort(byLen),40),
+    tam:_qfilt(tam.sort(byLen),40),
+    near:_qfilt(near.sort(byLen),30),
+    slant:_qfilt(slant.sort(byLen),20),
+    sufKey:wordSuf,sufWords:_qfilt(sufWords.sort(byLen),30),
+    compound,ms:Math.round(performance.now()-t),
+    total:perfect.length+tam.length+near.length+slant.length
+  };
 }
 
 function qR(w){
   document.getElementById('rInput').value=w;
+  document.querySelectorAll('.rex').forEach(b=>b.classList.toggle('on',b.textContent===w));
   findRhymes();
 }
-
-function findRhymes() {
-  const word = document.getElementById('rInput').value.trim().toLowerCase();
-  if (!word) return;
-  const results = { perfect: [], tam: [], near: [], slant: [], sufKey: null, sufWords: [], compound: [], total: 0, ms: 0 };
-  const tStart = performance.now();
-  
-  TR_DICT.forEach(w => {
-    if (w === word) return;
-    if (w.endsWith(word.slice(-3))) results.perfect.push(w);
-    else if (w.endsWith(word.slice(-2))) results.tam.push(w);
-  });
-  
-  results.ms = Math.round(performance.now() - tStart);
-  results.total = results.perfect.length + results.tam.length;
-  renderRhymes(word, results);
-}
-
-function renderRhymes(word, r) {
-  let html = `<div style="font-size:9px;color:var(--t3);margin-bottom:10px;">${r.ms}ms · ${r.total} eşleşme</div>`;
-  html += '<div class="rgrid">';
-  const sections = [
-    { k: 'perfect', l: 'MÜKEMMEL KAFİYE', c: 'p' },
-    { k: 'tam', l: 'TAM KAFİYE', c: 'n' }
-  ];
-  sections.forEach(s => {
-    const ws = r[s.k];
-    if (!ws.length) return;
-    html += `<div class="rco"><div class="rco-h">${s.l} <span class="rco-cnt">${ws.length}</span></div><div class="rchips">`;
-    html += ws.map(w => `<div class="rc ${s.c}" onclick="useR('${encodeURIComponent(w)}')">${w}</div>`).join('');
-    html += '</div></div>';
-  });
-  html += '</div>';
-  document.getElementById('rout').innerHTML = html;
-}
-
-function useR(w) {
-  document.getElementById('rInput').value = decodeURIComponent(w);
-  findRhymes();
-}
-
 function clearR(){
   document.getElementById('rInput').value='';
-  document.getElementById('rout').innerHTML='';
+  document.getElementById('rout').innerHTML='<div class="rempty"><big>KAFİYE</big><p>kelimeyi yaz · enter veya butona bas</p></div>';
+  document.getElementById('saveBtn').style.display='none';
+  document.getElementById('rt').classList.remove('on');
+  document.querySelectorAll('.rex').forEach(b=>b.classList.remove('on'));
 }
 
+async function findRhymes(){
+  const word=document.getElementById('rInput').value.trim();
+  if(!word)return;
+  S.lastRhymeWord=word;
+  document.getElementById('rout').innerHTML='<div class="rloading"><div class="ld"></div><div class="ld"></div><div class="ld"></div><span style="margin-left:8px;letter-spacing:2px;">'+word.toUpperCase()+' — '+TR_DICT.length.toLocaleString()+' KELİMEDE TARANIYYOR...</span></div>';
+  document.getElementById('rt').classList.remove('on');
+  document.getElementById('saveBtn').style.display='none';
+  await new Promise(r=>setTimeout(r,10));
+  const result=trFind(word);
+  if(!result){renderRhymesEmpty();return;}
+  // Gemini ile zenginleştir (API key varsa ve sonuç azsa)
+  const key=S.apiKey;
+  if(key&&key.startsWith('AIza')&&result.perfect.length<8){
+    try{
+      const res=await fetch(CFG.GEMINI_URL+key,{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          contents:[{parts:[{text:'Türkçe rap için "'+word+'" ile kafiyeli kelimeler bul. Sadece JSON: {"extra":["k1","k2",...]} — 15 kelime, küçük harf, fonetik olarak gerçekten kafiyeli.'}]}],
+          generationConfig:{temperature:.8,maxOutputTokens:400}
+        })
+      });
+      if(res.ok){
+        const data=await res.json();
+        const txt=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+        const m=txt.match(/\{[\s\S]*\}/);
+        if(m){
+          const ex=(JSON.parse(m[0]).extra||[]).map(w=>w.toLowerCase());
+          const exist=new Set([...result.perfect,...result.tam]);
+          ex.forEach(w=>{if(!exist.has(w)&&w!==word)result.perfect.push(w);});
+        }
+      }
+    }catch(e){}
+  }
+  renderRhymes(word,result);
+  document.getElementById('saveBtn').style.display='inline-flex';
+}
+
+function renderRhymesEmpty(){
+  document.getElementById('rout').innerHTML='<div class="rempty"><big>—</big><p>kelime bulunamadı</p></div>';
+}
+
+function _chip(w,cls){
+  return '<div class="rc '+cls+'" data-rw="'+encodeURIComponent(w)+'">'+w+'</div>';
+}
+function renderRhymes(word,r){
+  var html='<div style="font-size:9px;color:var(--t3);margin-bottom:10px;letter-spacing:1px;padding:2px 0;">'+
+    TR_DICT.length.toLocaleString()+' kelimeli sözlük \u00b7 '+r.ms+'ms \u00b7 '+r.total+' eşleşme'+
+    (r.sufKey?' \u00b7 Ek: <b style="color:var(--lime);">-'+r.sufKey+'</b> ('+r.sufWords.length+' kelime)':'')+
+  '</div>';
+  html+='<div class="rgrid">';
+  var secs=[
+    {k:'perfect',l:'MÜKEMMEL KAFİYE',c:'p',d:'son 2+ hece birebir'},
+    {k:'tam',l:'TAM KAFİYE',c:'n',d:'son hece eşleşmesi'},
+    {k:'near',l:'YAKIN KAFİYE',c:'s',d:'fonetik benzerlik'},
+    {k:'slant',l:'EĞİK KAFİYE',c:'',d:'ünlü benzerliği'},
+  ];
+  secs.forEach(function(s){
+    var ws=r[s.k]||[];
+    if(!ws.length)return;
+    html+='<div class="rco"><div class="rco-h">'+s.l+'<span class="rco-cnt">'+ws.length+'</span>'+
+      '<span style="font-size:8px;color:var(--t3);font-weight:300;margin-left:3px;">'+s.d+'</span></div>'+
+      '<div class="rchips">'+ws.map(function(w){return _chip(w,s.c);}).join('')+'</div></div>';
+  });
+  if(r.sufKey&&r.sufWords.length){
+    html+='<div class="rco full"><div class="rco-h">EK KAFİYE <b style="color:var(--lime);font-size:11px;">-'+r.sufKey+'</b>'+
+      '<span class="rco-cnt">'+r.sufWords.length+'</span>'+
+      '<span style="font-size:8px;color:var(--t3);font-weight:300;margin-left:3px;">aynı ek taşıyanlar</span></div>'+
+      '<div class="rchips">'+r.sufWords.map(function(w){return _chip(w,'p');}).join('')+'</div></div>';
+  }
+  html+='<div class="rco full"><div class="rco-h">BİRLEŞİK<span class="rco-cnt">'+r.compound.length+'</span>'+
+    '<span style="font-size:8px;color:var(--t3);font-weight:300;margin-left:3px;">söz kalıpları</span></div>'+
+    '<div class="rchips">'+r.compound.map(function(w){return _chip(w,'c');}).join('')+'</div></div>';
+  html+='</div>';
+  var el=document.getElementById('rout');
+  el.innerHTML=html;
+  el.querySelectorAll('[data-rw]').forEach(function(c){
+    c.addEventListener('click',function(){useR(this.getAttribute('data-rw'));});
+  });
+}
+function useR(enc){
+  document.getElementById('rInput').value=decodeURIComponent(enc);
+  findRhymes();
+}
+
+
+// Save
+function saveRhyme(){
+  const word=S.lastRhymeWord;if(!word)return;
+  const tops=[...document.querySelectorAll('#rout .rc.p')].map(c=>c.textContent).slice(0,8);
+  if(!savedRhymes.find(r=>r.w===word)){
+    savedRhymes.unshift({w:word,r:tops});
+    if(savedRhymes.length>20) savedRhymes.pop();
+    try{localStorage.setItem('wuka_saved',JSON.stringify(savedRhymes));}catch(e){}
+    renderSaved();toast('rt','✓ Kaydedildi','ok');
+  }
+}
+function renderSaved(){
+  const sec=document.getElementById('savedSec'),list=document.getElementById('savedList');
+  if(!savedRhymes.length){sec.style.display='none';return;}
+  sec.style.display='block';
+  list.innerHTML=savedRhymes.map((r,i)=>
+    `<div class="saved-item"><span class="si-w">${r.w}</span><span class="si-r">${r.r.join(' · ')}</span><span class="si-del" onclick="delSaved(${i})">✕</span></div>`
+  ).join('');
+}
+function delSaved(i){savedRhymes.splice(i,1);try{localStorage.setItem('wuka_saved',JSON.stringify(savedRhymes));}catch(e){}renderSaved();}
+
+// ── API KEY ──────────────────────────────────────────
+function saveKey(){
+  const k=document.getElementById('apiKeyInp').value.trim();
+  if(!k){toast('ft','⚠ Key boş','err');return;}
+  if(!k.startsWith('AIza')){toast('ft','⚠ Format hatalı — AIzaSy... ile başlamalı','err');return;}
+  S.apiKey=k;
+  try{localStorage.setItem('wuka_key',k);}catch(e){}
+  updateApiUI();
+  toast('ft','✓ Gemini API key kaydedildi — Kafiye artık AI ile çalışır','ok');
+}
+function clearKey(){
+  S.apiKey='';document.getElementById('apiKeyInp').value='';
+  try{localStorage.removeItem('wuka_key');}catch(e){}
+  updateApiUI();
+}
+function updateApiUI(){
+  const has=!!(S.apiKey&&S.apiKey.startsWith('AIza'));
+  document.getElementById('apiDotBig').className='api-dot-big'+(has?' on':'');
+  document.getElementById('apiName').textContent=has?'Gemini 1.5 Flash — Bağlı':'API Key girilmedi';
+  document.getElementById('apiBadge').textContent=has?'AKTİF':'PASİF';
+  document.getElementById('apiBadge').className='api-badge '+(has?'on':'off');
+}
+function updateSettings(){
+  document.getElementById('stPool')&&(document.getElementById('stPool').textContent=activePool.length);
+  document.getElementById('stBpm')&&(document.getElementById('stBpm').textContent=S.bpm);
+}
+
+// ── NOTEBOOK ─────────────────────────────────────────
 function addLine(){
   const ll=document.getElementById('llines');
+  const num=ll.children.length+1;
   const div=document.createElement('div');div.className='ll';
-  div.innerHTML=`<span class="lnum">${ll.children.length+1}</span><textarea class="ltxt"></textarea>`;
+  div.innerHTML=`<span class="lnum">${num}</span>
+    <textarea class="ltxt" rows="1" placeholder="Satır ${num}..." oninput="rsz(this)"></textarea>
+    <div class="lacts"><button class="la" onclick="delLine(this)">✕</button></div>`;
   ll.appendChild(div);
+  div.querySelector('.ltxt').focus();
+}
+function rsz(el){el.style.height='auto';el.style.height=el.scrollHeight+'px';}
+function delLine(btn){
+  btn.closest('.ll').remove();
+  document.querySelectorAll('.lnum').forEach((n,i)=>n.textContent=i+1);
+}
+function expLyrics(){
+  const lines=[...document.querySelectorAll('.ltxt')].map(t=>t.value).join('\n');
+  const note=document.getElementById('nba').value;
+  const all=(lines.trim()?'=== SÖZLER ===\n'+lines:'')+(note.trim()?'\n\n=== NOTLAR ===\n'+note:'');
+  if(!all.trim()){toast('ft','Defter boş','warn');return;}
+  const a=document.createElement('a');
+  a.href='data:text/plain;charset=utf-8,'+encodeURIComponent(all);
+  a.download='wuka-sozler-'+new Date().toISOString().slice(0,10)+'.txt';
+  a.click();
+}
+function initNotebook(){
+  addLine();addLine();addLine();
+  const nb=document.getElementById('nba');
+  nb.addEventListener('input',()=>{
+    const w=nb.value.trim().split(/\s+/).filter(Boolean).length;
+    document.getElementById('nwc').textContent=w+' kelime';
+    document.getElementById('ncc').textContent=nb.value.length+' karakter';
+    try{localStorage.setItem('wuka_nb',nb.value);}catch(e){}
+  });
 }
 
-function initNotebook(){ addLine(); }
-function loadKey(){}
-function saveKey(){}
-function clearKey(){}
-function updateApiUI(){}
-function updateSettings(){}
-function saveRhyme(){}
-function expLyrics(){}
-function fmt(s){return "0:00";}
+// ── KEYBOARD ─────────────────────────────────────────
+document.addEventListener('keydown',e=>{
+  const tag=document.activeElement.tagName;
+  if(tag==='INPUT'||tag==='TEXTAREA') return;
+  if(e.code==='Space'){e.preventDefault();if(!S.ytMode)togglePlay();}
+  if(e.key==='t'||e.key==='T') tapBPM();
+  if(e.key==='n'||e.key==='N'){if(S.playing||S.ytFlowing){S.mode==='verse'?pushVerse():pushWord();}}
+  if(e.key==='r'||e.key==='R') trigRefill();
+  if(e.key==='ArrowRight') setBPM(Math.min(200,S.bpm+1),'Manuel');
+  if(e.key==='ArrowLeft')  setBPM(Math.max(60,S.bpm-1),'Manuel');
+  if(e.key==='Escape') hardStop();
+  if(e.key==='m'||e.key==='M') setMode(S.mode==='bar'?'verse':'bar');
+});
+
+// ── HELPERS ──────────────────────────────────────────
+function fmt(s){if(!s||isNaN(s))return'0:00';return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');}
+
 </script>
 </body>
 </html>
