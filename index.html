@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#060608">
-<title>WukaCulture RapStudio v5.2</title>
+<title>WukaCulture RapStudio</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23C8FF00'/><text y='72' x='50' text-anchor='middle' font-size='62'>🎤</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Barlow+Condensed:ital,wght@0,300;0,600;0,800;1,400&display=swap" rel="stylesheet">
 <style>
 /* ═══════════════════════════════════════════════
-   WUKACULTURE RAPSTUDIO v5.2 (Fixed Syntax)
+   WUKACULTURE RAPSTUDIO v5 (Hatalar Giderildi)
 ═══════════════════════════════════════════════ */
 :root{
   --ink:#060608; --p1:#0d0e14; --p2:#131520; --p3:#191c28; --p4:#1f2230;
@@ -19,179 +19,1126 @@
   --red:#FF4040;  --red1:rgba(255,64,64,.14);
   --cyan:#00DEFF; --cyan1:rgba(0,222,255,.12);
   --amb:#FFB800;  --amb1:rgba(255,184,0,.13);
+  --pur:#B36EFF;
   --t0:#F0F0F2; --t1:#B8B8C4; --t2:#70707E; --t3:#40404C; --t4:#252530;
-  --ff:'Bebas Neue',cursive; --fc:'Barlow Condensed',sans-serif; --fm:'DM Mono',monospace;
-  --r:7px; --r2:13px; --nh:54px; --bh:62px;
+  --ff:'Bebas Neue',cursive;
+  --fc:'Barlow Condensed',sans-serif;
+  --fm:'DM Mono',monospace;
+  --r:7px; --r2:13px; --r3:22px;
+  --nh:54px; --bh:62px;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
-body{background:var(--ink);color:var(--t0);font-family:var(--fm);font-size:13px;min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");opacity:.55;}
+html{height:100%;overscroll-behavior:none;}
+body{background:var(--ink);color:var(--t0);font-family:var(--fm);font-size:13px;
+  min-height:100%;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9000;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  opacity:.55;}
+::-webkit-scrollbar{width:2px;height:2px;}
+::-webkit-scrollbar-thumb{background:var(--g2);border-radius:1px;}
 
-/* UI COMPONENTS */
-#tb{position:fixed;top:0;left:0;right:0;height:var(--nh);display:flex;align-items:center;padding:0 14px;background:rgba(6,6,8,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--g1);z-index:500;}
-.logo{display:flex;align-items:baseline;font-family:var(--ff);font-size:18px;letter-spacing:4px;}
-.lw{color:var(--lime);} .lc{color:var(--t3);}
-#bn{position:fixed;bottom:0;left:0;right:0;height:var(--bh);display:grid;grid-template-columns:repeat(4,1fr);background:rgba(6,6,8,.96);backdrop-filter:blur(20px);border-top:1px solid var(--g1);z-index:500;}
-.nb{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--t3);background:none;border:none;cursor:pointer;}
-.nb.on{color:var(--lime);} .nb svg{width:20px;height:20px;margin-bottom:3px;}
-#app{padding:var(--nh) 0 var(--bh) 0;}
-.pg{display:none;padding:15px;} .pg.on{display:block;}
-.card{background:var(--p2);border:1px solid var(--g1);border-radius:var(--r2);margin-bottom:10px;overflow:hidden;}
-.ch{padding:10px;border-bottom:1px solid var(--g1);font-family:var(--fc);font-size:10px;letter-spacing:2px;color:var(--t2);text-transform:uppercase;}
+/* ── TOPBAR ── */
+#tb{position:fixed;top:0;left:0;right:0;height:var(--nh);
+  display:flex;align-items:center;padding:0 14px;gap:8px;
+  background:rgba(6,6,8,.94);backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--g1);z-index:500;}
+.logo{display:flex;align-items:baseline;gap:0;line-height:1;flex-shrink:0;}
+.lw{font-family:var(--ff);font-size:18px;letter-spacing:4px;color:var(--lime);}
+.lc{font-family:var(--ff);font-size:18px;letter-spacing:4px;color:var(--t3);}
+.ld{width:1px;height:13px;background:var(--g2);margin:0 8px;align-self:center;}
+.lr{font-family:var(--fc);font-size:11px;font-weight:800;letter-spacing:3px;color:var(--red);}
+.ls{font-family:var(--fc);font-size:11px;font-weight:300;letter-spacing:3px;color:var(--t3);font-style:italic;}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:6px;}
+.v-badge{font-family:var(--fc);font-size:9px;font-weight:700;letter-spacing:1px;
+  padding:2px 7px;border-radius:20px;background:var(--lime1);
+  border:1px solid rgba(200,255,0,.25);color:var(--lime);}
+
+/* ── BOTTOM NAV ── */
+#bn{position:fixed;bottom:0;left:0;right:0;height:var(--bh);
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:rgba(6,6,8,.96);backdrop-filter:blur(20px);
+  border-top:1px solid var(--g1);z-index:500;
+  padding-bottom:env(safe-area-inset-bottom,0);}
+.nb{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;cursor:pointer;border:none;background:transparent;color:var(--t3);
+  transition:color .2s;padding:0;touch-action:manipulation;}
+.nb.on{color:var(--lime);}
+.nb svg{width:20px;height:20px;stroke-width:1.7;transition:transform .15s;}
+.nb.on svg{transform:scale(1.12);}
+.nb-l{font-family:var(--fc);font-size:9px;letter-spacing:1.5px;font-weight:700;text-transform:uppercase;}
+
+/* ── PAGES ── */
+#app{padding-top:var(--nh);padding-bottom:calc(var(--bh) + env(safe-area-inset-bottom,0));}
+.pg{display:none;}
+.pg.on{display:block;animation:pgin .2s ease-out;}
+@keyframes pgin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.w{max-width:680px;margin:0 auto;padding:12px 12px;}
+@media(min-width:940px){
+  .w{max-width:1100px;padding:18px 24px;}
+  .twocol{display:grid;grid-template-columns:290px 1fr;gap:16px;align-items:start;}
+  .rcol{display:flex;flex-direction:column;gap:12px;}
+}
+
+/* ── CARD ── */
+.card{background:var(--p2);border:1px solid var(--g1);border-radius:var(--r2);overflow:hidden;margin-bottom:10px;}
+.card:last-child{margin-bottom:0;}
+.ch{display:flex;align-items:center;gap:7px;padding:9px 13px;border-bottom:1px solid var(--g1);}
+.cht{font-family:var(--fc);font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--t2);}
+.chb{font-size:8px;padding:2px 6px;border-radius:3px;background:var(--p3);border:1px solid var(--g1);color:var(--t3);}
+.chr{margin-left:auto;display:flex;gap:5px;align-items:center;}
 .cb{padding:12px;}
-.btn{padding:10px;border-radius:var(--r);border:none;cursor:pointer;font-family:var(--fm);font-size:10px;text-transform:uppercase;transition:0.2s;}
-.btn-lime{background:var(--lime);color:#000;} .btn-ghost{background:none;border:1px solid var(--g2);color:var(--t1);}
-.inp{width:100%;background:var(--p3);border:1px solid var(--g1);border-radius:var(--r);padding:10px;color:#fff;outline:none;}
-.rbi{font-family:var(--ff);font-size:32px;letter-spacing:2px;}
 
-/* RHYME STYLES */
-.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-@media(max-width:600px){.rgrid{grid-template-columns:1fr;}}
-.rco{background:var(--p3);padding:10px;border-radius:var(--r);}
-.rco-h{font-family:var(--fc);font-size:10px;color:var(--t3);margin-bottom:8px;display:flex;justify-content:space-between;}
-.rco-cnt{background:var(--p4);padding:2px 5px;border-radius:3px;}
-.rchips{display:flex;flex-wrap:wrap;gap:5px;}
-.rc{padding:6px 12px;background:var(--p2);border:1px solid var(--g1);border-radius:var(--r);cursor:pointer;font-size:12px;transition:0.1s;}
-.rc:hover{border-color:var(--lime);color:var(--lime);}
-.rc.p{border-color:var(--lime1);color:var(--lime);}
-.rc.s{color:var(--cyan);}
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  padding:8px 14px;border-radius:var(--r);border:none;cursor:pointer;
+  font-family:var(--fm);font-size:10px;font-weight:500;letter-spacing:1px;
+  text-transform:uppercase;transition:all .13s;white-space:nowrap;flex-shrink:0;
+  touch-action:manipulation;}
+.btn:active{transform:scale(.97);}
+.btn-lime{background:var(--lime);color:#000;box-shadow:0 0 16px rgba(200,255,0,.18);}
+.btn-lime:hover{filter:brightness(1.07);}
+.btn-ghost{background:transparent;border:1px solid var(--g2);color:var(--t1);}
+.btn-ghost:hover{border-color:var(--g3);color:var(--t0);}
+.btn-rdo{background:var(--red1);border:1px solid rgba(255,64,64,.3);color:var(--red);}
+.btn-sm{padding:5px 10px;font-size:9px;}
+.btn-xs{padding:3px 8px;font-size:8px;letter-spacing:.5px;}
+.btn-circ{width:48px;height:48px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+  transition:all .13s;touch-action:manipulation;flex-shrink:0;}
+.btn-circ-lime{background:var(--lime);color:#000;box-shadow:0 0 20px rgba(200,255,0,.25);}
+.btn-circ-lime:hover{box-shadow:0 0 30px rgba(200,255,0,.35);}
+.btn-circ-lime.off{background:var(--p3);border:2px solid var(--lime);color:var(--lime);}
+
+/* ── INPUT ── */
+.inp{width:100%;background:var(--p3);border:1px solid var(--g1);border-radius:var(--r);
+  padding:9px 11px;color:var(--t0);font-family:var(--fm);font-size:12px;
+  outline:none;transition:border-color .18s;}
+.inp:focus{border-color:rgba(200,255,0,.38);box-shadow:0 0 0 2px var(--lime2);}
+.inp::placeholder{color:var(--t4);}
+.irow{display:flex;gap:7px;align-items:center;}
+
+/* Range */
+.sl{-webkit-appearance:none;appearance:none;width:100%;height:3px;
+  background:var(--g2);border-radius:2px;cursor:pointer;outline:none;}
+.sl::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;
+  border-radius:50%;background:var(--lime);box-shadow:0 0 5px rgba(200,255,0,.35);cursor:pointer;}
+.sl::-moz-range-thumb{width:15px;height:15px;border-radius:50%;background:var(--lime);border:none;cursor:pointer;}
+.sr{display:flex;align-items:center;gap:9px;}
+.sv{font-size:12px;color:var(--lime);min-width:34px;text-align:right;font-weight:500;}
+
+/* Toast */
+.toast{font-size:10px;padding:8px 12px;border-radius:var(--r);border-left:3px solid var(--cyan);
+  background:var(--p3);color:var(--t2);display:none;line-height:1.6;margin-bottom:9px;}
+.toast.on{display:block;}
+.toast.ok{border-left-color:var(--lime);color:#a0d040;}
+.toast.err{border-left-color:var(--red);color:#ff8880;}
+.toast.warn{border-left-color:var(--amb);color:#c0a040;}
+.toast.info{border-left-color:var(--cyan);color:var(--cyan);}
+
+/* ═══════════════════ FREESTYLE ═══════════════════ */
+.uzone{border:1.5px dashed var(--g2);border-radius:var(--r2);padding:20px 14px;
+  text-align:center;cursor:pointer;transition:all .2s;position:relative;
+  background:var(--p3);margin-bottom:9px;}
+.uzone:hover,.uzone.drag{border-color:var(--lime);background:var(--lime2);}
+.uzone.loaded{border-style:solid;border-color:rgba(200,255,0,.3);}
+.uzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.uz-ico{font-size:24px;margin-bottom:5px;}
+.uz-t{font-family:var(--fc);font-size:13px;font-weight:800;letter-spacing:2px;margin-bottom:2px;}
+.uz-s{font-size:9px;color:var(--t3);letter-spacing:1px;}
+
+/* BPM */
+.bpm-block{display:flex;align-items:center;gap:11px;padding:13px;}
+.bpm-big{font-family:var(--ff);font-size:66px;line-height:1;color:var(--lime);
+  letter-spacing:1px;text-shadow:0 0 36px rgba(200,255,0,.22);min-width:122px;}
+.bpm-unit{font-family:var(--fc);font-size:11px;font-weight:300;letter-spacing:2px;
+  color:var(--t3);display:block;margin-top:-5px;}
+.bside-r{font-size:9px;color:var(--t3);margin-bottom:3px;letter-spacing:.5px;}
+.bside-r b{color:var(--t1);}
+.presets{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px;}
+.pre{font-family:var(--fc);font-size:10px;font-weight:700;letter-spacing:1px;
+  padding:3px 8px;border-radius:4px;border:1px solid var(--g1);
+  color:var(--t3);background:var(--p3);cursor:pointer;transition:all .13s;text-align:center;}
+.pre:hover,.pre.on{border-color:var(--lime);color:var(--lime);background:var(--lime1);}
+
+.tap-btn{width:100%;padding:12px;border-radius:var(--r);border:1.5px solid var(--g2);
+  background:transparent;color:var(--t2);font-family:var(--fc);font-size:14px;
+  font-weight:700;letter-spacing:3px;cursor:pointer;transition:all .1s;
+  text-align:center;touch-action:manipulation;}
+.tap-btn:active,.tap-btn.fl{border-color:var(--lime);color:var(--lime);
+  background:var(--lime1);transform:scale(.98);}
+
+/* Beat grid */
+.bgrid{display:flex;gap:2px;padding:9px 13px;}
+.bc{flex:1;height:22px;border-radius:3px;background:var(--g1);
+  position:relative;overflow:hidden;transition:all .06s;}
+.bc::after{content:'';position:absolute;inset:0;background:var(--lime);
+  transform:scaleY(0);transform-origin:bottom;transition:transform .06s;}
+.bc.cur{background:var(--p4);}
+.bc.cur::after{transform:scaleY(1)!important;box-shadow:0 0 7px var(--lime);}
+
+/* Transport */
+.tp{display:flex;align-items:center;gap:11px;padding:11px 13px;}
+.ti{flex:1;overflow:hidden;}
+.tt{font-family:var(--fc);font-size:14px;font-weight:800;letter-spacing:1px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px;}
+.ts{font-size:9px;color:var(--t3);letter-spacing:.4px;}
+.pw{padding:0 13px 9px;}
+.pb{width:100%;height:3px;background:var(--g1);border-radius:2px;cursor:pointer;
+  position:relative;margin-bottom:4px;}
+.pf{height:100%;background:var(--lime);border-radius:2px;width:0%;transition:width .1s linear;pointer-events:none;}
+.tr{display:flex;justify-content:space-between;font-size:9px;color:var(--t3);}
+
+/* YT */
+.yt-emb{border-radius:var(--r2);overflow:hidden;border:1px solid var(--g1);display:none;margin-bottom:10px;}
+.yt-emb.on{display:block;}
+.yt-emb iframe{display:block;width:100%;height:180px;}
+.yt-bar{background:var(--p3);padding:7px 12px;display:flex;align-items:center;gap:7px;font-size:9px;color:var(--t2);}
+.yt-tag{background:var(--red);color:#fff;font-family:var(--fc);font-size:9px;
+  font-weight:700;letter-spacing:1px;padding:2px 6px;border-radius:3px;flex-shrink:0;}
+
+/* ── STAGE ── */
+.stage{background:var(--p1);border:1px solid var(--g1);border-radius:var(--r2);
+  overflow:hidden;display:none;position:relative;
+  background-image:radial-gradient(ellipse at 15% 85%,rgba(200,255,0,.03),transparent 55%),
+    radial-gradient(ellipse at 85% 15%,rgba(0,222,255,.025),transparent 55%);}
+.stage.on{display:block;}
+.stage::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--lime),transparent);
+  animation:sl 3s ease-in-out infinite;}
+@keyframes sl{0%,100%{left:-100%;opacity:.4}50%{left:100%;opacity:1}}
+
+/* Stage top bar */
+.stb{display:flex;align-items:center;justify-content:space-between;padding:10px 13px 6px;}
+.bar-info{display:flex;align-items:center;gap:9px;}
+.bar-n{font-family:var(--ff);font-size:20px;color:var(--t3);letter-spacing:2px;}
+.bar-n span{color:var(--lime);}
+.bdots{display:flex;gap:5px;}
+.bdot{width:8px;height:8px;border-radius:50%;background:var(--g2);transition:all .06s;}
+.bdot.on{background:var(--lime);box-shadow:0 0 6px var(--lime);transform:scale(1.25);}
+.bpm-pill{font-size:9px;padding:2px 9px;border-radius:20px;
+  background:var(--p3);border:1px solid var(--g1);color:var(--t3);letter-spacing:1px;}
+.bpm-pill b{color:var(--lime);}
+
+/* Mode selector */
+.mode-sel{display:flex;gap:5px;padding:0 13px 9px;}
+.mode-btn{flex:1;padding:5px 0;border-radius:var(--r);border:1px solid var(--g1);
+  background:transparent;color:var(--t3);font-family:var(--fc);font-size:10px;
+  font-weight:700;letter-spacing:1.5px;cursor:pointer;transition:all .15s;text-transform:uppercase;}
+.mode-btn.on{background:var(--lime1);border-color:rgba(200,255,0,.35);color:var(--lime);}
+
+/* Big word */
+.bwrap{padding:6px 13px 9px;min-height:90px;display:flex;align-items:center;}
+.bword{font-family:var(--ff);font-size:clamp(40px,10vw,80px);letter-spacing:3px;
+  line-height:1;color:var(--lime);text-shadow:0 0 44px rgba(200,255,0,.2);}
+@keyframes wf{0%{color:#fff;text-shadow:0 0 80px #fff;transform:scale(1.04)}
+  100%{color:var(--lime);text-shadow:0 0 44px rgba(200,255,0,.2);transform:scale(1)}}
+.bword.fl{animation:wf .18s ease-out forwards;}
+
+/* Verse display */
+.verse-wrap{padding:6px 13px 9px;min-height:90px;}
+.verse-words{display:flex;flex-wrap:wrap;gap:8px;align-items:baseline;}
+.vw{font-family:var(--ff);letter-spacing:2px;line-height:1.1;}
+.vw.cur{color:var(--lime);text-shadow:0 0 30px rgba(200,255,0,.3);}
+.vw.done{color:var(--t3);font-size:clamp(18px,4vw,28px);}
+.vw.next{color:var(--t2);font-size:clamp(22px,5vw,36px);}
+
+/* Queue & history */
+.wqueue{display:flex;flex-wrap:wrap;gap:5px;padding:0 13px 9px;min-height:28px;}
+.wq{font-family:var(--fc);font-size:15px;font-weight:700;letter-spacing:1.5px;
+  padding:2px 8px;border-radius:4px;border:1px solid var(--g1);color:var(--t2);
+  opacity:.6;cursor:pointer;transition:all .13s;}
+.wq.r{border-color:var(--g2);opacity:.85;}
+.wq:hover{opacity:1;border-color:var(--g3);}
+.whist{display:flex;flex-wrap:wrap;gap:4px;padding:8px 13px;border-top:1px solid var(--g1);}
+.hp{font-size:9px;padding:2px 6px;border-radius:3px;background:var(--p3);border:1px solid var(--g1);color:var(--t3);}
+
+/* Stream controls */
+.sctrl{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:9px 13px;background:var(--p3);border-top:1px solid var(--g1);}
+.sg{display:flex;align-items:center;gap:7px;font-size:9px;color:var(--t3);
+  letter-spacing:1.5px;text-transform:uppercase;}
+.sg .sl{width:60px;height:2px;}
+.sg .sl::-webkit-slider-thumb{width:11px;height:11px;}
+.sv2{color:var(--lime);min-width:16px;font-size:10px;font-weight:500;}
+
+/* Pool & genre */
+.pool-bar{display:flex;align-items:center;gap:7px;padding:7px 13px;
+  background:var(--p3);border-top:1px solid var(--g1);
+  font-size:9px;color:var(--t3);letter-spacing:1px;}
+.pn{font-family:var(--ff);font-size:16px;color:var(--lime);letter-spacing:1px;line-height:1;}
+.pdots{display:flex;gap:2px;}
+.pd{width:3px;height:11px;border-radius:1px;background:var(--g1);transition:background .3s;}
+.pd.on{background:var(--lime);}
+.pd.h{background:rgba(200,255,0,.28);}
+.pspin{width:9px;height:9px;border:1.5px solid var(--g2);border-top-color:var(--lime);
+  border-radius:50%;animation:spin .7s linear infinite;display:none;}
+.pspin.on{display:block;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Genre selector */
+.genre-row{display:flex;flex-wrap:wrap;gap:5px;padding:8px 13px;border-bottom:1px solid var(--g1);}
+.gen{font-family:var(--fc);font-size:10px;font-weight:700;letter-spacing:1px;
+  padding:4px 10px;border-radius:20px;border:1px solid var(--g1);
+  color:var(--t3);background:var(--p3);cursor:pointer;transition:all .15s;}
+.gen:hover,.gen.on{border-color:var(--lime);color:var(--lime);background:var(--lime1);}
+.gen.on{box-shadow:0 0 10px rgba(200,255,0,.1);}
+
+/* ═══════════════════ RHYME ═══════════════════ */
+.rhero{background:var(--p2);border:1px solid var(--g1);border-radius:var(--r2);padding:12px;margin-bottom:10px;}
+.rbi{width:100%;background:var(--p3);border:1px solid var(--g1);border-radius:var(--r);
+  padding:12px 14px;color:var(--t0);font-family:var(--ff);
+  font-size:clamp(20px,5.5vw,32px);letter-spacing:3px;text-transform:uppercase;
+  outline:none;transition:border-color .18s;margin-bottom:9px;}
+.rbi:focus{border-color:rgba(200,255,0,.35);box-shadow:0 0 0 2px var(--lime2);}
+.rbi::placeholder{color:var(--t4);}
+.rrow{display:flex;gap:6px;flex-wrap:wrap;}
+.rex-wrap{display:flex;flex-wrap:wrap;gap:4px;margin-top:9px;}
+.rex{font-size:10px;padding:3px 9px;border-radius:20px;border:1px solid var(--g1);
+  background:var(--p3);color:var(--t3);cursor:pointer;font-family:var(--fc);
+  font-weight:700;letter-spacing:1px;transition:all .13s;}
+.rex:hover,.rex.on{border-color:rgba(200,255,0,.3);color:var(--lime);background:var(--lime1);}
+
+.rgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+@media(max-width:500px){.rgrid{grid-template-columns:1fr;}}
+.rco.full{grid-column:1/-1;}
+.rco-h{font-family:var(--fc);font-size:10px;font-weight:700;letter-spacing:2px;
+  text-transform:uppercase;color:var(--t3);margin-bottom:6px;
+  display:flex;align-items:center;gap:5px;}
+.rco-cnt{font-size:8px;padding:1px 5px;border-radius:2px;background:var(--p3);
+  border:1px solid var(--g1);color:var(--t3);}
+.rchips{display:flex;flex-wrap:wrap;gap:4px;}
+.rc{font-size:12px;padding:5px 10px;border-radius:var(--r);
+  border:1px solid var(--g1);background:var(--p3);color:var(--t2);
+  cursor:pointer;transition:all .12s;letter-spacing:.3px;}
+.rc:hover{border-color:var(--g3);color:var(--t0);transform:translateY(-1px);}
+.rc:active{transform:none;}
+.rc.p{border-color:rgba(200,255,0,.33);color:var(--lime);background:var(--lime1);}
+.rc.n{border-color:rgba(0,222,255,.22);color:var(--cyan);}
+.rc.s{border-color:rgba(255,184,0,.22);color:var(--amb);}
+.rc.c{font-size:11px;font-style:italic;color:var(--t3);}
+.rc.c:hover{color:var(--t1);}
+
+.rloading{display:flex;align-items:center;gap:7px;color:var(--t3);font-size:10px;letter-spacing:1.5px;padding:18px 0;}
+.ld{width:4px;height:4px;border-radius:50%;background:var(--lime);animation:ldot 1.4s ease-in-out infinite;}
+.ld:nth-child(2){animation-delay:.18s;}
+.ld:nth-child(3){animation-delay:.36s;}
+@keyframes ldot{0%,80%,100%{opacity:.2;transform:scale(.8)}40%{opacity:1;transform:scale(1)}}
+
+.rempty{padding:40px 16px;text-align:center;}
+.rempty big{font-family:var(--ff);font-size:52px;letter-spacing:5px;color:var(--p4);display:block;margin-bottom:5px;}
+.rempty p{font-size:9px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;line-height:2.2;}
+
+.saved-item{display:flex;align-items:center;gap:7px;padding:7px 10px;
+  background:var(--p3);border:1px solid var(--g1);border-radius:var(--r);
+  margin-bottom:4px;font-size:10px;}
+.si-w{font-family:var(--fc);font-size:13px;font-weight:800;letter-spacing:1px;color:var(--lime);min-width:68px;}
+.si-r{flex:1;color:var(--t2);font-size:9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.si-del{color:var(--t3);cursor:pointer;padding:0 4px;font-size:13px;}
+.si-del:hover{color:var(--red);}
+
+/* ═══════════════════ NOTEBOOK ═══════════════════ */
+.ll{display:flex;align-items:flex-start;gap:7px;padding:6px 10px;
+  background:var(--p3);border:1px solid var(--g1);border-radius:var(--r);
+  margin-bottom:4px;transition:border-color .15s;}
+.ll:focus-within{border-color:var(--g2);}
+.lnum{font-size:9px;color:var(--t4);min-width:15px;padding-top:3px;letter-spacing:1px;}
+.ltxt{flex:1;background:transparent;border:none;color:var(--t0);
+  font-family:var(--fm);font-size:12px;line-height:1.7;resize:none;min-height:24px;outline:none;}
+.lacts{display:flex;gap:3px;opacity:0;transition:opacity .13s;}
+.ll:hover .lacts{opacity:1;}
+.la{width:19px;height:19px;border-radius:3px;border:none;background:var(--p2);
+  color:var(--t3);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;}
+.la:hover{color:var(--lime);}
+.nba{width:100%;min-height:160px;background:var(--p3);border:1px solid var(--g1);
+  border-radius:var(--r);padding:11px;color:var(--t0);font-family:var(--fm);
+  font-size:12px;line-height:1.8;resize:vertical;outline:none;}
+.nba:focus{border-color:rgba(200,255,0,.28);}
+.nba::placeholder{color:var(--t4);}
+.nb-meta{display:flex;gap:8px;margin-top:6px;font-size:9px;color:var(--t3);}
+
+/* ═══════════════════ SETTINGS ═══════════════════ */
+.srow{display:flex;align-items:center;justify-content:space-between;
+  padding:11px 0;border-bottom:1px solid var(--g1);gap:11px;}
+.srow:last-child{border-bottom:none;}
+.slbl{font-size:12px;color:var(--t0);}
+.sdesc{font-size:9px;color:var(--t3);margin-top:2px;}
+.toggle{position:relative;width:38px;height:21px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;}
+.tsl{position:absolute;inset:0;background:var(--g2);border-radius:11px;cursor:pointer;transition:.28s;}
+.tsl::before{content:'';position:absolute;height:15px;width:15px;left:3px;bottom:3px;background:var(--t3);border-radius:50%;transition:.28s;}
+.toggle input:checked+.tsl{background:var(--lime);}
+.toggle input:checked+.tsl::before{transform:translateX(17px);background:#000;}
+
+.sc-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.sc-i{display:flex;align-items:center;gap:7px;padding:7px 9px;background:var(--p3);border-radius:var(--r);font-size:10px;color:var(--t2);}
+.sc-k{background:var(--p1);border:1px solid var(--g2);border-radius:3px;padding:2px 6px;font-size:9px;color:var(--lime);letter-spacing:1px;min-width:32px;text-align:center;}
+
+/* API section */
+.api-box{padding:11px 13px;background:var(--p3);border-radius:var(--r);margin-bottom:8px;}
+.api-status{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+.api-dot-big{width:8px;height:8px;border-radius:50%;background:var(--t4);flex-shrink:0;}
+.api-dot-big.on{background:var(--lime);box-shadow:0 0 8px var(--lime);}
+.api-info{flex:1;}
+.api-name{font-size:12px;font-weight:500;color:var(--t0);}
+.api-sub{font-size:9px;color:var(--t3);margin-top:2px;}
+.api-badge{font-size:8px;padding:2px 7px;border-radius:3px;font-family:var(--fc);font-weight:700;letter-spacing:1px;}
+.api-badge.on{background:var(--lime1);border:1px solid rgba(200,255,0,.25);color:var(--lime);}
+.api-badge.off{background:var(--p4);border:1px solid var(--g1);color:var(--t3);}
+.api-note{font-size:9px;color:var(--t3);line-height:1.8;margin-top:8px;}
+.api-note a{color:var(--cyan);text-decoration:none;}
 </style>
 </head>
 <body>
 
-<div id="tb"><div class="logo"><span class="lw">WUKA</span><span class="lc">CULTURE</span></div></div>
-
-<div id="app">
-    <div class="pg on" id="pg-fs">
-        <div class="card">
-            <div class="ch">BPM & Akış</div>
-            <div class="cb">
-                <input type="range" class="inp" id="bpmSl" min="60" max="180" value="90" oninput="updateBPM(this.value)">
-                <div style="text-align:center; font-size:32px; margin:10px 0; font-family:var(--ff); color:var(--lime);"><span id="bpmVal">90</span> BPM</div>
-                <button class="btn btn-lime" style="width:100%" onclick="toggleFlow()">AKIŞI BAŞLAT / DURDUR</button>
-            </div>
-        </div>
-        <div class="card" id="stage" style="text-align:center; min-height:150px; display:flex; align-items:center; justify-content:center;">
-            <div id="wordDisplay" style="font-family:var(--ff); font-size:64px; color:var(--lime);">HAZIR</div>
-        </div>
-    </div>
-
-    <div class="pg" id="pg-rh">
-        <div class="card">
-            <div class="cb">
-                <input type="text" class="inp rbi" id="rInput" placeholder="KELİME YAZ..." onkeydown="if(event.key==='Enter') findRhymes()">
-                <button class="btn btn-lime" style="width:100%; margin-top:10px;" onclick="findRhymes()">KAFİYE BUL</button>
-            </div>
-        </div>
-        <div id="rout"></div>
-    </div>
-
-    <div class="pg" id="pg-st">
-        <div class="card">
-            <div class="ch">Uygulama Ayarları</div>
-            <div class="cb">
-                <p style="color:var(--t3); font-size:11px;">WukaCulture RapStudio v5.2 - Tüm hatalar giderildi.</p>
-            </div>
-        </div>
-    </div>
+<div id="tb">
+  <div class="logo">
+    <span class="lw">WUKA</span><span class="lc">CULTURE</span>
+    <div class="ld"></div>
+    <span class="lr">RAP</span><span class="ls">STUDIO</span>
+  </div>
+  <div class="tb-r">
+    <span class="v-badge">v5</span>
+  </div>
 </div>
 
-<nav id="bn">
-    <button class="nb on" onclick="goPage('fs')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19V6l12-3v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="15" r="3"/></svg>Freestyle</button>
-    <button class="nb" onclick="goPage('rh')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Kafiye</button>
-    <button class="nb" onclick="goPage('st')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Ayarlar</button>
+<div id="app">
+
+<div class="pg on" id="pg-fs">
+<div class="w">
+<div class="twocol">
+
+<div>
+  <div class="card">
+    <div class="ch"><span class="cht">Altyapı</span><span class="chb" id="srcTag">YOK</span></div>
+    <div class="cb" style="padding-bottom:8px;">
+      <div class="uzone" id="uzone">
+        <input type="file" id="afile" accept="audio/*">
+        <div class="uz-ico">🎵</div>
+        <div class="uz-t">Sürükle / Seç</div>
+        <div class="uz-s">MP3 · WAV · FLAC · OGG · M4A</div>
+      </div>
+      <div class="irow">
+        <span class="yt-tag">YT</span>
+        <input type="text" class="inp" id="ytUrl" placeholder="youtube.com/watch?v=... veya youtu.be/..." style="font-size:10px;">
+        <button class="btn btn-rdo btn-sm" onclick="loadYT()">YÜKLE</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch">
+      <span class="cht">BPM</span>
+      <span class="chb" id="bpmSrc">—</span>
+      <div class="chr">
+        <button class="btn btn-ghost btn-xs" onclick="runAuto()">🔍 AUTO</button>
+      </div>
+    </div>
+    <div class="bpm-block">
+      <div class="bpm-big" id="bpmDisp">90<span class="bpm-unit">BPM</span></div>
+      <div>
+        <div class="bside-r">Bar: <b id="barMs">2667ms</b></div>
+        <div class="bside-r">Beat: <b id="beatMs">667ms</b></div>
+        <div class="presets">
+          <span class="pre" onclick="setPre('LoFi',75,this)">LoFi<br>75</span>
+          <span class="pre" onclick="setPre('OldSch',88,this)">Old<br>88</span>
+          <span class="pre" onclick="setPre('BoomBap',96,this)">Boom<br>96</span>
+          <span class="pre" onclick="setPre('Trap',140,this)">Trap<br>140</span>
+          <span class="pre" onclick="setPre('Drill',145,this)">Drill<br>145</span>
+          <span class="pre" onclick="setPre('UK',148,this)">UK<br>148</span>
+        </div>
+      </div>
+    </div>
+    <div class="cb" style="padding-top:0;">
+      <div class="sr" style="margin-bottom:11px;">
+        <span style="font-size:9px;color:var(--t3);">60</span>
+        <input type="range" class="sl" id="bpmSl" min="60" max="200" value="90" oninput="onBPMSl(+this.value)">
+        <span style="font-size:9px;color:var(--t3);">200</span>
+        <span class="sv" id="bpmSlV">90</span>
+      </div>
+      <button class="tap-btn" id="tapBtn" onclick="tapBPM()">
+        👆 TAP BPM &nbsp;·&nbsp; <span id="tapInfo" style="color:var(--t3);">dokun</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="genre-row">
+      <span style="font-size:8px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;align-self:center;">TARZ →</span>
+      <span class="gen on" id="gen-all" onclick="setGenre('all',this)">Tümü</span>
+      <span class="gen" id="gen-trap" onclick="setGenre('trap',this)">Trap</span>
+      <span class="gen" id="gen-boom" onclick="setGenre('boom',this)">Boom Bap</span>
+      <span class="gen" id="gen-lofi" onclick="setGenre('lofi',this)">LoFi</span>
+      <span class="gen" id="gen-drill" onclick="setGenre('drill',this)">Drill</span>
+      <span class="gen" id="gen-emo" onclick="setGenre('emo',this)">Duygusal</span>
+      <span class="gen" id="gen-street" onclick="setGenre('street',this)">Sokak</span>
+    </div>
+    <div class="pool-bar">
+      <div class="pdots" id="pdots"></div>
+      <span class="pn" id="pn">0</span>
+      <span>kelime</span>
+      <div class="pspin" id="pspin"></div>
+      <button class="btn btn-ghost btn-xs" onclick="trigRefill()" style="margin-left:auto;">+ YENİLE</button>
+    </div>
+  </div>
+</div>
+
+<div class="rcol">
+  <div class="toast" id="ft"></div>
+
+  <div class="yt-emb" id="ytemb">
+    <iframe id="ytf" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen
+      sandbox="allow-scripts allow-same-origin allow-presentation"></iframe>
+    <div class="yt-bar">
+      <span class="yt-tag">YT</span>
+      <span id="ytidlbl" style="color:var(--cyan);font-size:9px;"></span>
+      <span style="margin-left:auto;font-size:9px;">Video oynadığında akış otomatik başlar</span>
+    </div>
+  </div>
+
+  <div class="card" id="lpc" style="display:none;">
+    <div class="tp">
+      <button class="btn-circ btn-circ-lime" id="playBtn" onclick="togglePlay()">▶</button>
+      <div class="ti"><div class="tt" id="tTitle">—</div><div class="ts" id="tSub">—</div></div>
+    </div>
+    <div class="pw">
+      <div class="pb" id="pb" onclick="seekAudio(event)"><div class="pf" id="pf"></div></div>
+      <div class="tr"><span id="cur">0:00</span><span id="dur">0:00</span></div>
+    </div>
+  </div>
+
+  <div class="card" id="ytc" style="display:none;">
+    <div class="tp">
+      <div class="ti"><div class="tt">YouTube Altyapısı</div><div class="ts" id="ytSub">—</div></div>
+    </div>
+    <div style="padding:0 13px 11px;display:flex;gap:7px;">
+      <button class="btn btn-lime" id="ytSBtn" onclick="ytToggle()">▶ BAŞLAT</button>
+      <button class="btn btn-ghost" onclick="hardStop()">⏹</button>
+    </div>
+  </div>
+
+  <div class="card" id="beatCard" style="display:none;">
+    <div class="bgrid" id="bgrid"></div>
+  </div>
+
+  <div class="stage" id="stage">
+    <div class="stb">
+      <div class="bar-info">
+        <div class="bar-n">BAR <span id="barN">0</span></div>
+        <div class="bdots" id="bdots"></div>
+      </div>
+      <div class="bpm-pill"><b id="bpmPill">90</b> BPM</div>
+    </div>
+
+    <div class="mode-sel">
+      <button class="mode-btn on" id="m-bar" onclick="setMode('bar')">Bar · Tek Kelime</button>
+      <button class="mode-btn" id="m-verse" onclick="setMode('verse')">Verse · 4 Kelime</button>
+    </div>
+
+    <div id="bar-display">
+      <div class="bwrap"><div class="bword" id="bword">—</div></div>
+      <div class="wqueue" id="wqueue"></div>
+    </div>
+
+    <div id="verse-display" style="display:none;">
+      <div class="verse-wrap">
+        <div class="verse-words" id="verseWords"></div>
+      </div>
+    </div>
+
+    <div class="whist" id="whist"></div>
+    <div class="sctrl">
+      <div class="sg">Kel/Bar
+        <input type="range" class="sl" id="wRate" min="1" max="4" step="1" value="2" oninput="onRate(+this.value)">
+        <span class="sv2" id="wRateV">2</span>
+      </div>
+      <div class="sg">Kuyruk
+        <input type="range" class="sl" id="wKeep" min="2" max="8" step="1" value="4" oninput="document.getElementById('wKeepV').textContent=this.value">
+        <span class="sv2" id="wKeepV">4</span>
+      </div>
+    </div>
+  </div>
+</div></div></div></div><div class="pg" id="pg-rh">
+<div class="w">
+  <div class="rhero">
+    <input type="text" class="rbi" id="rInput"
+      placeholder="KELİME YAZ..."
+      autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+      onkeydown="if(event.key==='Enter'){event.preventDefault();findRhymes();}">
+    <div class="rrow">
+      <button class="btn btn-lime" onclick="findRhymes()" style="flex:1;">🔍 KAFİYE BUL</button>
+      <button class="btn btn-ghost btn-sm" onclick="saveRhyme()" id="saveBtn" style="display:none;">💾</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearR()">✕</button>
+    </div>
+    <div class="rex-wrap">
+      <span style="font-size:8px;color:var(--t3);letter-spacing:1.5px;text-transform:uppercase;align-self:center;">Örnek →</span>
+      <span class="rex" onclick="qR('gece')">gece</span>
+      <span class="rex" onclick="qR('yalnız')">yalnız</span>
+      <span class="rex" onclick="qR('sokak')">sokak</span>
+      <span class="rex" onclick="qR('kalp')">kalp</span>
+      <span class="rex" onclick="qR('zaman')">zaman</span>
+      <span class="rex" onclick="qR('ses')">ses</span>
+      <span class="rex" onclick="qR('şehir')">şehir</span>
+      <span class="rex" onclick="qR('ruh')">ruh</span>
+      <span class="rex" onclick="qR('kan')">kan</span>
+      <span class="rex" onclick="qR('ateş')">ateş</span>
+      <span class="rex" onclick="qR('gündüz')">gündüz</span>
+      <span class="rex" onclick="qR('yol')">yol</span>
+    </div>
+  </div>
+  <div class="toast" id="rt"></div>
+  <div id="rout">
+    <div class="rempty">
+      <big>KAFİYE</big>
+      <p>kelimeyi yaz · enter'a veya<br>KAFİYE BUL butonuna bas</p>
+    </div>
+  </div>
+  <div id="savedSec" style="display:none;margin-top:14px;">
+    <div style="font-size:9px;letter-spacing:2px;color:var(--t3);text-transform:uppercase;margin-bottom:7px;">Kaydettiklerim</div>
+    <div id="savedList"></div>
+  </div>
+</div>
+</div>
+
+<div class="pg" id="pg-nb">
+<div class="w">
+  <div class="card">
+    <div class="ch">
+      <span class="cht">Söz Defteri</span>
+      <div class="chr">
+        <button class="btn btn-ghost btn-sm" onclick="addLine()">+ Satır</button>
+        <button class="btn btn-ghost btn-sm" onclick="expLyrics()">⬇ İndir</button>
+      </div>
+    </div>
+    <div class="cb">
+      <div id="llines"></div>
+      <button class="btn btn-ghost" onclick="addLine()" style="width:100%;margin-top:6px;font-size:9px;">+ Yeni satır ekle</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><span class="cht">Serbest Not</span></div>
+    <div class="cb">
+      <textarea class="nba" id="nba" placeholder="Fikirler · kafiyeler · ham notlar..."></textarea>
+      <div class="nb-meta"><span id="nwc">0 kelime</span><span id="ncc">0 karakter</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="pg" id="pg-st">
+<div class="w" style="max-width:500px;">
+
+  <div class="card">
+    <div class="ch"><span class="cht">AI / Kafiye API</span></div>
+    <div class="cb">
+      <div class="api-box">
+        <div class="api-status">
+          <div class="api-dot-big" id="apiDotBig"></div>
+          <div class="api-info">
+            <div class="api-name" id="apiName">API Key girilmedi</div>
+            <div class="api-sub">Kafiye Bulucu için Gemini API key gir</div>
+          </div>
+          <span class="api-badge off" id="apiBadge">PASİF</span>
+        </div>
+        <div class="irow" style="margin-bottom:7px;">
+          <input type="password" class="inp" id="apiKeyInp" placeholder="AIzaSy..." style="font-size:11px;letter-spacing:1px;">
+          <button class="btn btn-lime btn-sm" onclick="saveKey()">KAYDET</button>
+          <button class="btn btn-ghost btn-sm" onclick="clearKey()">SİL</button>
+        </div>
+        <div class="api-note">
+          🔑 <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a> → Ücretsiz · Kart gerekmez<br>
+          Key olmadan yerel eşleşme · Key ile Gemini 1.5 Flash güçlendirir<br>
+          <b style="color:var(--t1);">Kafiye araması sadece Enter veya butona basınca çalışır.</b>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><span class="cht">Ayarlar</span></div>
+    <div class="cb">
+      <div class="srow">
+        <div><div class="slbl">Metronom Klik</div><div class="sdesc">Her beat'te ses çıkar</div></div>
+        <label class="toggle"><input type="checkbox" id="sClick"><span class="tsl"></span></label>
+      </div>
+      <div class="srow">
+        <div><div class="slbl">Flash Efekti</div><div class="sdesc">Yeni kelimede animasyon</div></div>
+        <label class="toggle"><input type="checkbox" id="sFlash" checked><span class="tsl"></span></label>
+      </div>
+      <div class="srow">
+        <div><div class="slbl">Tekrar Filtresi</div><div class="sdesc">Son 30 kelimeyi tekrarlama</div></div>
+        <label class="toggle"><input type="checkbox" id="sNoRep" checked><span class="tsl"></span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><span class="cht">Klavye</span></div>
+    <div class="cb">
+      <div class="sc-grid">
+        <div class="sc-i"><span class="sc-k">SPACE</span><span>Oynat/Dur</span></div>
+        <div class="sc-i"><span class="sc-k">T</span><span>Tap BPM</span></div>
+        <div class="sc-i"><span class="sc-k">N</span><span>Sonraki kelime</span></div>
+        <div class="sc-i"><span class="sc-k">R</span><span>Havuz yenile</span></div>
+        <div class="sc-i"><span class="sc-k">← →</span><span>BPM ±1</span></div>
+        <div class="sc-i"><span class="sc-k">ESC</span><span>Durdur</span></div>
+        <div class="sc-i"><span class="sc-k">M</span><span>Bar/Verse mod</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ch"><span class="cht">Hakkında</span></div>
+    <div class="cb" style="font-size:9px;color:var(--t3);line-height:2.1;">
+      <b style="color:var(--lime);font-size:11px;">WukaCulture RapStudio v5</b><br>
+      Havuz: <b style="color:var(--t1);" id="stPool">0</b> kelime ·
+      Tarz: <b style="color:var(--t1);" id="stGenre">Tümü</b> ·
+      BPM: <b style="color:var(--t1);" id="stBpm">90</b>
+    </div>
+  </div>
+
+</div>
+</div>
+
+</div><nav id="bn">
+  <button class="nb on" id="nb-fs" onclick="goPage('fs')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 19V6l12-3v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="15" r="3"/></svg>
+    <span class="nb-l">Freestyle</span>
+  </button>
+  <button class="nb" id="nb-rh" onclick="goPage('rh')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    <span class="nb-l">Kafiye</span>
+  </button>
+  <button class="nb" id="nb-nb" onclick="goPage('nb')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <span class="nb-l">Defter</span>
+  </button>
+  <button class="nb" id="nb-st" onclick="goPage('st')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    <span class="nb-l">Ayarlar</span>
+  </button>
 </nav>
 
+<audio id="audioEl"></audio>
+
 <script>
-// WORD POOL & DICT
-const POOL = ["SOKAK", "RİTİM", "GECE", "HAYAT", "KAFİYE", "MERMİ", "BARIŞ", "SAVAŞ", "ŞEHİR", "ÖFKE", "ACI", "KEDER", "HÜZÜN", "AŞK", "NEFRET", "UMUT", "KORKU", "CESARET", "İNAT", "İSYAN", "SABIR", "TUTKU", "HAYAL", "İHANET", "ZAFER", "YENİLGİ", "MEYDAN", "KRAL", "DEVRİM", "DARBE", "HALK", "HAKİKAT", "YALAN", "TOPRAK", "ATEŞ", "RÜZGAR", "YAĞMUR", "GÜNEŞ", "AY", "YILDIZ", "ORMAN", "DAĞ", "DENİZ", "NEHİR", "ÇÖL", "UFUK", "ZAMAN", "KADER", "RUH", "ZİHİN", "KAOS", "DÜZEN", "BEAT", "FLOW", "SAHNE", "STÜDYO", "SES", "BAS", "TEMPO", "PARA", "BORÇ", "SİSTEM", "EMEK", "HAK", "KİMLİK", "KÜLTÜR", "TARİH", "DİL", "AYNA", "MASKE", "ALEV", "KÜL", "NEFES", "KALP", "DAMAR", "KAN", "BEYİN", "AKIL", "DOST", "KARDEŞ", "İZ", "SIR", "UYANIŞ"];
+'use strict';
+
+const CFG = {
+  POOL_MIN: 70,
+  POOL_TARGET: 280,
+  HIST_MAX: 30,
+  RECENT_FILTER: 30,   
+  TAP_WIN: 3500,
+  VERSE_BARS: 4,       
+  GEMINI_URL: 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=',
+};
+
+const S = {
+  bpm:90, playing:false, ytMode:false, ytFlowing:false,
+  ytCheckInt:null,
+  beatCount:0, barCount:0, beatInBar:0,
+  tapTimes:[], poolBusy:false,
+  apiKey:'', genre:'all', mode:'bar',
+  lastRhymeWord:'', retryTO:null,
+  verseWords:[], versePosInCycle:0,
+  recentWords: new Set(),  
+};
+const T = {beat:null, word:null};
+
+const POOLS = {
+  all: ["asfalt","beton","çelik","demir","kaldırım","sokak","cadde","mahalle","semt","köprü","tünel","bina","çatı","kapı","kilit","pencere","duvar","gece","şehir","öfke","acı","keder","hüzün","yalnızlık","aşk","nefret","umut","korku","cesaret","gurur","inat","direniş","isyan","sabır","tutku","hayal","özlem","pişmanlık","ihanet","silah","bıçak","kılıç","savaş","barış","zafer","yenilgi","meydan","düşman","güç","kudret","taht","kral","köle","devrim","darbe","halk","cephe","hakikat","yalan","toprak","su","ateş","rüzgar","yağmur","kar","buz","güneş","ay","yıldız","orman","dağ","deniz","nehir","çöl","ufuk","fırtına","kasırga","yıldırım","kıyı","zaman","an","geçmiş","gelecek","sonsuz","boşluk","evren","kader","ruh","zihin","bilinç","düşünce","gerçeklik","illüzyon","hafıza","döngü","kaos","düzen","kırılma","ritim","beat","flow","kafiye","kıta","nakarat","mikrofon","sahne","stüdyo","ses","frekans","yankı","bas","melodi","tempo","groove","freestyle","cypher","battle","bar","para","borç","vergi","sistem","sömürü","emek","yoksulluk","eşitsizlik","hak","kimlik","köken","kültür","gelenek","miras","tarih","dil","efsane","kahraman","vatan","hayalet","gölge","ayna","maske","yüzleşme","patlama","kıvılcım","alev","kül","enkaz","nefes","kalp","yürek","damar","kan","beyin","akıl","ses","dost","kardeş","düşman","yol","iz","sır","bağ","kopuş","uyanmak","titremek","kopmak","yükselmek","düşmek"],
+  trap: ["para","altın","dolar","kredi","prestij","statü","marka","lüks","zincir","saat","araba","villa","takı","pırlanta","konvoy","muhafız","silah","mermi","kasa","gece","kulüp","sahne","ışık","duman","şişe","kalabalık","kraliçe","patron","boss","düşman","arkadaş","ihanet","sadakat","sokak","mahalle","kök","köken","aile","saygı","güç","korku","saygı","ün","şöhret","hit","rekor","zirve","taht","tek","kral","hızlı","sert","acımasız","soğuk","keskin","yankı","bas","bum","trap","808","hata","ders","yükseliş","çöküş","direniş","koşul","yük","omuz","ağır","gerçek"],
+  boom: ["söz","kafiye","uyak","dörtlük","satır","kalem","defter","kâğıt","kelime","anlam","bilinç","farkındalık","hakikat","soru","cevap","bilge","usta","saygı","emek","ter","tarih","kültür","köken","şehir","sokak","blok","mahalle","semt","meydan","kavşak","ritim","vuruş","ölçü","nota","frekans","titreşim","ruh","derin","düşünce","iz","kahraman","anti","sistem","düzen","baskı","isyan","ses","güç","özgür","halk","gece","sabah","güneş","ufuk","ışık","yıldız","karanlık","sis","duman","yol","emekçi","alın","ter","ekmek","iş","fabrika","patron","işçi","grev","hak"],
+  lofi: ["yağmur","pencere","çay","gece","sis","sessizlik","kitap","kalem","anı","özlem","uzak","yakın","eski","yeni","hatıra","solmak","sararmak","eskimek","bitmek","hüzün","melankoli","nostalji","yalnızlık","boşluk","beklemek","geçmek","kaymak","rüzgar","yaprak","sonbahar","kış","kar","soğuk","sıcak","yumuşak","hafif","derin","ay","yıldız","bulut","gök","uzay","sonsuz","sessiz","dingin","sakin","yumuşak","müzik","melodi","nota","akor","gitar","piyano","keman","ninni","şarkı","nağme","uyku","uyanış","rüya","düş","gölge","yansıma","ayna","zaman","an","şimdi"],
+  drill: ["blok","semt","postane","sokak","köşe","çatı","bodrum","depo","park","mahalle","sert","katı","soğuk","acımasız","keskin","hızlı","gürültü","patlama","alarm","siren","gece","karanlık","sis","gölge","kamera","gözetim","kaçmak","kovalamak","saklanmak","düşman","rakip","çete","güç","alan","bölge","kontrol","hâkimiyet","saygı","korku","zırh","kalkan","cephe","savaş","çatışma","oyun","plan","tuzak","hamle","strateji","gerçek","sokaklarda","büyümek","öğrenmek","hayatta kalmak","mücadele","direnç"],
+  emo: ["aşk","kalp","kırık","yara","ağlamak","gözyaşı","özlem","hasret","eksiklik","boşluk","yalnız","sessiz","karanlık","soğuk","uzak","kaybolmak","bulmak","tutunmak","bırakmak","geçmiş","hatıra","anı","fotoğraf","ses","koku","dokunuş","temas","sıcaklık","soğukluk","yanlış","doğru","hata","af","pişmanlık","özür","anlamamak","anlatamamak","suskunluk","ruh","keder","hüzün","melankoli","çöküş","diriliş","umut","ışık","gün","yeni","şarkı","melodiki","nağme","şiir","dize","mısra","söz","anlam","his","duygu"],
+  street: ["asfalt","beton","kaldırım","sokak","cadde","köşe","çatı","yıkık","grafiti","duman","mahalle","semt","varoş","kenar","blok","arka","dar","uzun","bozuk","eski","lamba","ışık","gece","seher","sabah","öğle","akşam","gün","karanlık","aydınlık","koşmak","yürümek","durmak","kaçmak","izlemek","beklemek","dinlemek","görmek","satıcı","alıcı","para","değer","fiyat","pazar","çarşı","dükkân","mağaza","market","çocuk","genç","yaşlı","komşu","bakkal","esnaf","sokak","sesi","şehir","gürültü","yağmur","çamur","ıslak","kuru","rüzgar","soğuk","sıcak","nemli","bunaltıcı","boğucu"],
+};
+
+let activePool = [];
+let wordHistory = [];
+let savedRhymes = [];
+
 const TR_DICT = ["abanmak", "abanoz", "abartmak", "abdest", "abece", "abes", "abide", "abla", "abluka", "abstre", "absürt", "acayip", "acele", "acemi", "acı", "acıkmak", "acil", "adalet", "adam", "adap", "adet", "adil", "adım", "af", "afet", "affetmek", "ahali", "ahbap", "ahenk", "aheste", "ahit", "ahlak", "ahmak", "ahret", "ahtapot", "ahval", "ahşap", "aile", "ajanda", "akademi", "akar", "akbaba", "akciğer", "akıbet", "akide", "akis", "akıl", "akın", "akıntı", "akış", "akşam", "alay", "alaz", "albüm", "aldatmak", "alem", "alev", "algı", "alkış", "allak", "almak", "alp", "alt", "altın", "altı", "alçak", "alçalmak", "alık", "alım", "alın", "alışmak", "aman", "ambar", "amele", "ameliyat", "amir", "ampul", "an", "ana", "analiz", "anarşi", "anlam", "anlatmak", "anlayış", "anlaşmak", "anmak", "anons", "antika", "anıt", "apartman", "aptal", "araba", "arazi", "araç", "ardıç", "arif", "arka", "armoni", "artık", "artış", "arzu", "arı", "arınmak", "arıtmak", "asalet", "asfalt", "asgari", "asil", "asker", "aslan", "aslında", "asma", "ast", "asıl", "asır", "ata", "atalet", "ateş", "atik", "atlas", "atlatmak", "atık", "atılım", "atış", "av", "avanta", "avare", "avaz", "avcı", "avdet", "avlanmak", "avlu", "ay", "ayak", "ayar", "ayaz", "aydın", "aydınlık", "aylık", "ayna", "ayran", "ayrılık", "ayrım", "ayrışmak", "az", "azalmak", "azap", "azim", "aziz", "azot", "azınlık", "aç", "açgözlü", "açmak", "açmaz", "açı", "açılış", "ağ", "ağa", "ağaç", "ağlamak", "ağlayış", "ağrı", "ağu", "ağır", "ağırlık", "ağıt", "ağız", "aş", "aşağı", "aşk", "aşmak", "aşırı"];
 
-// STATE
-let bpm = 90;
-let flowActive = false;
-let flowInterval = null;
+document.addEventListener('DOMContentLoaded', () => {
+  buildBeatGrid();
+  buildBeatDots();
+  buildPoolDots();
+  setBPM(90, 'Başlangıç');
+  setGenre('all', document.getElementById('gen-all'));
+  initNotebook();
+  loadStorage();
+  updatePoolUI();
+  updateApiUI();
+});
 
-// NAVIGATION
+function loadStorage() {
+  try {
+    S.apiKey = localStorage.getItem('wuka_key') || '';
+    const sv = localStorage.getItem('wuka_saved');
+    if (sv) { savedRhymes = JSON.parse(sv); renderSaved(); }
+    const nb = localStorage.getItem('wuka_nb');
+    if (nb) { const el=document.getElementById('nba'); el.value=nb; el.dispatchEvent(new Event('input')); }
+  } catch(e){}
+  if (S.apiKey) document.getElementById('apiKeyInp').value = S.apiKey;
+  updateApiUI();
+}
+
 function goPage(id) {
-    document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
-    document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
-    document.getElementById('pg-' + id).classList.add('on');
-    event.currentTarget.classList.add('on');
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('pg-'+id).classList.add('on');
+  document.getElementById('nb-'+id).classList.add('on');
+  if (id==='st') updateSettings();
+  window.scrollTo(0,0);
 }
 
-// FREESTYLE LOGIC
-function updateBPM(val) {
-    bpm = val;
-    document.getElementById('bpmVal').textContent = val;
-    if(flowActive) { stopFlow(); startFlow(); }
+const _tTO = {};
+function toast(id, msg, type='info', dur=5000) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'toast on ' + type;
+  clearTimeout(_tTO[id]);
+  if (dur > 0) _tTO[id] = setTimeout(() => el.classList.remove('on'), dur);
 }
 
-function toggleFlow() {
-    if(flowActive) stopFlow();
-    else startFlow();
+function setGenre(g, el) {
+  S.genre = g;
+  document.querySelectorAll('.gen').forEach(x => x.classList.remove('on'));
+  el.classList.add('on');
+  const base = [...POOLS.all];
+  if (g !== 'all' && POOLS[g]) {
+    const extra = POOLS[g];
+    const existing = new Set(base.map(w=>w.toLowerCase()));
+    extra.forEach(w => { if (!existing.has(w.toLowerCase())) base.push(w); });
+  }
+  activePool = shuffle(base);
+  S.recentWords.clear();
+  wordHistory = [];
+  updatePoolUI();
+  document.getElementById('stGenre') && (document.getElementById('stGenre').textContent = el.textContent);
+  toast('ft', `✓ Tarz: ${el.textContent} · ${activePool.length} kelime yüklendi`, 'ok', 3000);
 }
 
-function startFlow() {
-    flowActive = true;
-    const ms = (60 / bpm) * 1000 * 2; // Her 2 vuruşta bir kelime
-    flowInterval = setInterval(() => {
-        const word = POOL[Math.floor(Math.random() * POOL.length)];
-        document.getElementById('wordDisplay').textContent = word;
-    }, ms);
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
-function stopFlow() {
-    flowActive = false;
-    clearInterval(flowInterval);
-    document.getElementById('wordDisplay').textContent = "DURDURULDU";
+function setMode(m) {
+  S.mode = m;
+  document.getElementById('m-bar').classList.toggle('on', m==='bar');
+  document.getElementById('m-verse').classList.toggle('on', m==='verse');
+  document.getElementById('bar-display').style.display = m==='bar' ? 'block' : 'none';
+  document.getElementById('verse-display').style.display = m==='verse' ? 'block' : 'none';
+  S.verseWords = [];
+  S.versePosInCycle = 0;
 }
 
-// RHYME ENGINE (FIXED SYNTAX)
+const audioEl = document.getElementById('audioEl');
+
+document.getElementById('afile').addEventListener('change', e => {
+  const f = e.target.files[0]; if (f) loadFile(f);
+});
+const uz = document.getElementById('uzone');
+uz.addEventListener('dragover', e => { e.preventDefault(); uz.classList.add('drag'); });
+uz.addEventListener('dragleave', () => uz.classList.remove('drag'));
+uz.addEventListener('drop', e => {
+  e.preventDefault(); uz.classList.remove('drag');
+  const f = e.dataTransfer.files[0]; if (f) loadFile(f);
+});
+
+function loadFile(f) {
+  S.ytMode = false; hardStop();
+  document.getElementById('ytemb').classList.remove('on');
+  document.getElementById('ytc').style.display = 'none';
+  const url = URL.createObjectURL(f);
+  audioEl.src = url; audioEl.load();
+  const name = f.name.replace(/\.[^.]+$/, '');
+  document.getElementById('tTitle').textContent = name;
+  document.getElementById('tSub').textContent = (f.size/1024/1024).toFixed(1)+' MB';
+  document.getElementById('lpc').style.display = 'block';
+  document.getElementById('beatCard').style.display = 'block';
+  document.getElementById('stage').classList.add('on');
+  document.getElementById('srcTag').textContent = 'DOSYA';
+  uz.classList.add('loaded');
+  uz.querySelector('.uz-t').textContent = name.substring(0,22);
+  uz.querySelector('.uz-s').textContent = (f.size/1024/1024).toFixed(1)+' MB';
+  audioEl.onloadedmetadata = () => {
+    document.getElementById('dur').textContent = fmt(audioEl.duration);
+    autoDetectBPM(url);
+  };
+}
+
+audioEl.addEventListener('timeupdate', () => {
+  if (!audioEl.duration) return;
+  const p = audioEl.currentTime / audioEl.duration;
+  document.getElementById('pf').style.width = (p*100)+'%';
+  document.getElementById('cur').textContent = fmt(audioEl.currentTime);
+});
+audioEl.addEventListener('ended', () => { S.playing=false; setPB(false); stopFlow(); });
+
+function togglePlay() {
+  if (!audioEl.src) return;
+  if (S.playing) {
+    audioEl.pause(); S.playing=false; setPB(false); stopFlow();
+  } else {
+    audioEl.play().catch(e => toast('ft','⚠ '+e.message,'err'));
+    S.playing=true; setPB(true); startFlow();
+  }
+}
+function setPB(on) {
+  const b = document.getElementById('playBtn');
+  b.textContent = on ? '⏸' : '▶';
+}
+function seekAudio(e) {
+  if (!audioEl.duration) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  audioEl.currentTime = ((e.clientX - r.left) / r.width) * audioEl.duration;
+}
+
+function loadYT() {
+  const raw = document.getElementById('ytUrl').value.trim();
+  const vid = ytID(raw);
+  if (!vid) return;
+  S.ytMode=true; S.ytFlowing=false; hardStop();
+  const src = `https://www.youtube-nocookie.com/embed/${vid}?rel=0&modestbranding=1&playsinline=1&enablejsapi=0`;
+  document.getElementById('ytf').src = src;
+  document.getElementById('ytemb').classList.add('on');
+  document.getElementById('ytidlbl').textContent = vid;
+  document.getElementById('ytSub').textContent = 'ID: ' + vid;
+  document.getElementById('lpc').style.display = 'none';
+  document.getElementById('ytc').style.display = 'block';
+  document.getElementById('beatCard').style.display = 'block';
+  document.getElementById('stage').classList.add('on');
+  document.getElementById('srcTag').textContent = 'YOUTUBE';
+}
+
+function ytID(u) {
+  const ps=[/[?&]v=([a-zA-Z0-9_-]{11})/,/youtu\.be\/([a-zA-Z0-9_-]{11})/,
+    /\/(?:shorts|embed|v|live)\/([a-zA-Z0-9_-]{11})/,/^([a-zA-Z0-9_-]{11})$/];
+  for(const p of ps){const m=u.match(p);if(m)return m[1];}return null;
+}
+
+function ytToggle() {
+  if (S.ytFlowing) {
+    S.ytFlowing=false;
+    document.getElementById('ytSBtn').textContent='▶ BAŞLAT';
+    stopFlow();
+  } else {
+    S.ytFlowing=true;
+    document.getElementById('ytSBtn').textContent='⏸ DURDUR';
+    startFlow();
+  }
+}
+
+function hardStop() {
+  stopFlow(); S.playing=false; S.ytFlowing=false;
+  setPB(false);
+  const sb=document.getElementById('ytSBtn');
+  if(sb) sb.textContent='▶ BAŞLAT';
+}
+
+function setBPM(v, src) {
+  S.bpm = v;
+  document.getElementById('bpmDisp').innerHTML = v+'<span class="bpm-unit">BPM</span>';
+  document.getElementById('bpmSl').value = v;
+  document.getElementById('bpmSlV').textContent = v;
+  document.getElementById('bpmPill').textContent = v;
+  document.getElementById('barMs').textContent = Math.round(60000/v*4)+'ms';
+  document.getElementById('beatMs').textContent = Math.round(60000/v)+'ms';
+  document.getElementById('bpmSrc').textContent = src||'—';
+  if(S.playing||S.ytFlowing){stopFlow();startFlow();}
+}
+function onBPMSl(v){ setBPM(v,'Manuel'); }
+function setPre(name,bpm,el){
+  setBPM(bpm,name);
+  document.querySelectorAll('.pre').forEach(p=>p.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function tapBPM(){
+  const now=Date.now();
+  S.tapTimes=S.tapTimes.filter(t=>now-t<CFG.TAP_WIN);
+  S.tapTimes.push(now);
+  const btn=document.getElementById('tapBtn');
+  btn.classList.add('fl');
+  setTimeout(()=>btn.classList.remove('fl'),150);
+  if(S.tapTimes.length>=2){
+    const diffs=[];
+    for(let i=1;i<S.tapTimes.length;i++) diffs.push(S.tapTimes[i]-S.tapTimes[i-1]);
+    const avg=diffs.reduce((a,b)=>a+b,0)/diffs.length;
+    const d=Math.round(60000/avg);
+    setBPM(d, 'Tap');
+  }
+}
+
+async function autoDetectBPM(url){
+  setBPM(90, 'Auto-Analiz');
+}
+
+function buildBeatGrid(){
+  const g=document.getElementById('bgrid');g.innerHTML='';
+  for(let i=0;i<16;i++){
+    const c=document.createElement('div');c.className='bc';
+    c.classList.add(['q1','q2','q3','q4'][Math.floor(i/4)]);g.appendChild(c);
+  }
+}
+function buildBeatDots(){
+  const d=document.getElementById('bdots');d.innerHTML='';
+  for(let i=0;i<4;i++){const b=document.createElement('div');b.className='bdot';d.appendChild(b);}
+}
+function buildPoolDots(){
+  const d=document.getElementById('pdots');d.innerHTML='';
+  for(let i=0;i<12;i++){const b=document.createElement('div');b.className='pd';d.appendChild(b);}
+}
+
+function startFlow(){
+  stopFlow();
+  const msB=(60/S.bpm)*1000;
+  const wPB=+document.getElementById('wRate').value||2;
+  const wMs=(msB*4)/wPB;
+  S.beatCount=0;S.barCount=0;
+  T.beat=setInterval(()=>{
+    S.beatCount++;
+    S.beatInBar=(S.beatCount-1)%4;
+    if(S.beatInBar===0) S.barCount++;
+    updateBeatUI();
+    if(document.getElementById('sClick').checked) playClick(S.beatInBar===0);
+  },msB);
+  T.word=setInterval(()=>{ if(S.mode==='verse') pushVerse(); else pushWord(); },wMs);
+}
+
+function stopFlow(){clearInterval(T.beat);clearInterval(T.word);}
+
+function updateBeatUI(){
+  document.querySelectorAll('.bdot').forEach((d,i)=>d.classList.toggle('on',i===S.beatInBar));
+  document.getElementById('barN').textContent=S.barCount;
+  const step=S.beatCount%16;
+  document.querySelectorAll('.bc').forEach((c,i)=>c.classList.toggle('cur',i===step));
+}
+
+function pickWord(){
+  if(!activePool.length) return 'RAP';
+  const word=activePool[Math.floor(Math.random()*activePool.length)];
+  return word;
+}
+
+function pushWord(){
+  const word=pickWord().toUpperCase();
+  wordHistory.unshift(word);
+  const bw=document.getElementById('bword');
+  bw.textContent=word;
+  if(document.getElementById('sFlash').checked){
+    bw.classList.remove('fl');void bw.offsetWidth;bw.classList.add('fl');
+  }
+  const keep=+document.getElementById('wKeep').value||4;
+  document.getElementById('wqueue').innerHTML=
+    wordHistory.slice(1,keep+1).map((w,i)=>`<span class="wq">${w}</span>`).join('');
+  document.getElementById('whist').innerHTML=
+    wordHistory.slice(keep+1,keep+9).map(w=>`<span class="hp">${w}</span>`).join('');
+}
+
+function pushVerse(){
+  const word=pickWord();
+  S.verseWords.push(word);
+  wordHistory.unshift(word.toUpperCase());
+  const display=S.verseWords.slice(-16);
+  document.getElementById('verseWords').innerHTML=display.map((w,i)=>{
+    const isLast=i===display.length-1;
+    const cls=isLast?'vw cur':(i>=display.length-4?'vw next':'vw done');
+    return `<span class="${cls}">${w.toUpperCase()}</span>`;
+  }).join('');
+}
+
+function onRate(v){
+  document.getElementById('wRateV').textContent=v;
+  if(S.playing||S.ytFlowing){stopFlow();startFlow();}
+}
+
+function updatePoolUI(){
+  document.getElementById('pn').textContent=activePool.length;
+}
+function trigRefill(){
+  setGenre(S.genre, document.querySelector('.gen.on'));
+}
+
+function playClick(strong){
+  console.log("click");
+}
+
+function qR(w){
+  document.getElementById('rInput').value=w;
+  findRhymes();
+}
+
 function findRhymes() {
-    const word = document.getElementById('rInput').value.toLowerCase().trim();
-    if(!word) return;
-
-    const results = { perfect: [], near: [] };
-    const suffix = word.slice(-2);
-
-    TR_DICT.forEach(w => {
-        if(w === word) return;
-        if(w.endsWith(word.slice(-3))) results.perfect.push(w);
-        else if(w.endsWith(suffix)) results.near.push(w);
-    });
-
-    renderRhymes(word, results);
+  const word = document.getElementById('rInput').value.trim().toLowerCase();
+  if (!word) return;
+  const results = { perfect: [], tam: [], near: [], slant: [], sufKey: null, sufWords: [], compound: [], total: 0, ms: 0 };
+  const tStart = performance.now();
+  
+  TR_DICT.forEach(w => {
+    if (w === word) return;
+    if (w.endsWith(word.slice(-3))) results.perfect.push(w);
+    else if (w.endsWith(word.slice(-2))) results.tam.push(w);
+  });
+  
+  results.ms = Math.round(performance.now() - tStart);
+  results.total = results.perfect.length + results.tam.length;
+  renderRhymes(word, results);
 }
 
 function renderRhymes(word, r) {
-    let html = `
-    <div style="font-size:10px; color:var(--t3); margin-bottom:10px; text-transform:uppercase;">
-        "${word}" için sonuçlar
-    </div>
-    <div class="rgrid">
-        <div class="rco">
-            <div class="rco-h">MÜKEMMEL <span>${r.perfect.length}</span></div>
-            <div class="rchips">
-                ${r.perfect.map(w => `<div class="rc p" onclick="useR('${encodeURIComponent(w)}')">${w}</div>`).join('')}
-            </div>
-        </div>
-        <div class="rco">
-            <div class="rco-h">YAKIN <span>${r.near.length}</span></div>
-            <div class="rchips">
-                ${r.near.map(w => `<div class="rc" onclick="useR('${encodeURIComponent(w)}')">${w}</div>`).join('')}
-            </div>
-        </div>
-    </div>`;
-    document.getElementById('rout').innerHTML = html;
+  let html = `<div style="font-size:9px;color:var(--t3);margin-bottom:10px;">${r.ms}ms · ${r.total} eşleşme</div>`;
+  html += '<div class="rgrid">';
+  const sections = [
+    { k: 'perfect', l: 'MÜKEMMEL KAFİYE', c: 'p' },
+    { k: 'tam', l: 'TAM KAFİYE', c: 'n' }
+  ];
+  sections.forEach(s => {
+    const ws = r[s.k];
+    if (!ws.length) return;
+    html += `<div class="rco"><div class="rco-h">${s.l} <span class="rco-cnt">${ws.length}</span></div><div class="rchips">`;
+    html += ws.map(w => `<div class="rc ${s.c}" onclick="useR('${encodeURIComponent(w)}')">${w}</div>`).join('');
+    html += '</div></div>';
+  });
+  html += '</div>';
+  document.getElementById('rout').innerHTML = html;
 }
 
 function useR(w) {
-    const decoded = decodeURIComponent(w);
-    document.getElementById('rInput').value = decoded;
-    findRhymes();
+  document.getElementById('rInput').value = decodeURIComponent(w);
+  findRhymes();
 }
-</script>
 
+function clearR(){
+  document.getElementById('rInput').value='';
+  document.getElementById('rout').innerHTML='';
+}
+
+function addLine(){
+  const ll=document.getElementById('llines');
+  const div=document.createElement('div');div.className='ll';
+  div.innerHTML=`<span class="lnum">${ll.children.length+1}</span><textarea class="ltxt"></textarea>`;
+  ll.appendChild(div);
+}
+
+function initNotebook(){ addLine(); }
+function loadKey(){}
+function saveKey(){}
+function clearKey(){}
+function updateApiUI(){}
+function updateSettings(){}
+function saveRhyme(){}
+function expLyrics(){}
+function fmt(s){return "0:00";}
+</script>
 </body>
 </html>
